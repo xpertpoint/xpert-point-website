@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XpertPoint — Service Biciclete București</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a08;
+    --white: #f5f3ee;
+    --cream: #ede9e0;
+    --accent: #ffffff;
+    --accent-dim: #cfcac2;
+    --olive: #4a5240;
+    --tan: #c9b99a;
+    --mid: #6b6760;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-serif: 'DM Serif Display', serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed; top: 0; left: 0; z-index: 9999;
+    pointer-events: none;
+    mix-blend-mode: difference;
+  }
+  .cursor-dot {
+    width: 8px; height: 8px;
+    background: var(--white);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width .2s, height .2s;
+  }
+  .cursor-ring {
+    width: 40px; height: 40px;
+    border: 1px solid rgba(245,243,238,0.5);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all .15s ease-out;
+    position: absolute; top: 0; left: 0;
+  }
+  body:hover .cursor-dot { width: 8px; height: 8px; }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 3rem;
+    background: linear-gradient(to bottom, rgba(10,10,8,0.95), transparent);
+    transition: background .3s;
+  }
+  nav.scrolled { background: rgba(10,10,8,0.98); }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+  .nav-switch { color: var(--tan) !important; border:1px solid rgba(201,185,154,0.3); padding:0.5rem 0.9rem; border-radius:2px; }
+  .nav-switch::after { display:none; }
+  .nav-switch:hover { border-color: var(--accent); }
+  .nav-links a {
+    color: rgba(245,243,238,0.7);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color .2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: width .3s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    background: var(--accent);
+    color: var(--black) !important;
+    padding: 0.6rem 1.5rem;
+    border-radius: 2px;
+    font-weight: 500 !important;
+  }
+  .nav-cta::after { display: none; }
+  .nav-cta:hover { background: var(--accent-dim) !important; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
+  .hamburger span { width: 24px; height: 1px; background: var(--white); transition: all .3s; display: block; }
+
+  /* ── HERO ── */
+  .hero {
+    height: 100vh;
+    position: relative;
+    display: flex; align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero-slides { position: absolute; inset: 0; }
+  .hero-slide {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  .hero-slide.active { opacity: 1; }
+  .hero-slide::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(10,10,8,0.85) 0%,
+      rgba(10,10,8,0.4) 60%,
+      rgba(255,255,255,0.15) 100%
+    );
+  }
+  /* Slide 1: sport bicycle - Murillo de Paula (road bike) */
+  .slide-1 { background-image: url('https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=1920&q=85'); }
+  /* Slide 2: bicycle maintenance/mechanic hands on drivetrain */
+  .slide-2 { background-image: url('https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=1920&q=85'); }
+  /* Slide 3: electric bicycle modern urban - cycle on street */
+  .slide-3 { background-image: url('https://images.unsplash.com/photo-1576435728678-68d0fbf94946?w=1920&q=85'); }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 0 3rem 5rem;
+    max-width: 900px;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
+  }
+  .hero-eyebrow::before { content: ''; width: 40px; height: 1px; background: var(--accent); }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 12vw, 11rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+  }
+  .hero-title em { color: var(--accent); font-style: normal; }
+  .hero-sub {
+    font-size: 1.05rem; line-height: 1.7;
+    color: rgba(245,243,238,0.65);
+    max-width: 480px;
+    margin-top: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+  }
+  .hero-actions {
+    display: flex; align-items: center; gap: 2rem;
+    margin-top: 2.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.9s forwards;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--black);
+    padding: 1rem 2.5rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none;
+    border: none; cursor: none;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+    transition: background .2s, transform .2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--accent-dim); transform: translateY(-2px); }
+  .btn-ghost {
+    color: rgba(245,243,238,0.8);
+    text-decoration: none;
+    font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 0.75rem;
+    transition: color .2s;
+  }
+  .btn-ghost:hover { color: var(--white); }
+  .btn-ghost::after {
+    content: '→';
+    transition: transform .2s;
+  }
+  .btn-ghost:hover::after { transform: translateX(4px); }
+
+  .hero-indicators {
+    position: absolute; bottom: 2.5rem; right: 3rem; z-index: 2;
+    display: flex; gap: 0.5rem;
+  }
+  .indicator {
+    width: 30px; height: 2px;
+    background: rgba(245,243,238,0.3);
+    cursor: none;
+    transition: background .3s, width .3s;
+  }
+  .indicator.active { background: var(--accent); width: 60px; }
+
+  .hero-scroll {
+    position: absolute; right: 3rem; top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    z-index: 2;
+    font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: rgba(245,243,238,0.4);
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .hero-scroll::after {
+    content: '';
+    width: 60px; height: 1px;
+    background: rgba(245,243,238,0.2);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-bar {
+    background: var(--accent);
+    padding: 0.75rem 0;
+    overflow: hidden;
+  }
+  .marquee-track {
+    display: flex; gap: 0;
+    animation: marquee 25s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    flex-shrink: 0;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    color: rgba(10,10,8,0.85);
+    padding: 0 2rem;
+    display: flex; align-items: center; gap: 2rem;
+  }
+  .marquee-item::after { content: '✦'; opacity: 0.6; }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── STATS ── */
+  .stats {
+    padding: 5rem 3rem;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: rgba(255,255,255,0.04);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .stat-item {
+    padding: 2.5rem;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: 4.5rem;
+    color: var(--white);
+    line-height: 1;
+  }
+  .stat-number span { color: var(--accent); }
+  .stat-label {
+    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--tan);
+    margin-top: 0.5rem;
+  }
+
+  /* ── ABOUT STRIP ── */
+  .about-strip {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 60vh;
+  }
+  .about-image {
+    position: relative; overflow: hidden;
+  }
+  .about-image img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(30%) contrast(1.1);
+    transition: transform 0.8s ease;
+  }
+  .about-image:hover img { transform: scale(1.04); }
+  .about-image::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, transparent 70%, var(--black));
+  }
+  .about-text {
+    background: var(--cream);
+    color: var(--black);
+    padding: 5rem;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .section-label {
+    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--black);
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .section-label::before { content: ''; width: 30px; height: 1px; background: var(--black); }
+  .about-heading {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.1;
+    color: var(--black);
+    margin-bottom: 1.5rem;
+  }
+  .about-heading em { color: var(--black); text-decoration: underline; text-decoration-color: rgba(10,10,8,0.3); text-underline-offset: 4px; }
+  .about-body {
+    font-size: 1rem; line-height: 1.8;
+    color: rgba(10,10,8,0.7);
+    max-width: 420px;
+  }
+  .feature-list {
+    list-style: none;
+    margin-top: 2rem;
+    display: flex; flex-direction: column; gap: 0.75rem;
+  }
+  .feature-list li {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.9rem; color: rgba(10,10,8,0.8);
+  }
+  .feature-list li::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    flex-shrink: 0;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+
+  /* ── SERVICES ── */
+  .services {
+    padding: 7rem 3rem;
+    background: var(--black);
+  }
+  .services-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 4rem;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+  }
+  .section-title small {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .service-card {
+    position: relative;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 3rem;
+    overflow: hidden;
+    transition: background .3s, border-color .3s;
+    display: flex; flex-direction: column;
+  }
+  .service-card:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.3);
+  }
+  .service-card.featured {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--black);
+  }
+  .service-card.featured:hover { background: var(--accent-dim); }
+
+  .card-number {
+    font-family: var(--font-display);
+    font-size: 5rem; line-height: 1;
+    color: rgba(255,255,255,0.06);
+    position: absolute; top: 1.5rem; right: 2rem;
+    transition: color .3s;
+  }
+  .service-card:hover .card-number { color: rgba(255,255,255,0.15); }
+  .service-card.featured .card-number { color: rgba(10,10,8,0.1); }
+
+  .card-icon {
+    width: 50px; height: 50px;
+    margin-bottom: 2rem;
+  }
+  .card-icon svg { width: 100%; height: 100%; }
+
+  .card-name {
+    font-family: var(--font-display);
+    font-size: 1.8rem; letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+  .card-desc {
+    font-size: 0.9rem; line-height: 1.7;
+    color: rgba(245,243,238,0.6);
+    flex: 1;
+  }
+  .service-card.featured .card-desc { color: rgba(10,10,8,0.7); }
+
+  .card-includes {
+    list-style: none;
+    margin: 1.5rem 0;
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+  .card-includes li {
+    font-size: 0.8rem;
+    color: rgba(245,243,238,0.5);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .service-card.featured .card-includes li { color: rgba(10,10,8,0.75); }
+  .card-includes li::before { content: '—'; color: var(--accent); }
+  .service-card.featured .card-includes li::before { color: rgba(10,10,8,0.45); }
+
+  .card-price {
+    display: flex; align-items: baseline; gap: 0.4rem;
+    margin-top: auto; padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .service-card.featured .card-price { border-top-color: rgba(10,10,8,0.15); }
+  .price-amount {
+    font-family: var(--font-display);
+    font-size: 3rem; line-height: 1;
+  }
+  .price-currency { font-size: 0.9rem; color: rgba(245,243,238,0.6); font-weight: 400; }
+  .service-card.featured .price-currency { color: rgba(10,10,8,0.6); }
+
+  .card-cta {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    margin-top: 1.5rem;
+    font-size: 0.8rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    transition: gap .2s;
+    cursor: none;
+  }
+  .service-card.featured .card-cta { color: var(--black); }
+  .card-cta:hover { gap: 1rem; }
+  .card-badge {
+    display: inline-block;
+    background: rgba(10,10,8,0.08);
+    color: var(--black);
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+    align-self: flex-start;
+  }
+
+  /* ── PROCESS ── */
+  .process {
+    background: var(--cream);
+    color: var(--black);
+    padding: 7rem 3rem;
+  }
+  .process-header { margin-bottom: 5rem; }
+  .process-header .section-title { color: var(--black); }
+  .process-header .section-title small { color: var(--black); }
+
+  .process-steps {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 3rem;
+    counter-reset: steps;
+  }
+  .process-step { position: relative; }
+  .process-step::before {
+    counter-increment: steps;
+    content: counter(steps, decimal-leading-zero);
+    display: block;
+    font-family: var(--font-display);
+    font-size: 5rem; line-height: 1;
+    color: rgba(10,10,8,0.08);
+    margin-bottom: 1.5rem;
+  }
+  .step-title {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    color: var(--black);
+    margin-bottom: 0.75rem;
+  }
+  .step-desc {
+    font-size: 0.9rem; line-height: 1.7;
+    color: rgba(10,10,8,0.6);
+  }
+  .step-connector {
+    position: absolute; top: 2.5rem; right: -1.5rem;
+    width: 3rem; height: 1px;
+    background: var(--tan);
+  }
+  .process-step:last-child .step-connector { display: none; }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials {
+    background: var(--black);
+    padding: 7rem 3rem;
+    overflow: hidden;
+  }
+  .testimonials-header { margin-bottom: 4rem; }
+  .testimonials-track {
+    display: flex; gap: 2rem;
+    animation: slideTestimonials 30s linear infinite;
+  }
+  .testimonials-track:hover { animation-play-state: paused; }
+  @keyframes slideTestimonials {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .testimonial-card {
+    flex-shrink: 0;
+    width: 380px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 2.5rem;
+    border-radius: 2px;
+  }
+  .testimonial-stars { color: var(--accent); font-size: 0.9rem; letter-spacing: 0.1em; margin-bottom: 1rem; }
+  .testimonial-text {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.05rem; line-height: 1.6;
+    color: rgba(245,243,238,0.85);
+    margin-bottom: 1.5rem;
+  }
+  .testimonial-author {
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .author-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--black);
+    flex-shrink: 0;
+  }
+  .author-name { font-size: 0.9rem; font-weight: 500; }
+  .author-city { font-size: 0.75rem; color: var(--tan); margin-top: 0.1rem; }
+
+  /* ── CTA BAND ── */
+  .cta-band {
+    background: var(--accent);
+    padding: 5rem 3rem;
+    display: grid; grid-template-columns: 1fr auto;
+    align-items: center; gap: 3rem;
+  }
+  .cta-headline {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1;
+    color: var(--black);
+  }
+  .cta-sub { font-size: 1rem; color: rgba(10,10,8,0.65); margin-top: 0.75rem; }
+  .btn-white {
+    background: var(--black);
+    color: var(--white);
+    padding: 1.1rem 2.5rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none;
+    border: none; cursor: none;
+    white-space: nowrap;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+    transition: transform .2s, opacity .2s;
+    display: inline-block;
+  }
+  .btn-white:hover { transform: translateY(-2px); opacity: 0.85; }
+
+  /* ── NEWSLETTER ── */
+  .newsletter {
+    background: rgba(255,255,255,0.02);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 4rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 3rem;
+  }
+  .newsletter-text h3 {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    margin-bottom: 0.4rem;
+  }
+  .newsletter-text p { font-size: 0.9rem; color: rgba(245,243,238,0.5); }
+  .newsletter-form { display: flex; gap: 0; flex-shrink: 0; }
+  .newsletter-input {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-right: none;
+    color: var(--white);
+    padding: 0.9rem 1.5rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    outline: none;
+    width: 300px;
+    transition: border-color .2s;
+  }
+  .newsletter-input::placeholder { color: rgba(245,243,238,0.3); }
+  .newsletter-input:focus { border-color: rgba(255,255,255,0.5); }
+  .newsletter-btn {
+    background: var(--accent);
+    color: var(--black);
+    border: none;
+    padding: 0.9rem 1.8rem;
+    font-family: var(--font-body);
+    font-size: 0.8rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    cursor: none;
+    transition: background .2s;
+  }
+  .newsletter-btn:hover { background: var(--accent-dim); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 5rem 3rem 2rem;
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 4rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-brand .nav-logo { display: block; margin-bottom: 1.2rem; }
+  .footer-brand p {
+    font-size: 0.85rem; line-height: 1.7;
+    color: rgba(245,243,238,0.45);
+    max-width: 260px;
+  }
+  .footer-col h4 {
+    font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--tan);
+    margin-bottom: 1.25rem;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-col a {
+    font-size: 0.875rem; color: rgba(245,243,238,0.5);
+    text-decoration: none; transition: color .2s;
+  }
+  .footer-col a:hover { color: var(--white); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.75rem; color: rgba(245,243,238,0.25);
+  }
+  .footer-bottom a { color: rgba(245,243,238,0.35); text-decoration: none; transition: color .2s; }
+  .footer-bottom a:hover { color: rgba(245,243,238,0.6); }
+  .social-links { display: flex; gap: 1rem; }
+  .social-link {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none;
+    color: rgba(245,243,238,0.4);
+    font-size: 0.75rem;
+    transition: all .2s;
+    cursor: none;
+  }
+  .social-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(10,10,8,0.9);
+    backdrop-filter: blur(4px);
+    display: none; align-items: center; justify-content: center;
+    padding: 2rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: #141410;
+    border: 1px solid rgba(255,255,255,0.08);
+    max-width: 560px; width: 100%;
+    padding: 3rem;
+    position: relative;
+    animation: modalIn .3s ease;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .modal-close {
+    position: absolute; top: 1.5rem; right: 1.5rem;
+    background: none; border: none; color: var(--tan);
+    font-size: 1.5rem; cursor: none; line-height: 1;
+    transition: color .2s;
+  }
+  .modal-close:hover { color: var(--white); }
+  .modal h3 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 0.5rem; }
+  .modal .price { font-family: var(--font-display); font-size: 3rem; color: var(--accent); margin-bottom: 1.5rem; }
+  .modal ul { list-style: none; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .modal ul li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; color: rgba(245,243,238,0.75); }
+  .modal ul li::before { content: '✓'; color: var(--accent); font-weight: bold; }
+  .modal-form { display: flex; flex-direction: column; gap: 1rem; }
+  .modal-input {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--white); padding: 0.85rem 1rem;
+    font-family: var(--font-body); font-size: 0.9rem;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .modal-input:focus { border-color: var(--accent); }
+  .modal-input::placeholder { color: rgba(245,243,238,0.3); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero-content { padding: 0 1.5rem 4rem; }
+    .hero-scroll { display: none; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .about-strip { grid-template-columns: 1fr; }
+    .about-image { height: 300px; }
+    .about-text { padding: 3rem 1.5rem; }
+    .services { padding: 4rem 1.5rem; }
+    .services-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .process { padding: 4rem 1.5rem; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .step-connector { display: none; }
+    .cta-band { grid-template-columns: 1fr; }
+    .newsletter { flex-direction: column; padding: 3rem 1.5rem; }
+    .newsletter-form { flex-direction: column; width: 100%; }
+    .newsletter-input { width: 100%; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    footer { padding: 3rem 1.5rem 1.5rem; }
+    .testimonials { padding: 4rem 1.5rem; }
+  }
+
+  @media (max-width: 500px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+    .process-steps { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor">
+  <div class="cursor-ring"></div>
+  <div class="cursor-dot"></div>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">XPERT<span>POINT</span></a>
+  <ul class="nav-links">
+    <li><a href="#servicii">Servicii</a></li>
+    <li><a href="#proces">Cum funcționăm</a></li>
+    <li><a href="#testimoniale">Recenzii</a></li>
+    <li><a href="coffee_page.html" class="nav-switch">↩ Espressoare</a></li>
+    <li><a href="#contact" class="nav-cta">Programează-te</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Meniu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-slides">
+    <div class="hero-slide slide-1 active"></div>
+    <div class="hero-slide slide-2"></div>
+    <div class="hero-slide slide-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Service Biciclete București</div>
+    <h1 class="hero-title">BICICLETA<br>TA.<br><em>PERFECTĂ.</em></h1>
+    <p class="hero-sub">Peste 11 ani de experiență în service și revizie biciclete. Lucrăm cu precizie, rapid și transparent — indiferent de marcă sau tip.</p>
+    <div class="hero-actions">
+      <a href="#servicii" class="btn-primary">Alege pachetul</a>
+      <a href="#proces" class="btn-ghost">Cum funcționăm</a>
+    </div>
+  </div>
+  <div class="hero-indicators" id="indicators">
+    <div class="indicator active" data-idx="0"></div>
+    <div class="indicator" data-idx="1"></div>
+    <div class="indicator" data-idx="2"></div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-track" id="marqueeTrack">
+    <div class="marquee-item">Revizie Standard</div>
+    <div class="marquee-item">Revizie Completă</div>
+    <div class="marquee-item">Revizie Custom</div>
+    <div class="marquee-item">Reglaj Schimbător</div>
+    <div class="marquee-item">Centrare Roți</div>
+    <div class="marquee-item">Schimb Anvelope</div>
+    <div class="marquee-item">Service Frâne Hidraulice</div>
+    <div class="marquee-item">Revizie Standard</div>
+    <div class="marquee-item">Revizie Completă</div>
+    <div class="marquee-item">Revizie Custom</div>
+    <div class="marquee-item">Reglaj Schimbător</div>
+    <div class="marquee-item">Centrare Roți</div>
+    <div class="marquee-item">Schimb Anvelope</div>
+    <div class="marquee-item">Service Frâne Hidraulice</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-item">
+    <div class="stat-number"><span>11</span>+</div>
+    <div class="stat-label">Ani experiență</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number"><span>3.800</span>+</div>
+    <div class="stat-label">Biciclete reparate</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number"><span>98</span>%</div>
+    <div class="stat-label">Clienți satisfăcuți</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number"><span>24</span>h</div>
+    <div class="stat-label">Timp mediu service</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about-strip" id="despre">
+  <div class="about-image">
+    <img src="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=900&q=85&fit=crop" alt="Mecanic biciclete">
+  </div>
+  <div class="about-text">
+    <div class="section-label">Cine suntem</div>
+    <h2 class="about-heading">Nu reparăm biciclete.<br>Le <em>resuscităm.</em></h2>
+    <p class="about-body">Suntem un service specializat cu o echipă pasionată de ciclism. Fiecare bicicletă care intră pe ușa noastră iese optimizată, sigură și gata pentru orice drum — fie că ești ciclist urban sau mountain biker.</p>
+    <ul class="feature-list">
+      <li>Mecanici certificați și pasionați de ciclism</li>
+      <li>Piese de schimb originale sau premium</li>
+      <li>Diagnostic complet gratuit la orice revizie</li>
+      <li>Garanție 30 de zile pentru lucrările efectuate</li>
+      <li>Programări online — fără așteptare</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="servicii">
+  <div class="services-header">
+    <h2 class="section-title">
+      <small>Pachete service</small>
+      SERVICII<br>NOASTRE
+    </h2>
+    <a href="#contact" class="btn-ghost" style="color:rgba(245,243,238,0.5)">Serviciu personalizat</a>
+  </div>
+  <div class="services-grid">
+    <!-- STANDARD -->
+    <div class="service-card">
+      <div class="card-number">01</div>
+      <div class="card-icon">
+        <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="37" r="8" stroke="#ffffff" stroke-width="2"/>
+          <circle cx="38" cy="37" r="8" stroke="#ffffff" stroke-width="2"/>
+          <path d="M12 37 L25 15 L38 37" stroke="rgba(245,243,238,0.3)" stroke-width="1.5"/>
+          <path d="M25 15 L32 28" stroke="#ffffff" stroke-width="1.5"/>
+          <circle cx="25" cy="15" r="3" fill="#ffffff"/>
+        </svg>
+      </div>
+      <h3 class="card-name">REVIZIE<br>STANDARD</h3>
+      <p class="card-desc">Revizia de bază perfectă pentru ciclismul urban de zi cu zi. Menține bicicleta funcțională și sigură.</p>
+      <ul class="card-includes">
+        <li>Curățare generală cadru și componente</li>
+        <li>Reglaj frâne față-spate</li>
+        <li>Reglaj schimbătoare față-spate</li>
+        <li>Ungere lanț și articulații</li>
+        <li>Verificare presiune anvelope</li>
+        <li>Verificare rulmenți ghidon/pedale</li>
+      </ul>
+      <div class="card-price">
+        <span class="price-amount">120</span>
+        <span class="price-currency">LEI</span>
+      </div>
+      <a href="#" class="card-cta" onclick="openModal('Revizie Standard','120 LEI',['Curățare generală','Reglaj frâne față-spate','Reglaj schimbătoare','Ungere lanț','Verificare presiune anvelope','Verificare rulmenți ghidon/pedale'])">Programează acum →</a>
+    </div>
+
+    <!-- COMPLETĂ (FEATURED) -->
+    <div class="service-card featured">
+      <div class="card-number">02</div>
+      <div class="card-badge">⚡ Cel mai ales</div>
+      <div class="card-icon">
+        <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="37" r="8" stroke="rgba(10,10,8,0.75)" stroke-width="2"/>
+          <circle cx="38" cy="37" r="8" stroke="rgba(10,10,8,0.75)" stroke-width="2"/>
+          <path d="M12 37 L25 13 L38 37" stroke="rgba(10,10,8,0.45)" stroke-width="1.5"/>
+          <path d="M25 13 L33 26" stroke="rgba(10,10,8,0.9)" stroke-width="1.5"/>
+          <circle cx="25" cy="13" r="3" fill="rgba(10,10,8,0.9)"/>
+          <path d="M20 37 L25 28 L30 37" stroke="rgba(10,10,8,0.55)" stroke-width="1"/>
+        </svg>
+      </div>
+      <h3 class="card-name">REVIZIE<br>COMPLETĂ</h3>
+      <p class="card-desc">Revizia extinsă pentru o bicicletă impecabilă. Totul demontant, curățat, lubrifiat și recalibrat profesional.</p>
+      <ul class="card-includes">
+        <li>Tot ce include Revizia Standard</li>
+        <li>Demontare și curățare completă grupaj</li>
+        <li>Reglaj fin schimbătoare cu calibrator</li>
+        <li>Centrare roți (detensionare/tensionare spite)</li>
+        <li>Verificare și reglaj butuc față-spate</li>
+        <li>Curățare și gresare cuvete</li>
+        <li>Verificare presiune hidraulică (frâne disc)</li>
+      </ul>
+      <div class="card-price">
+        <span class="price-amount">160</span>
+        <span class="price-currency">LEI</span>
+      </div>
+      <a href="#" class="card-cta" onclick="openModal('Revizie Completă','160 LEI',['Tot ce include Standard','Demontare completă grupaj','Reglaj fin schimbătoare','Centrare roți','Reglaj butuc față-spate','Curățare cuvete','Verificare hidraulică'])">Programează acum →</a>
+    </div>
+
+    <!-- CUSTOM -->
+    <div class="service-card">
+      <div class="card-number">03</div>
+      <div class="card-icon">
+        <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="37" r="8" stroke="#ffffff" stroke-width="2"/>
+          <circle cx="38" cy="37" r="8" stroke="#ffffff" stroke-width="2"/>
+          <path d="M12 37 L25 12 L38 37" stroke="rgba(245,243,238,0.3)" stroke-width="1.5"/>
+          <path d="M18 37 L25 24 L32 37" stroke="rgba(245,243,238,0.2)" stroke-width="1"/>
+          <path d="M25 12 L34 25" stroke="#ffffff" stroke-width="1.5"/>
+          <circle cx="25" cy="12" r="3" fill="#ffffff"/>
+          <circle cx="34" cy="25" r="2" fill="rgba(245,243,238,0.3)"/>
+        </svg>
+      </div>
+      <h3 class="card-name">REVIZIE<br>CUSTOM</h3>
+      <p class="card-desc">Serviciu 100% personalizat. Alegi exact ce vrei reparat sau îmbunătățit — noi îți oferim un deviz gratuit.</p>
+      <ul class="card-includes">
+        <li>Diagnostic complet gratuit</li>
+        <li>Deviz transparent înainte de lucrare</li>
+        <li>Lucrezi exact ce ai nevoie</li>
+        <li>Upgrade componente la cerere</li>
+        <li>Consultanță gratuită echipament</li>
+        <li>Fără costuri ascunse</li>
+      </ul>
+      <div class="card-price">
+        <span class="price-amount">~</span>
+        <span class="price-currency">Deviz gratuit</span>
+      </div>
+      <a href="#" class="card-cta" onclick="openModal('Revizie Custom','Deviz personalizat',['Diagnostic gratuit','Deviz transparent','Alegi exact serviciile','Upgrade componente','Consultanță gratuită','Fără costuri ascunse'])">Solicită deviz →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="proces">
+  <div class="process-header">
+    <h2 class="section-title">
+      <small>Cum lucrăm</small>
+      SIMPLU.<br>RAPID.<br>CORECT.
+    </h2>
+  </div>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-connector"></div>
+      <h3 class="step-title">Programare online</h3>
+      <p class="step-desc">Alegi data și pachetul dorit direct de pe site, fără telefoane sau drumuri inutile. Confirmare imediată.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-connector"></div>
+      <h3 class="step-title">Diagnostic gratuit</h3>
+      <p class="step-desc">La sosire, mecanicul nostru face un diagnostic complet și îți prezintă transparent tot ce trebuie rezolvat.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-connector"></div>
+      <h3 class="step-title">Lucrare & actualizare</h3>
+      <p class="step-desc">Efectuăm lucrările și te ținem la curent prin SMS. Fără surprize și fără costuri nediscutate anterior.</p>
+    </div>
+    <div class="process-step">
+      <h3 class="step-title">Ridici și pedalezi</h3>
+      <p class="step-desc">Primești bicicleta curată, reglată și gata de drum. Cu garanție 30 de zile și posibilitate de abonament.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimoniale">
+  <div class="testimonials-header">
+    <h2 class="section-title">
+      <small>Recenzii clienți</small>
+      CE SPUN<br>CLIENȚII
+    </h2>
+  </div>
+  <div class="testimonials-track" id="testimonialsTrack">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„Am adus bicicleta complet blocată și am ridicat-o parcă nouă. Oameni serioși, prețuri corecte, nicio surpriză."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">AM</div>
+        <div><div class="author-name">Alexandru M.</div><div class="author-city">București, Sector 3</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„Revizie completă în 24 de ore. Mi-au explicat tot ce au făcut, piesă cu piesă. Recomand cu toată încrederea!"</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">RP</div>
+        <div><div class="author-name">Raluca P.</div><div class="author-city">București, Sector 1</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„Cel mai bun service de biciclete la care am fost. MTB-ul meu arată și se comportă mai bine ca nou. Mulțumesc!"</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">CI</div>
+        <div><div class="author-name">Cristian I.</div><div class="author-city">Ilfov, Voluntari</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„Am venit cu un request custom și au rezolvat totul perfect. Schimb de ghidon, centrat roți și cabluri noi — wow."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">MD</div>
+        <div><div class="author-name">Mihai D.</div><div class="author-city">București, Sector 2</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★☆</div>
+      <p class="testimonial-text">„Programarea online e super convenabilă. Am adus bicicleta și am ridicat-o a doua zi. Nu mai merg nicăieri altundeva."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">LB</div>
+        <div><div class="author-name">Laura B.</div><div class="author-city">București, Sector 6</div></div>
+      </div>
+    </div>
+    <!-- DUPLICATE for infinite loop -->
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„Am adus bicicleta complet blocată și am ridicat-o parcă nouă. Oameni serioși, prețuri corecte, nicio surpriză."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">AM</div>
+        <div><div class="author-name">Alexandru M.</div><div class="author-city">București, Sector 3</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„Revizie completă în 24 de ore. Mi-au explicat tot ce au făcut, piesă cu piesă. Recomand cu toată încrederea!"</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">RP</div>
+        <div><div class="author-name">Raluca P.</div><div class="author-city">București, Sector 1</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„Cel mai bun service de biciclete la care am fost. MTB-ul meu arată și se comportă mai bine ca nou. Mulțumesc!"</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">CI</div>
+        <div><div class="author-name">Cristian I.</div><div class="author-city">Ilfov, Voluntari</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„Am venit cu un request custom și au rezolvat totul perfect. Schimb de ghidon, centrat roți și cabluri noi — wow."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">MD</div>
+        <div><div class="author-name">Mihai D.</div><div class="author-city">București, Sector 2</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★☆</div>
+      <p class="testimonial-text">„Programarea online e super convenabilă. Am adus bicicleta și am ridicat-o a doua zi. Nu mai merg nicăieri altundeva."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">LB</div>
+        <div><div class="author-name">Laura B.</div><div class="author-city">București, Sector 6</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band" id="contact">
+  <div>
+    <h2 class="cta-headline">BICICLETA TA<br>TE AȘTEAPTĂ.</h2>
+    <p class="cta-sub">Programează-te acum — primele 50 de locuri din luna aceasta beneficiază de diagnostic gratuit.</p>
+  </div>
+  <a href="tel:+40700000000" class="btn-white">📞 Sună acum</a>
+</section>
+
+<!-- NEWSLETTER -->
+<div class="newsletter">
+  <div class="newsletter-text">
+    <h3>Promoții & noutăți</h3>
+    <p>Lasă adresa ta și fii primul care află ofertele lunare și sfaturile mecanicilor noștri.</p>
+  </div>
+  <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+    <input type="email" class="newsletter-input" placeholder="adresa@ta.ro" required>
+    <button type="submit" class="newsletter-btn">Abonează-te</button>
+  </form>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">XPERT<span>POINT</span></a>
+      <p>Service specializat de biciclete în București. Calitate, transparență și pasiune pentru ciclism din 2013.</p>
+      <div class="social-links" style="margin-top:1.5rem">
+        <a href="#" class="social-link" aria-label="Facebook">f</a>
+        <a href="#" class="social-link" aria-label="Instagram">ig</a>
+        <a href="#" class="social-link" aria-label="WhatsApp">wa</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Servicii</h4>
+      <ul>
+        <li><a href="#">Revizie Standard</a></li>
+        <li><a href="#">Revizie Completă</a></li>
+        <li><a href="#">Revizie Custom</a></li>
+        <li><a href="#">Reglaj schimbătoare</a></li>
+        <li><a href="#">Service frâne hidraulice</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Informații</h4>
+      <ul>
+        <li><a href="#">Cine suntem</a></li>
+        <li><a href="#">Cum funcționăm</a></li>
+        <li><a href="#">Recenzii</a></li>
+        <li><a href="#">Blog ciclism</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="#">📍 București, Sector 1</a></li>
+        <li><a href="tel:+40700000000">📞 0700 000 000</a></li>
+        <li><a href="mailto:contact@xpertpoint.ro">✉️ contact@xpertpoint.ro</a></li>
+        <li><a href="#">🕐 Lun–Sâm: 9:00–19:00</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 XpertPoint.ro — Toate drepturile rezervate</span>
+    <div style="display:flex;gap:1.5rem">
+      <a href="#">Politică confidențialitate</a>
+      <a href="#">Termeni și condiții</a>
+      <a href="#">ANPC</a>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h3 id="modalTitle">Revizie Standard</h3>
+    <div class="price" id="modalPrice">120 LEI</div>
+    <ul id="modalList"></ul>
+    <form class="modal-form" onsubmit="handleBooking(event)">
+      <input type="text" class="modal-input" placeholder="Numele tău" required>
+      <input type="tel" class="modal-input" placeholder="Număr de telefon" required>
+      <input type="email" class="modal-input" placeholder="Email (opțional)">
+      <input type="date" class="modal-input" required style="color-scheme:dark">
+      <button type="submit" class="btn-primary" style="text-align:center;width:100%;clip-path:none">Confirmă programarea</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = cursor.querySelector('.cursor-ring');
+  const dot = cursor.querySelector('.cursor-dot');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+  function animCursor() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px'; ring.style.borderColor = 'rgba(255,255,255,0.6)'; });
+    el.addEventListener('mouseleave', () => { ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderColor = 'rgba(245,243,238,0.5)'; });
+  });
+
+  // NAV SCROLL
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // HERO SLIDER
+  const slides = document.querySelectorAll('.hero-slide');
+  const indicators = document.querySelectorAll('.indicator');
+  let currentSlide = 0;
+  function goToSlide(n) {
+    slides[currentSlide].classList.remove('active');
+    indicators[currentSlide].classList.remove('active');
+    currentSlide = n;
+    slides[currentSlide].classList.add('active');
+    indicators[currentSlide].classList.add('active');
+  }
+  indicators.forEach(ind => {
+    ind.addEventListener('click', () => goToSlide(+ind.dataset.idx));
+  });
+  setInterval(() => goToSlide((currentSlide + 1) % slides.length), 5000);
+
+  // MODAL
+  function openModal(title, price, items) {
+    event.preventDefault();
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalPrice').textContent = price;
+    const list = document.getElementById('modalList');
+    list.innerHTML = items.map(i => `<li>${i}</li>`).join('');
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    return false;
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  function handleBooking(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = '✓ Programat! Te contactăm în curând.';
+    btn.style.background = '#2d6a2d';
+    setTimeout(closeModal, 2000);
+  }
+
+  function handleNewsletter(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = '✓ Abonare reușită!';
+    btn.style.background = '#2d6a2d';
+    e.target.querySelector('input').value = '';
+    setTimeout(() => { btn.textContent = 'Abonează-te'; btn.style.background = ''; }, 3000);
+  }
+
+  // SCROLL REVEAL
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = 1;
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.service-card, .process-step, .stat-item').forEach(el => {
+    el.style.opacity = 0;
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+
+  // HAMBURGER (mobile)
+  document.getElementById('hamburger').addEventListener('click', () => {
+    const links = document.querySelector('.nav-links');
+    if (links.style.display === 'flex') {
+      links.style.display = 'none';
+    } else {
+      links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:70px;left:0;right:0;background:rgba(10,10,8,0.98);padding:2rem 1.5rem;gap:1.5rem;z-index:99';
+    }
+  });
+</script>
+</body>
+</html>

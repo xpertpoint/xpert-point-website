@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XpertPoint — Alege Serviciul (Minimal)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a08;
+    --white: #f5f3ee;
+    --rust: #c0410b;
+    --tan: #c9b99a;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 300;
+    overflow: hidden;
+    position: relative;
+  }
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* FULL-BLEED HOVER BACKGROUNDS */
+  .bg-layer {
+    position: fixed; inset: 0;
+    background-size: cover; background-position: center;
+    opacity: 0;
+    transform: scale(1.06);
+    transition: opacity 0.9s ease, transform 1.2s ease;
+    z-index: 0;
+  }
+  .bg-layer.active { opacity: 1; transform: scale(1); }
+  .bg-biciclete { background-image: url('https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=1920&q=85'); }
+  .bg-cafea { background-image: url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1920&q=85'); }
+  .bg-scrim {
+    position: fixed; inset: 0;
+    background: rgba(10,10,8,0.72);
+    z-index: 1;
+    transition: background 0.6s ease;
+  }
+  body.hovering .bg-scrim { background: rgba(10,10,8,0.55); }
+
+  .brand {
+    position: fixed; top: 2.2rem; left: 50%; transform: translateX(-50%);
+    z-index: 5;
+    font-family: var(--font-display);
+    font-size: 1.5rem; letter-spacing: 0.05em;
+    text-align: center;
+  }
+  .brand span { color: var(--rust); }
+  .brand small {
+    display: block; font-family: var(--font-body);
+    font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(245,243,238,0.45); margin-top: 0.3rem;
+  }
+
+  .menu {
+    position: relative; z-index: 5;
+    height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0;
+  }
+  .menu-item {
+    position: relative;
+    text-decoration: none;
+    color: var(--white);
+    padding: 1.3rem 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(245,243,238,0.12);
+  }
+  .menu-item:last-child { border-bottom: 1px solid rgba(245,243,238,0.12); }
+  .menu-title {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 11vw, 8.5rem);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: rgba(245,243,238,0.35);
+    transition: color 0.4s ease, letter-spacing 0.4s ease;
+  }
+  .menu-item:hover .menu-title { letter-spacing: 0.04em; }
+  .menu-title em { font-style: normal; }
+  #itemBiciclete:hover .menu-title { color: var(--white); }
+  #itemBiciclete:hover .menu-title em { color: var(--white); }
+  #itemCafea:hover .menu-title { color: var(--rust); }
+  #itemCafea:hover .menu-title em { color: var(--rust); }
+  .menu-sub {
+    font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(245,243,238,0.3);
+    margin-top: 0.5rem;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .menu-item:hover .menu-sub { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 700px) {
+    .menu-title { font-size: clamp(2.8rem, 15vw, 4.5rem); }
+    .brand { top: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-layer bg-biciclete" id="bgBiciclete"></div>
+<div class="bg-layer bg-cafea" id="bgCafea"></div>
+<div class="bg-scrim" id="scrim"></div>
+
+<div class="brand">XPERT<span>POINT</span><small>Ce reparăm astăzi?</small></div>
+
+<div class="menu">
+  <a href="bike_page.html" class="menu-item" id="itemBiciclete">
+    <div class="menu-title">BICI<em>CLETE</em></div>
+    <div class="menu-sub">Revizii & reparații — programare rapidă</div>
+  </a>
+  <a href="coffee_page.html" class="menu-item" id="itemCafea">
+    <div class="menu-title">ESPRESS<em>OARE</em></div>
+    <div class="menu-sub">Aparate espressor — curățare & reparații</div>
+  </a>
+</div>
+
+<script>
+  const bgBiciclete = document.getElementById('bgBiciclete');
+  const bgCafea = document.getElementById('bgCafea');
+  const itemBiciclete = document.getElementById('itemBiciclete');
+  const itemCafea = document.getElementById('itemCafea');
+
+  itemBiciclete.addEventListener('mouseenter', () => { bgBiciclete.classList.add('active'); document.body.classList.add('hovering'); });
+  itemBiciclete.addEventListener('mouseleave', () => { bgBiciclete.classList.remove('active'); document.body.classList.remove('hovering'); });
+  itemCafea.addEventListener('mouseenter', () => { bgCafea.classList.add('active'); document.body.classList.add('hovering'); });
+  itemCafea.addEventListener('mouseleave', () => { bgCafea.classList.remove('active'); document.body.classList.remove('hovering'); });
+</script>
+</body>
+</html>
