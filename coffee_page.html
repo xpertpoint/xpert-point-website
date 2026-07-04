@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XpertPoint — Service Cafea · B (Povestea & Abonament)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a08;
+    --white: #f5f3ee;
+    --cream: #ede9e0;
+    --rust: #c0410b;
+    --rust-light: #e05a20;
+    --olive: #4a5240;
+    --tan: #c9b99a;
+    --mid: #6b6760;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-serif: 'DM Serif Display', serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor { position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none; mix-blend-mode: difference; }
+  .cursor-dot { width: 8px; height: 8px; background: var(--white); border-radius: 50%; transform: translate(-50%, -50%); transition: width .2s, height .2s; }
+  .cursor-ring { width: 40px; height: 40px; border: 1px solid rgba(245,243,238,0.5); border-radius: 50%; transform: translate(-50%, -50%); transition: all .15s ease-out; position: absolute; top: 0; left: 0; }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 3rem; background: linear-gradient(to bottom, rgba(10,10,8,0.95), transparent); transition: background .3s; }
+  nav.scrolled { background: rgba(10,10,8,0.98); }
+  .nav-logo { font-family: var(--font-display); font-size: 2rem; letter-spacing: 0.05em; color: var(--white); text-decoration: none; }
+  .nav-logo span { color: var(--rust); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+  .nav-links a { color: rgba(245,243,238,0.7); text-decoration: none; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; transition: color .2s; position: relative; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--rust); transition: width .3s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-switch { color: var(--tan) !important; border:1px solid rgba(201,185,154,0.3); padding:0.5rem 0.9rem; border-radius:2px; }
+  .nav-switch::after { display:none; }
+  .nav-switch:hover { border-color: var(--rust); }
+  .nav-cta { background: var(--rust); color: var(--white) !important; padding: 0.6rem 1.5rem; border-radius: 2px; font-weight: 500 !important; }
+  .nav-cta::after { display: none; }
+  .nav-cta:hover { background: var(--rust-light) !important; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: none; background: none; border: none; }
+  .hamburger span { width: 24px; height: 1px; background: var(--white); transition: all .3s; display: block; }
+
+  /* ── HERO ── */
+  .hero { height: 100vh; position: relative; display: flex; align-items: flex-end; overflow: hidden; }
+  .hero-slides { position: absolute; inset: 0; }
+  .hero-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.2s ease; }
+  .hero-slide.active { opacity: 1; }
+  .hero-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(10,10,8,0.88) 0%, rgba(10,10,8,0.45) 60%, rgba(192,65,11,0.15) 100%); }
+  .slide-1 { background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1920&q=85'); }
+  .slide-2 { background-image: url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1920&q=85'); }
+  .slide-3 { background-image: url('https://images.unsplash.com/photo-1521302080334-4bebac2763a6?w=1920&q=85'); }
+
+  .hero-content { position: relative; z-index: 2; padding: 0 3rem 5rem; max-width: 900px; }
+  .hero-eyebrow { display: inline-flex; align-items: center; gap: 0.75rem; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--rust); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s 0.3s forwards; }
+  .hero-eyebrow::before { content: ''; width: 40px; height: 1px; background: var(--rust); }
+  .hero-title { font-family: var(--font-display); font-size: clamp(5rem, 12vw, 11rem); line-height: 0.96; letter-spacing: 0.02em; color: var(--white); opacity: 0; animation: fadeUp 0.8s 0.5s forwards; }
+  .hero-title em { color: var(--rust); font-style: normal; }
+  .hero-sub { font-size: 1.05rem; line-height: 1.7; color: rgba(245,243,238,0.65); max-width: 500px; margin-top: 1.5rem; opacity: 0; animation: fadeUp 0.8s 0.7s forwards; }
+  .hero-actions { display: flex; align-items: center; gap: 2rem; margin-top: 2.5rem; opacity: 0; animation: fadeUp 0.8s 0.9s forwards; flex-wrap: wrap; }
+  .btn-primary { background: var(--rust); color: var(--white); padding: 1rem 2.5rem; font-family: var(--font-body); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border: none; cursor: none; clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%); transition: background .2s, transform .2s; display: inline-block; }
+  .btn-primary:hover { background: var(--rust-light); transform: translateY(-2px); }
+  .btn-ghost { color: rgba(245,243,238,0.8); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; gap: 0.75rem; transition: color .2s; }
+  .btn-ghost:hover { color: var(--white); }
+  .btn-ghost::after { content: '→'; transition: transform .2s; }
+  .btn-ghost:hover::after { transform: translateX(4px); }
+  .hero-indicators { position: absolute; bottom: 2.5rem; right: 3rem; z-index: 2; display: flex; gap: 0.5rem; }
+  .indicator { width: 30px; height: 2px; background: rgba(245,243,238,0.3); cursor: none; transition: background .3s, width .3s; }
+  .indicator.active { background: var(--rust); width: 60px; }
+  .hero-scroll { position: absolute; right: 3rem; top: 50%; transform: translateY(-50%) rotate(90deg); z-index: 2; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(245,243,238,0.4); display: flex; align-items: center; gap: 1rem; }
+  .hero-scroll::after { content: ''; width: 60px; height: 1px; background: rgba(245,243,238,0.2); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── MARQUEE ── */
+  .marquee-bar { background: var(--rust); padding: 0.75rem 0; overflow: hidden; }
+  .marquee-track { display: flex; gap: 0; animation: marquee 25s linear infinite; white-space: nowrap; }
+  .marquee-item { flex-shrink: 0; font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.08em; color: rgba(245,243,238,0.9); padding: 0 2rem; display: flex; align-items: center; gap: 2rem; }
+  .marquee-item::after { content: '✦'; opacity: 0.6; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── STATS ── */
+  .stats { padding: 5rem 3rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .stat-item { padding: 2.5rem; text-align: center; border-right: 1px solid rgba(255,255,255,0.06); }
+  .stat-item:last-child { border-right: none; }
+  .stat-number { font-family: var(--font-display); font-size: 4.5rem; color: var(--white); line-height: 1; }
+  .stat-number span { color: var(--rust); }
+  .stat-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--tan); margin-top: 0.5rem; }
+
+  /* ── SHARED SECTION TITLE ── */
+  .section-title { font-family: var(--font-display); font-size: clamp(3rem, 7vw, 6rem); line-height: 0.95; letter-spacing: 0.02em; padding-top: 0.08em; }
+  .section-title small { display: block; font-family: var(--font-body); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--rust); line-height: 1; margin-bottom: 1.2rem; }
+  .section-label { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--rust); display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+  .section-label::before { content: ''; width: 30px; height: 1px; background: var(--rust); }
+
+  /* ── SERVICES ── */
+  .services { padding: 7rem 3rem; background: var(--black); }
+  .services-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .service-card { position: relative; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 3rem; overflow: hidden; transition: background .3s, border-color .3s; display: flex; flex-direction: column; }
+  .service-card:hover { background: rgba(192,65,11,0.06); border-color: rgba(192,65,11,0.3); }
+  .service-card.featured { background: var(--rust); border-color: var(--rust); }
+  .service-card.featured:hover { background: var(--rust-light); }
+  .card-number { font-family: var(--font-display); font-size: 5rem; line-height: 1; color: rgba(255,255,255,0.06); position: absolute; top: 1.5rem; right: 2rem; transition: color .3s; }
+  .service-card:hover .card-number { color: rgba(192,65,11,0.15); }
+  .service-card.featured .card-number { color: rgba(255,255,255,0.15); }
+  .card-icon { width: 50px; height: 50px; margin-bottom: 2rem; }
+  .card-icon svg { width: 100%; height: 100%; }
+  .card-name { font-family: var(--font-display); font-size: 1.8rem; letter-spacing: 0.05em; margin-bottom: 1rem; }
+  .card-desc { font-size: 0.9rem; line-height: 1.7; color: rgba(245,243,238,0.6); flex: 1; }
+  .service-card.featured .card-desc { color: rgba(245,243,238,0.8); }
+  .card-includes { list-style: none; margin: 1.5rem 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .card-includes li { font-size: 0.8rem; color: rgba(245,243,238,0.5); display: flex; align-items: center; gap: 0.5rem; }
+  .service-card.featured .card-includes li { color: rgba(245,243,238,0.8); }
+  .card-includes li::before { content: '—'; color: var(--rust); }
+  .service-card.featured .card-includes li::before { color: rgba(245,243,238,0.6); }
+  .card-price { display: flex; align-items: baseline; gap: 0.4rem; margin-top: auto; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.08); }
+  .service-card.featured .card-price { border-top-color: rgba(255,255,255,0.2); }
+  .price-amount { font-family: var(--font-display); font-size: 3rem; line-height: 1; }
+  .price-currency { font-size: 0.9rem; color: rgba(245,243,238,0.6); font-weight: 400; }
+  .service-card.featured .price-currency { color: rgba(245,243,238,0.7); }
+  .card-cta { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.5rem; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rust); text-decoration: none; transition: gap .2s; cursor: none; }
+  .service-card.featured .card-cta { color: var(--white); }
+  .card-cta:hover { gap: 1rem; }
+  .card-badge { display: inline-block; background: rgba(245,243,238,0.15); color: var(--white); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.3rem 0.75rem; border-radius: 2px; margin-bottom: 1rem; align-self: flex-start; }
+
+  /* ── PRICE LIST (cream) ── */
+  .pricelist { background: var(--cream); color: var(--black); padding: 7rem 3rem; }
+  .pricelist .section-title { color: var(--black); }
+  .pricelist-head { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:3rem; flex-wrap:wrap; gap:1rem; }
+  .price-table { width: 100%; border-collapse: collapse; }
+  .price-table th, .price-table td { text-align: left; padding: 0.95rem 1.25rem; border-bottom: 1px solid rgba(10,10,8,0.1); }
+  .price-table thead th { font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.05em; color: var(--rust); font-weight: 400; }
+  .price-table td:last-child, .price-table th:last-child { text-align: right; white-space: nowrap; font-weight: 500; }
+  .price-table .cat td { font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.08em; color: var(--rust); padding-top: 2.2rem; border-bottom: 1px solid rgba(192,65,11,0.25); }
+  .price-table tbody tr:not(.cat):hover { background: rgba(192,65,11,0.05); }
+  .price-table .svc { color: rgba(10,10,8,0.85); }
+  .price-table .sub { display:block; font-size:0.75rem; color: rgba(10,10,8,0.5); font-style:italic; }
+  .price-note { margin-top: 1.75rem; font-size: 0.85rem; font-style: italic; color: rgba(10,10,8,0.55); }
+
+  /* ── PROCESS ── */
+  .process { background: var(--black); color: var(--white); padding: 7rem 3rem; }
+  .process-header { margin-bottom: 5rem; }
+  .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3rem; counter-reset: steps; }
+  .process-step { position: relative; }
+  .process-step::before { counter-increment: steps; content: counter(steps, decimal-leading-zero); display: block; font-family: var(--font-display); font-size: 5rem; line-height: 1; color: rgba(245,243,238,0.08); margin-bottom: 1.5rem; }
+  .step-title { font-family: var(--font-serif); font-size: 1.4rem; color: var(--white); margin-bottom: 0.75rem; }
+  .step-desc { font-size: 0.9rem; line-height: 1.7; color: rgba(245,243,238,0.6); }
+  .step-connector { position: absolute; top: 2.5rem; right: -1.5rem; width: 3rem; height: 1px; background: rgba(201,185,154,0.4); }
+  .process-step:last-child .step-connector { display: none; }
+
+  /* ── ABOUT STRIP ── */
+  .about-strip { display: grid; grid-template-columns: 1fr 1fr; min-height: 60vh; }
+  .about-image { position: relative; overflow: hidden; }
+  .about-image img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(30%) contrast(1.1); transition: transform 0.8s ease; }
+  .about-image:hover img { transform: scale(1.04); }
+  .about-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, transparent 70%, var(--black)); }
+  .about-text { background: var(--cream); color: var(--black); padding: 5rem; display: flex; flex-direction: column; justify-content: center; }
+  .about-heading { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; color: var(--black); margin-bottom: 1.5rem; }
+  .about-heading em { color: var(--rust); }
+  .about-body { font-size: 1rem; line-height: 1.8; color: rgba(10,10,8,0.7); max-width: 420px; }
+  .feature-list { list-style: none; margin-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .feature-list li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; color: rgba(10,10,8,0.8); }
+  .feature-list li::before { content: ''; width: 6px; height: 6px; background: var(--rust); flex-shrink: 0; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials { background: var(--black); padding: 7rem 3rem; overflow: hidden; }
+  .testimonials-header { margin-bottom: 4rem; }
+  .testimonials-track { display: flex; gap: 2rem; animation: slideTestimonials 30s linear infinite; }
+  .testimonials-track:hover { animation-play-state: paused; }
+  @keyframes slideTestimonials { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .testimonial-card { flex-shrink: 0; width: 380px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); padding: 2.5rem; border-radius: 2px; }
+  .testimonial-stars { color: var(--rust); font-size: 0.9rem; letter-spacing: 0.1em; margin-bottom: 1rem; }
+  .testimonial-text { font-family: var(--font-serif); font-style: italic; font-size: 1.05rem; line-height: 1.6; color: rgba(245,243,238,0.85); margin-bottom: 1.5rem; }
+  .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+  .author-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--rust); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 1rem; color: var(--white); flex-shrink: 0; }
+  .author-name { font-size: 0.9rem; font-weight: 500; }
+  .author-city { font-size: 0.75rem; color: var(--tan); margin-top: 0.1rem; }
+
+  /* ── FAQ ── */
+  .faq { background: var(--black); padding: 7rem 3rem; }
+  .faq-header { margin-bottom: 3.5rem; }
+  .faq-grid { max-width: 860px; }
+  .faq-item { border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .faq-q { width: 100%; background: none; border: none; color: var(--white); font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.03em; text-align: left; padding: 1.5rem 0; cursor: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .faq-q::after { content: '+'; color: var(--rust); font-family: var(--font-body); font-weight: 400; flex-shrink: 0; }
+  .faq-item.open .faq-q::after { content: '−'; }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease, padding .35s ease; color: rgba(245,243,238,0.6); font-size: 0.95rem; line-height: 1.75; }
+  .faq-item.open .faq-a { max-height: 260px; padding-bottom: 1.5rem; }
+
+  /* ── CTA BAND ── */
+  .cta-band { background: var(--rust); padding: 5rem 3rem; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 3rem; }
+  .cta-headline { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1; color: var(--white); }
+  .cta-sub { font-size: 1rem; color: rgba(245,243,238,0.8); margin-top: 0.75rem; }
+  .cta-actions { display:flex; gap:1rem; flex-wrap:wrap; }
+  .btn-white { background: var(--white); color: var(--rust); padding: 1.1rem 2.5rem; font-family: var(--font-body); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border: none; cursor: none; white-space: nowrap; clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%); transition: transform .2s, opacity .2s; display: inline-block; }
+  .btn-white:hover { transform: translateY(-2px); opacity: 0.95; }
+  .btn-white.alt { background: rgba(10,10,8,0.85); color: var(--white); }
+
+  /* ── NEWSLETTER ── */
+  .newsletter { background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 4rem 3rem; display: flex; align-items: center; justify-content: space-between; gap: 3rem; }
+  .newsletter-text h3 { font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 0.4rem; }
+  .newsletter-text p { font-size: 0.9rem; color: rgba(245,243,238,0.5); }
+  .newsletter-form { display: flex; gap: 0; flex-shrink: 0; }
+  .newsletter-input { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-right: none; color: var(--white); padding: 0.9rem 1.5rem; font-family: var(--font-body); font-size: 0.9rem; outline: none; width: 300px; transition: border-color .2s; }
+  .newsletter-input::placeholder { color: rgba(245,243,238,0.3); }
+  .newsletter-input:focus { border-color: rgba(192,65,11,0.5); }
+  .newsletter-btn { background: var(--rust); color: var(--white); border: none; padding: 0.9rem 1.8rem; font-family: var(--font-body); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: none; transition: background .2s; }
+  .newsletter-btn:hover { background: var(--rust-light); }
+
+  /* ── FOOTER ── */
+  footer { padding: 5rem 3rem 2rem; }
+  .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 4rem; padding-bottom: 4rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .footer-brand .nav-logo { display: block; margin-bottom: 1.2rem; }
+  .footer-brand p { font-size: 0.85rem; line-height: 1.7; color: rgba(245,243,238,0.45); max-width: 260px; }
+  .footer-col h4 { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--tan); margin-bottom: 1.25rem; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-col a { font-size: 0.875rem; color: rgba(245,243,238,0.5); text-decoration: none; transition: color .2s; }
+  .footer-col a:hover { color: var(--white); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: rgba(245,243,238,0.25); }
+  .footer-bottom a { color: rgba(245,243,238,0.35); text-decoration: none; transition: color .2s; }
+  .footer-bottom a:hover { color: rgba(245,243,238,0.6); }
+  .social-links { display: flex; gap: 1rem; }
+  .social-link { width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; text-decoration: none; color: rgba(245,243,238,0.4); font-size: 0.75rem; transition: all .2s; cursor: none; }
+  .social-link:hover { border-color: var(--rust); color: var(--rust); }
+
+  /* ── MODAL ── */
+  .modal-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(10,10,8,0.9); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; padding: 2rem; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #141410; border: 1px solid rgba(255,255,255,0.08); max-width: 560px; width: 100%; padding: 3rem; position: relative; animation: modalIn .3s ease; max-height: 92vh; overflow-y: auto; }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: var(--tan); font-size: 1.5rem; cursor: none; line-height: 1; transition: color .2s; }
+  .modal-close:hover { color: var(--white); }
+  .modal h3 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 0.5rem; }
+  .modal .price { font-family: var(--font-display); font-size: 3rem; color: var(--rust); margin-bottom: 1.5rem; }
+  .modal ul { list-style: none; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .modal ul li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; color: rgba(245,243,238,0.75); }
+  .modal ul li::before { content: '✓'; color: var(--rust); font-weight: bold; }
+  .modal-form { display: flex; flex-direction: column; gap: 1rem; }
+  .modal-input { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--white); padding: 0.85rem 1rem; font-family: var(--font-body); font-size: 0.9rem; outline: none; transition: border-color .2s; width: 100%; }
+  .modal-input:focus { border-color: var(--rust); }
+  .modal-input::placeholder { color: rgba(245,243,238,0.3); }
+  textarea.modal-input { min-height: 80px; resize: vertical; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero-content { padding: 0 1.5rem 4rem; }
+    .hero-scroll { display: none; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .about-strip { grid-template-columns: 1fr; }
+    .about-image { height: 300px; }
+    .about-text { padding: 3rem 1.5rem; }
+    .services { padding: 4rem 1.5rem; }
+    .services-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .pricelist { padding: 4rem 1.5rem; }
+    .process { padding: 4rem 1.5rem; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .step-connector { display: none; }
+    .faq { padding: 4rem 1.5rem; }
+    .cta-band { grid-template-columns: 1fr; }
+    .newsletter { flex-direction: column; padding: 3rem 1.5rem; }
+    .newsletter-form { flex-direction: column; width: 100%; }
+    .newsletter-input { width: 100%; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    footer { padding: 3rem 1.5rem 1.5rem; }
+    .testimonials { padding: 4rem 1.5rem; }
+  }
+  @media (max-width: 500px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+    .process-steps { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    .price-table th, .price-table td { padding: 0.8rem 0.6rem; }
+  }
+</style>
+
+<style>
+  .brands-sec .services-header,.pickup .services-header,.tips .services-header{margin-bottom:2.5rem}
+  /* BRANDS GRID */
+  .brands-sec{padding:7rem 3rem;background:var(--black)}
+  .brands-sub{color:rgba(245,243,238,0.5);max-width:520px;margin-top:1rem;font-size:0.95rem;line-height:1.7}
+  .brands-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:2rem}
+  .brand-tile{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);padding:2.1rem 1rem;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.55rem;letter-spacing:0.04em;color:rgba(245,243,238,0.7);transition:background .3s,border-color .3s,color .3s;text-align:center}
+  .brand-tile:hover{background:rgba(192,65,11,0.06);border-color:rgba(192,65,11,0.3);color:var(--white)}
+  @media(max-width:900px){.brands-grid{grid-template-columns:1fr 1fr}.brands-sec{padding:4rem 1.5rem}}
+
+  /* SUBSCRIBE BAND */
+  .subscribe{display:grid;grid-template-columns:1fr 1fr;min-height:55vh}
+  .subscribe-text{background:var(--cream);color:var(--black);padding:5rem;display:flex;flex-direction:column;justify-content:center}
+  .subscribe-text .section-label{color:var(--rust)}
+  .subscribe-text h2{font-family:var(--font-serif);font-size:clamp(2rem,4vw,3.2rem);line-height:1.1;margin-bottom:1rem}
+  .subscribe-text h2 em{color:var(--rust)}
+  .subscribe-text p{font-size:1rem;line-height:1.8;color:rgba(10,10,8,0.7);max-width:420px}
+  .sub-price{font-family:var(--font-display);font-size:4rem;line-height:1;color:var(--rust);margin:1.5rem 0 0.5rem}
+  .sub-price small{font-family:var(--font-body);font-size:0.9rem;color:rgba(10,10,8,0.5)}
+  .subscribe-visual{background:var(--rust);color:var(--white);padding:5rem;display:flex;flex-direction:column;justify-content:center}
+  .subscribe-visual h3{font-family:var(--font-display);font-size:2rem;letter-spacing:0.03em;margin-bottom:0.5rem}
+  .subscribe-visual ul{list-style:none;display:flex;flex-direction:column;gap:1rem;margin-top:1.5rem}
+  .subscribe-visual li{display:flex;gap:0.75rem;font-size:0.95rem;align-items:flex-start;color:rgba(245,243,238,0.92)}
+  .subscribe-visual li::before{content:'✓';font-weight:bold;color:var(--white)}
+  @media(max-width:900px){.subscribe{grid-template-columns:1fr}.subscribe-text,.subscribe-visual{padding:3rem 1.5rem}}
+
+  /* PICKUP EXPLAINER */
+  .pickup{padding:6rem 3rem;background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)}
+  .pickup-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3rem;margin-top:0.5rem}
+  .pickup-step .pn{font-family:var(--font-display);font-size:3rem;color:rgba(192,65,11,0.3);line-height:1}
+  .pickup-step h3{font-family:var(--font-serif);font-size:1.3rem;margin:0.6rem 0 0.5rem}
+  .pickup-step p{font-size:0.88rem;color:rgba(245,243,238,0.6);line-height:1.65}
+  @media(max-width:900px){.pickup-grid{grid-template-columns:1fr}.pickup{padding:4rem 1.5rem}}
+
+  /* TIPS / BLOG */
+  .tips{background:var(--cream);color:var(--black);padding:7rem 3rem}
+  .tips .section-title{color:var(--black)}
+  .tips-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:0.5rem}
+  .tip-card{background:#fff;border:1px solid rgba(10,10,8,0.08);padding:2rem;transition:transform .3s,box-shadow .3s}
+  .tip-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px -24px rgba(10,10,8,0.35)}
+  .tip-tag{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--rust);margin-bottom:0.75rem}
+  .tip-card h3{font-family:var(--font-serif);font-size:1.3rem;margin-bottom:0.6rem;color:var(--black)}
+  .tip-card p{font-size:0.88rem;line-height:1.7;color:rgba(10,10,8,0.6)}
+  .tip-link{margin-top:1rem;display:inline-block;font-size:0.76rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--rust);text-decoration:none}
+  @media(max-width:900px){.tips-grid{grid-template-columns:1fr}.tips{padding:4rem 1.5rem}}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"><div class="cursor-ring"></div><div class="cursor-dot"></div></div>
+<nav id="navbar">
+  <a href="#" class="nav-logo">XPERT<span>POINT</span></a>
+  <ul class="nav-links"><li><a href="#servicii">Servicii</a></li><li><a href="#abonament">Abonament</a></li><li><a href="#branduri">Branduri</a></li><li><a href="#sfaturi">Sfaturi</a></li><li><a href="bike_page.html" class="nav-switch">↩ Biciclete</a></li><li><a href="#contact" class="nav-cta">Programează-te</a></li></ul>
+  <button class="hamburger" id="hamburger" aria-label="Meniu"><span></span><span></span><span></span></button>
+</nav>
+<section class="hero">
+  <div class="hero-slides">
+    <div class="hero-slide slide-1 active"></div>
+    <div class="hero-slide slide-2"></div>
+    <div class="hero-slide slide-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Service Aparate de Cafea București</div>
+    <h1 class="hero-title">CAFEAUA BUNĂ<br>MERITĂ UN<br><em>APARAT BUN.</em></h1>
+    <p class="hero-sub">Aducem espressoarele înapoi la forma lor — curate, calibrate, gata de prima cafea. Cu grijă, nu cu grabă. București & Ilfov.</p>
+    <div class="hero-actions">
+      <a href="#servicii" class="btn-primary">Alege pachetul</a>
+      <a href="#proces" class="btn-ghost">Cum funcționăm</a>
+    </div>
+  </div>
+  <div class="hero-indicators" id="indicators">
+    <div class="indicator active" data-idx="0"></div>
+    <div class="indicator" data-idx="1"></div>
+    <div class="indicator" data-idx="2"></div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+<div class="stats">
+  <div class="stat-item"><div class="stat-number"><span>16</span>+</div><div class="stat-label">Branduri deservite</div></div>
+  <div class="stat-item"><div class="stat-number"><span>6</span> luni</div><div class="stat-label">Garanție lucrări</div></div>
+  <div class="stat-item"><div class="stat-number"><span>48</span>h</div><div class="stat-label">Timp mediu reparație</div></div>
+  <div class="stat-item"><div class="stat-number"><span>0</span> lei</div><div class="stat-label">Diagnostic la acceptare</div></div>
+</div>
+<section class="about-strip" id="despre">
+  <div class="about-image"><img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=900&q=85&fit=crop" alt="Reparație aparat de cafea"></div>
+  <div class="about-text">
+    <div class="section-label">Cine suntem</div>
+    <h2 class="about-heading">Nu reparăm aparate de cafea.<br>Le <em>readucem la viață.</em></h2>
+    <p class="about-body">Aceeași echipă XpertPoint care îți readuce bicicleta la viață știe și de ce aparatul tău a început să curgă, să facă zgomot sau să scoată o cafea fără cremă. Lucrăm cu precizie, transparent și fără costuri ascunse.</p>
+    <ul class="feature-list"><li>Piese de schimb originale sau verificate</li><li>Garanție 6 luni pentru reparații</li><li>Decalcifiere gratuită inclusă la orice reparație</li><li>Ridicare prin curier în București & Ilfov</li><li>Programări online — fără așteptare</li></ul>
+  </div>
+</section>
+<section class="brands-sec" id="branduri">
+  <div class="services-header"><h2 class="section-title"><small>Lucrăm cu</small>ORICE BRAND<br>DE APARAT</h2></div>
+  <p class="brands-sub">De la superautomate la espressoare manuale și capsule. Dacă nu îți vezi brandul aici, întreabă-ne — cel mai probabil îl reparăm.</p>
+  <div class="brands-grid"><div class="brand-tile">De'Longhi</div><div class="brand-tile">Philips</div><div class="brand-tile">Saeco</div><div class="brand-tile">Jura</div><div class="brand-tile">Krups</div><div class="brand-tile">Bosch</div><div class="brand-tile">Siemens</div><div class="brand-tile">Gaggia</div><div class="brand-tile">Melitta</div><div class="brand-tile">Nespresso</div><div class="brand-tile">Lavazza</div><div class="brand-tile">Dolce Gusto</div></div>
+</section>
+<section class="services" id="servicii">
+  <div class="services-header">
+    <h2 class="section-title"><small>Pachete service</small>ALEGE NIVELUL<br>DE ÎNGRIJIRE</h2>
+    <a href="#contact" class="btn-ghost" style="color:rgba(245,243,238,0.5)">Serviciu personalizat</a>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="card-number">01</div>
+      <div class="card-icon"><svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 21 H35 V29 a7 7 0 0 1 -7 7 H18 a7 7 0 0 1 -7 -7 Z" stroke="#c0410b" stroke-width="2"/><path d="M35 23 h4 a4.5 4.5 0 0 1 0 9 h-4" stroke="rgba(245,243,238,0.3)" stroke-width="1.5"/><path d="M18 9 c0 2.5 -2.5 2.5 -2.5 5" stroke="#c0410b" stroke-width="1.5"/><path d="M25 9 c0 2.5 -2.5 2.5 -2.5 5" stroke="#c0410b" stroke-width="1.5"/></svg></div>
+      <h3 class="card-name">ÎNTREȚINERE<br>ESENȚIALĂ</h3>
+      <p class="card-desc">Mentenanța de bază care ține espressorul curat, sigur și gata de cafeaua de dimineață.</p>
+      <ul class="card-includes"><li>Decalcifiere (curățare de calcar)</li><li>Igienizare aparat</li><li>Curățare + ungere grup de cafea</li><li>Verificare presiune & temperatură</li><li>Testare funcțională</li></ul>
+      <div class="card-price"><span class="price-amount">120</span><span class="price-currency">LEI</span></div>
+      <a href="#" class="card-cta" onclick="openModal('Întreținere Esențială','120 LEI',['Decalcifiere (curățare de calcar)','Igienizare aparat','Curățare + ungere grup de cafea','Verificare presiune și temperatură','Testare funcțională'])">Programează acum →</a>
+    </div>
+    <div class="service-card featured">
+      <div class="card-number">02</div>
+      <div class="card-badge">⚡ Cel mai ales</div>
+      <div class="card-icon"><svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 21 H35 V29 a7 7 0 0 1 -7 7 H18 a7 7 0 0 1 -7 -7 Z" stroke="rgba(245,243,238,0.9)" stroke-width="2"/><path d="M35 23 h4 a4.5 4.5 0 0 1 0 9 h-4" stroke="rgba(245,243,238,0.6)" stroke-width="1.5"/><path d="M15 8 c0 2.5 -2.5 2.5 -2.5 5" stroke="rgba(245,243,238,0.9)" stroke-width="1.5"/><path d="M22 8 c0 2.5 -2.5 2.5 -2.5 5" stroke="rgba(245,243,238,0.9)" stroke-width="1.5"/><path d="M29 8 c0 2.5 -2.5 2.5 -2.5 5" stroke="rgba(245,243,238,0.9)" stroke-width="1.5"/></svg></div>
+      <h3 class="card-name">REVIZIE<br>COMPLETĂ</h3>
+      <p class="card-desc">Revizia extinsă pentru un aparat impecabil. Demontat, curățat, recalibrat și testat cu cafea adevărată.</p>
+      <ul class="card-includes"><li>Tot ce include Esențiala</li><li>Revizie generală superautomat</li><li>Reglaj & recalibrare râșniță</li><li>Înlocuire garnituri uzate</li><li>Curățare circuit apă</li><li>Test final cu cafea</li></ul>
+      <div class="card-price"><span class="price-amount">180</span><span class="price-currency">LEI</span></div>
+      <a href="#" class="card-cta" onclick="openModal('Revizie Completă','180 LEI',['Tot ce include Esențiala','Revizie generală superautomat','Reglaj și recalibrare râșniță','Înlocuire garnituri uzate','Curățare circuit apă','Test final cu cafea'])">Programează acum →</a>
+    </div>
+    <div class="service-card">
+      <div class="card-number">03</div>
+      <div class="card-icon"><svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 21 H35 V29 a7 7 0 0 1 -7 7 H18 a7 7 0 0 1 -7 -7 Z" stroke="#c0410b" stroke-width="2"/><path d="M35 23 h4 a4.5 4.5 0 0 1 0 9 h-4" stroke="rgba(245,243,238,0.3)" stroke-width="1.5"/><path d="M27 6 l2.5 2.5 -2.5 2.5 -2.5 -2.5 Z" fill="#c0410b"/></svg></div>
+      <h3 class="card-name">REPARAȚIE<br>/ DEVIZ</h3>
+      <p class="card-desc">Aparatul nu mai face presiune, scurge sau dă eroare? Diagnosticăm gratuit și îți dăm un deviz transparent.</p>
+      <ul class="card-includes"><li>Diagnostic gratuit</li><li>Deviz transparent înainte de lucru</li><li>Doar piese verificate / originale</li><li>Manoperă 50 lei/oră</li><li>Garanție 6 luni</li><li>Fără costuri ascunse</li></ul>
+      <div class="card-price"><span class="price-amount">~</span><span class="price-currency">Deviz gratuit</span></div>
+      <a href="#" class="card-cta" onclick="openModal('Reparație / Deviz','Deviz personalizat',['Diagnostic gratuit','Deviz transparent înainte de lucru','Doar piese verificate / originale','Manoperă 50 lei/oră','Garanție 6 luni','Fără costuri ascunse'])">Solicită deviz →</a>
+    </div>
+  </div>
+</section>
+<section class="subscribe" id="abonament">
+  <div class="subscribe-text">
+    <div class="section-label">Mentenanță fără griji</div>
+    <h2>Un aparat <em>îngrijit</em> face cafea mai bună și se strică mai rar.</h2>
+    <p>Cu un abonament de mentenanță, ne ocupăm noi de decalcifiere, igienizare și verificările periodice — la intervalul potrivit pentru consumul tău. Tu doar faci cafea.</p>
+    <div class="sub-price">100 lei<small> / lună (de la)</small></div>
+    <a href="#contact" class="btn-primary" style="align-self:flex-start">Vreau abonament</a>
+  </div>
+  <div class="subscribe-visual">
+    <h3>CE INCLUDE</h3>
+    <ul>
+      <li>Decalcifiere & igienizare periodică programată</li>
+      <li>Curățare + ungere grup de cafea</li>
+      <li>Verificare presiune, temperatură și râșniță</li>
+      <li>Prioritate la programare și deviz preferențial la reparații</li>
+      <li>Ridicare prin curier inclusă (București + Ilfov)</li>
+    </ul>
+  </div>
+</section>
+<section class="pickup" id="curier">
+  <div class="services-header"><h2 class="section-title"><small>Nu te deplasezi</small>RIDICĂM APARATUL<br>DE LA TINE</h2></div>
+  <div class="pickup-grid">
+    <div class="pickup-step"><div class="pn">01</div><h3>Programezi ridicarea</h3><p>Alegi ziua și intervalul. Curierul vine la tine în București sau Ilfov — tur-retur 60 lei.</p></div>
+    <div class="pickup-step"><div class="pn">02</div><h3>Diagnosticăm & reparăm</h3><p>Primești devizul înainte de orice lucrare. Aprobi tu, apoi reparăm cu piese verificate.</p></div>
+    <div class="pickup-step"><div class="pn">03</div><h3>Îți aducem aparatul</h3><p>Curat, calibrat și testat cu cafea, livrat înapoi la ușa ta. Cu garanție 6 luni.</p></div>
+  </div>
+</section>
+<section class="process" id="proces">
+  <div class="process-header"><h2 class="section-title"><small>Cum lucrăm</small>SIMPLU.<br>RAPID.<br>CORECT.</h2></div>
+  <div class="process-steps">
+    <div class="process-step"><div class="step-connector"></div><h3 class="step-title">Programare online</h3><p class="step-desc">Alegi pachetul și ne spui brandul, modelul și ce face aparatul. Sau scrii-ne pe WhatsApp.</p></div>
+    <div class="process-step"><div class="step-connector"></div><h3 class="step-title">Diagnostic gratuit</h3><p class="step-desc">Verificăm aparatul și îți prezentăm transparent defectul și devizul. Nu atingem nimic fără acceptul tău.</p></div>
+    <div class="process-step"><div class="step-connector"></div><h3 class="step-title">Reparație & status</h3><p class="step-desc">Lucrăm cu piese verificate și te ținem la curent. Decalcifierea e inclusă gratuit la reparație.</p></div>
+    <div class="process-step"><h3 class="step-title">Ridici și savurezi</h3><p class="step-desc">Primești aparatul curat, calibrat și testat — sau ți-l aducem prin curier în București și Ilfov.</p></div>
+  </div>
+</section>
+<section class="testimonials" id="testimoniale"><div class="testimonials-header"><h2 class="section-title"><small>Recenzii clienți</small>CE SPUN<br>CLIENȚII</h2></div><div class="testimonials-track"><div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">„De'Longhi-ul nu mai făcea presiune deloc. L-am dus, mi-au dat deviz pe loc și a doua zi era ca nou. Cafea cu cremă din nou!</p><div class="testimonial-author"><div class="author-avatar">AM</div><div><div class="author-name">Alexandru M.</div><div class="author-city">București, Sector 3</div></div></div></div><div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">„Revizie completă la Saeco, plus decalcifiere gratuită. Mi-au explicat tot ce au făcut. Prețuri corecte, fără surprize."</p><div class="testimonial-author"><div class="author-avatar">RP</div><div><div class="author-name">Raluca P.</div><div class="author-city">București, Sector 1</div></div></div></div><div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">„Au venit să ridice aparatul cu curierul și mi l-au adus reparat. Mai simplu de atât nu se poate. Recomand!"</p><div class="testimonial-author"><div class="author-avatar">CI</div><div><div class="author-name">Cristian I.</div><div class="author-city">Ilfov, Voluntari</div></div></div></div><div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">„Râșnița de la Jura era complet dereglată. Au recalibrat-o și acum macină perfect. Oameni care chiar se pricep."</p><div class="testimonial-author"><div class="author-avatar">MD</div><div><div class="author-name">Mihai D.</div><div class="author-city">București, Sector 2</div></div></div></div><div class="testimonial-card"><div class="testimonial-stars">★★★★☆</div><p class="testimonial-text">„Programare online, diagnostic gratuit, totul explicat clar. Philips-ul meu merge impecabil. Nu mai merg altundeva."</p><div class="testimonial-author"><div class="author-avatar">LB</div><div><div class="author-name">Laura B.</div><div class="author-city">București, Sector 6</div></div></div></div><div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">„De'Longhi-ul nu mai făcea presiune deloc. L-am dus, mi-au dat deviz pe loc și a doua zi era ca nou. Cafea cu cremă din nou!</p><div class="testimonial-author"><div class="author-avatar">AM</div><div><div class="author-name">Alexandru M.</div><div class="author-city">București, Sector 3</div></div></div></div><div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">„Revizie completă la Saeco, plus decalcifiere gratuită. Mi-au explicat tot ce au făcut. Prețuri corecte, fără surprize."</p><div class="testimonial-author"><div class="author-avatar">RP</div><div><div class="author-name">Raluca P.</div><div class="author-city">București, Sector 1</div></div></div></div><div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">„Au venit să ridice aparatul cu curierul și mi l-au adus reparat. Mai simplu de atât nu se poate. Recomand!"</p><div class="testimonial-author"><div class="author-avatar">CI</div><div><div class="author-name">Cristian I.</div><div class="author-city">Ilfov, Voluntari</div></div></div></div><div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">„Râșnița de la Jura era complet dereglată. Au recalibrat-o și acum macină perfect. Oameni care chiar se pricep."</p><div class="testimonial-author"><div class="author-avatar">MD</div><div><div class="author-name">Mihai D.</div><div class="author-city">București, Sector 2</div></div></div></div><div class="testimonial-card"><div class="testimonial-stars">★★★★☆</div><p class="testimonial-text">„Programare online, diagnostic gratuit, totul explicat clar. Philips-ul meu merge impecabil. Nu mai merg altundeva."</p><div class="testimonial-author"><div class="author-avatar">LB</div><div><div class="author-name">Laura B.</div><div class="author-city">București, Sector 6</div></div></div></div></div></section>
+<section class="tips" id="sfaturi">
+  <div class="services-header"><h2 class="section-title"><small>De la tehnicienii noștri</small>SFATURI<br>PENTRU APARAT</h2></div>
+  <div class="tips-grid">
+    <div class="tip-card"><div class="tip-tag">Întreținere</div><h3>Cât de des să decalcifiezi?</h3><p>La uz casnic intens, decalcifierea e necesară la fiecare 1–2 luni. Apa dură grăbește depunerile și strică gustul cafelei.</p><a href="#contact" class="tip-link">Programează decalcifiere →</a></div>
+    <div class="tip-card"><div class="tip-tag">Gust</div><h3>De ce nu mai are cafeaua cremă?</h3><p>De obicei e vorba de presiune scăzută, grup înfundat sau măciniș prea grosier. O revizie de grup readuce crema.</p><a href="#diagnostic" class="tip-link">Vezi simptomele →</a></div>
+    <div class="tip-card"><div class="tip-tag">Apă</div><h3>Folosește apă filtrată</h3><p>Apa filtrată reduce calcarul și protejează pompa și boilerul. Un filtru bun îți poate dubla intervalul dintre revizii.</p><a href="#contact" class="tip-link">Întreabă-ne →</a></div>
+  </div>
+</section>
+<section class="cta-band" id="contact">
+  <div><h2 class="cta-headline">CAFEAUA TA<br>TE AȘTEAPTĂ.</h2><p class="cta-sub">Programează-te acum — diagnosticul e gratuit la acceptarea reparației, iar decalcifierea e inclusă.</p></div>
+  <div class="cta-actions"><a href="tel:+40700000000" class="btn-white">📞 Sună acum</a><a href="https://wa.me/40700000000" target="_blank" class="btn-white alt">WhatsApp</a></div>
+</section>
+<div class="newsletter">
+  <div class="newsletter-text"><h3>Sfaturi & promoții cafea</h3><p>Lasă adresa ta și primești sfaturi de întreținere și ofertele lunare ale tehnicienilor noștri.</p></div>
+  <form class="newsletter-form" onsubmit="handleNewsletter(event)"><input type="email" class="newsletter-input" placeholder="adresa@ta.ro" required><button type="submit" class="newsletter-btn">Abonează-te</button></form>
+</div>
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand"><a href="#" class="nav-logo">XPERT<span>POINT</span></a><p>Service specializat de biciclete și aparate de cafea în București. Întreținem, reparăm și păstrăm gustul cafelei tale.</p>
+      <div class="social-links" style="margin-top:1.5rem"><a href="#" class="social-link">f</a><a href="#" class="social-link">ig</a><a href="#" class="social-link">wa</a></div>
+    </div>
+    <div class="footer-col"><h4>Servicii</h4><ul><li><a href="#servicii">Întreținere Esențială</a></li><li><a href="#servicii">Revizie Completă</a></li><li><a href="#servicii">Reparație / Deviz</a></li><li><a href="#">Decalcifiere</a></li><li><a href="#">Pickup & return</a></li></ul></div>
+    <div class="footer-col"><h4>Informații</h4><ul><li><a href="#proces">Cum funcționăm</a></li><li><a href="#testimoniale">Recenzii</a></li><li><a href="#">Listă prețuri</a></li><li><a href="#">Întrebări frecvente</a></li><li><a href="#">Despre</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul><li><a href="#">📍 București + Ilfov</a></li><li><a href="tel:+40700000000">📞 0700 000 000</a></li><li><a href="mailto:contact@xpertpoint.ro">✉️ contact@xpertpoint.ro</a></li><li><a href="#">🕐 Lun–Sâm: 9:00–18:00</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 XpertPoint.ro — Toate drepturile rezervate</span><div style="display:flex;gap:1.5rem"><a href="#">Confidențialitate</a><a href="#">Termeni</a><a href="#">ANPC</a></div></div>
+</footer>
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h3 id="modalTitle">Întreținere Esențială</h3>
+    <div class="price" id="modalPrice">120 LEI</div>
+    <ul id="modalList"></ul>
+    <form class="modal-form" onsubmit="handleBooking(event)">
+      <input type="text" class="modal-input" placeholder="Numele tău" required>
+      <input type="tel" class="modal-input" placeholder="Număr de telefon" required>
+      <input type="text" class="modal-input" placeholder="Tip aparat / brand & model (ex. De'Longhi Magnifica S)">
+      <textarea class="modal-input" placeholder="Descriere defect (opțional)"></textarea>
+      <input type="date" class="modal-input" required style="color-scheme:dark">
+      <button type="submit" class="btn-primary" style="text-align:center;width:100%;clip-path:none">Confirmă programarea</button>
+    </form>
+  </div>
+</div>
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = cursor.querySelector('.cursor-ring');
+  const dot = cursor.querySelector('.cursor-dot');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+  function animCursor() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animCursor); }
+  animCursor();
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px'; ring.style.borderColor = 'rgba(192,65,11,0.6)'; });
+    el.addEventListener('mouseleave', () => { ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderColor = 'rgba(245,243,238,0.5)'; });
+  });
+
+  // NAV SCROLL
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 50); });
+
+  // HERO SLIDER
+  const slides = document.querySelectorAll('.hero-slide');
+  const indicators = document.querySelectorAll('.indicator');
+  let currentSlide = 0;
+  function goToSlide(n) {
+    slides[currentSlide].classList.remove('active'); indicators[currentSlide].classList.remove('active');
+    currentSlide = n;
+    slides[currentSlide].classList.add('active'); indicators[currentSlide].classList.add('active');
+  }
+  indicators.forEach(ind => { ind.addEventListener('click', () => goToSlide(+ind.dataset.idx)); });
+  setInterval(() => goToSlide((currentSlide + 1) % slides.length), 5000);
+
+  // MODAL
+  function openModal(title, price, items) {
+    event.preventDefault();
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalPrice').textContent = price;
+    document.getElementById('modalList').innerHTML = items.map(i => `<li>${i}</li>`).join('');
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    return false;
+  }
+  function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+  function closeModalOutside(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  function handleBooking(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = '✓ Programat! Te contactăm în curând.';
+    btn.style.background = '#2d6a2d';
+    setTimeout(closeModal, 2000);
+  }
+  function handleNewsletter(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = '✓ Abonare reușită!';
+    btn.style.background = '#2d6a2d';
+    e.target.querySelector('input').value = '';
+    setTimeout(() => { btn.textContent = 'Abonează-te'; btn.style.background = ''; }, 3000);
+  }
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => { q.parentElement.classList.toggle('open'); });
+  });
+
+  // SCROLL REVEAL
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity = 1; e.target.style.transform = 'translateY(0)'; } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.service-card, .process-step, .stat-item').forEach(el => {
+    el.style.opacity = 0; el.style.transform = 'translateY(24px)'; el.style.transition = 'opacity 0.6s ease, transform 0.6s ease'; observer.observe(el);
+  });
+
+  // HAMBURGER
+  document.getElementById('hamburger').addEventListener('click', () => {
+    const links = document.querySelector('.nav-links');
+    if (links.style.display === 'flex') { links.style.display = 'none'; }
+    else { links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:70px;left:0;right:0;background:rgba(10,10,8,0.98);padding:2rem 1.5rem;gap:1.5rem;z-index:99'; }
+  });
+
+  document.querySelectorAll('.faq-q').forEach(q => { q.addEventListener('click', () => { q.parentElement.classList.toggle('open'); }); });
+</script>
+
+</body>
+</html>
