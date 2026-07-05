@@ -112,6 +112,35 @@
     .menu-title { font-size: clamp(2.8rem, 15vw, 4.5rem); }
     .brand { top: 1.3rem; }
   }
+
+  /* COOKIE-CONSENT:START */
+  .cookie-banner {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000;
+    background: #141410;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 1.25rem 2rem;
+  }
+  .cookie-banner[hidden] { display: none; }
+  .cookie-banner-inner {
+    display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+    max-width: 1200px; margin: 0 auto; flex-wrap: wrap;
+  }
+  .cookie-banner-text { font-size: 0.85rem; line-height: 1.6; color: rgba(245,243,238,0.75); flex: 1 1 420px; }
+  .cookie-banner-actions { display: flex; gap: 0.75rem; flex-shrink: 0; }
+  .cookie-btn-reject, .cookie-btn-accept {
+    font-family: var(--font-body); font-size: 0.8rem; letter-spacing: 0.05em;
+    padding: 0.65rem 1.4rem; border-radius: 2px; cursor: pointer;
+    transition: opacity .2s, background .2s;
+  }
+  .cookie-btn-reject { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--white); }
+  .cookie-btn-reject:hover { border-color: rgba(255,255,255,0.4); }
+  .cookie-btn-accept { background: var(--rust); border: 1px solid transparent; color: var(--white); }
+  .cookie-btn-accept:hover { opacity: 0.85; }
+  @media (max-width: 700px) {
+    .cookie-banner-inner { flex-direction: column; align-items: stretch; text-align: center; }
+    .cookie-banner-actions { justify-content: center; }
+  }
+  /* COOKIE-CONSENT:END */
 </style>
 </head>
 <body>
@@ -133,7 +162,79 @@
   </a>
 </div>
 
+<!-- COOKIE-CONSENT:START -->
+<div class="cookie-banner" id="cookieBanner" hidden>
+  <div class="cookie-banner-inner">
+    <p class="cookie-banner-text">Folosim cookie-uri pentru a îmbunătăți experiența ta pe site și pentru statistici și marketing (Google, Meta). Poți accepta sau refuza cookie-urile non-esențiale.</p>
+    <div class="cookie-banner-actions">
+      <button type="button" class="cookie-btn-reject" id="cookieRejectBtn">Refuz</button>
+      <button type="button" class="cookie-btn-accept" id="cookieAcceptBtn">Accept</button>
+    </div>
+  </div>
+</div>
+<!-- COOKIE-CONSENT:END -->
+
 <script>
+  // LEAD-SOURCE:START
+  function detectLeadSource() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('gclid')) return 'google_ads';
+    if (params.get('fbclid') || ['facebook', 'instagram'].includes(params.get('utm_source'))) return 'meta_ads';
+    if (params.get('utm_source')) return `${params.get('utm_source')}/${params.get('utm_medium') || 'n/a'}`;
+    return 'organic_direct';
+  }
+  if (!sessionStorage.getItem('xp_lead_source')) {
+    sessionStorage.setItem('xp_lead_source', detectLeadSource());
+  }
+  // LEAD-SOURCE:END
+
+  // TRACKING:START (pageview only — no forms on this page, so no conversion events fired here)
+  const GA4_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // TODO: paste real GA4 Measurement ID
+  const META_PIXEL_ID = 'XXXXXXXXXXXXXXX'; // TODO: paste real Meta Pixel ID
+
+  function loadTrackingScripts() {
+    if (window.__xpTrackingLoaded) return;
+    window.__xpTrackingLoaded = true;
+
+    const gaScript = document.createElement('script');
+    gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`;
+    gaScript.async = true;
+    document.head.appendChild(gaScript);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('config', GA4_MEASUREMENT_ID);
+
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = true; n.version = '2.0'; n.queue = [];
+      t = b.createElement(e); t.async = true; t.src = v;
+      s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', META_PIXEL_ID);
+    fbq('track', 'PageView');
+  }
+  // TRACKING:END
+
+  // COOKIE-CONSENT:START
+  const COOKIE_CONSENT_KEY = 'xp_cookie_consent';
+  const cookieBanner = document.getElementById('cookieBanner');
+  function setCookieConsent(value) {
+    localStorage.setItem(COOKIE_CONSENT_KEY, value);
+    cookieBanner.hidden = true;
+    if (value === 'accepted' && typeof loadTrackingScripts === 'function') loadTrackingScripts();
+  }
+  function showCookieBanner() { cookieBanner.hidden = false; }
+  const existingCookieConsent = localStorage.getItem(COOKIE_CONSENT_KEY);
+  if (!existingCookieConsent) {
+    showCookieBanner();
+  } else if (existingCookieConsent === 'accepted' && typeof loadTrackingScripts === 'function') {
+    loadTrackingScripts();
+  }
+  document.getElementById('cookieAcceptBtn').addEventListener('click', () => setCookieConsent('accepted'));
+  document.getElementById('cookieRejectBtn').addEventListener('click', () => setCookieConsent('rejected'));
+  // COOKIE-CONSENT:END
+
   const bgBiciclete = document.getElementById('bgBiciclete');
   const bgCafea = document.getElementById('bgCafea');
   const itemBiciclete = document.getElementById('itemBiciclete');

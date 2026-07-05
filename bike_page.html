@@ -779,6 +779,35 @@
     .footer-top { grid-template-columns: 1fr; }
     .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
   }
+
+  /* COOKIE-CONSENT:START */
+  .cookie-banner {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000;
+    background: #141410;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 1.25rem 2rem;
+  }
+  .cookie-banner[hidden] { display: none; }
+  .cookie-banner-inner {
+    display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+    max-width: 1200px; margin: 0 auto; flex-wrap: wrap;
+  }
+  .cookie-banner-text { font-size: 0.85rem; line-height: 1.6; color: rgba(245,243,238,0.75); flex: 1 1 420px; }
+  .cookie-banner-actions { display: flex; gap: 0.75rem; flex-shrink: 0; }
+  .cookie-btn-reject, .cookie-btn-accept {
+    font-family: var(--font-body); font-size: 0.8rem; letter-spacing: 0.05em;
+    padding: 0.65rem 1.4rem; border-radius: 2px; cursor: none;
+    transition: opacity .2s, background .2s;
+  }
+  .cookie-btn-reject { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--white); }
+  .cookie-btn-reject:hover { border-color: rgba(255,255,255,0.4); }
+  .cookie-btn-accept { background: var(--accent); border: 1px solid transparent; color: var(--black); }
+  .cookie-btn-accept:hover { background: var(--accent-dim); }
+  @media (max-width: 700px) {
+    .cookie-banner-inner { flex-direction: column; align-items: stretch; text-align: center; }
+    .cookie-banner-actions { justify-content: center; }
+  }
+  /* COOKIE-CONSENT:END */
 </style>
 </head>
 <body>
@@ -1131,7 +1160,10 @@
     <p>Lasă adresa ta și fii primul care află ofertele lunare și sfaturile mecanicilor noștri.</p>
   </div>
   <form class="newsletter-form" onsubmit="handleNewsletter(event)">
-    <input type="email" class="newsletter-input" placeholder="adresa@ta.ro" required>
+    <input type="hidden" name="access_key" value="">
+    <input type="hidden" name="subject" value="Abonare newsletter — Xpert Point Biciclete">
+    <input type="hidden" name="lead_source" value="">
+    <input type="email" name="email" class="newsletter-input" placeholder="adresa@ta.ro" required>
     <button type="submit" class="newsletter-btn">Abonează-te</button>
   </form>
 </div>
@@ -1164,7 +1196,7 @@
         <li><a href="#">Cine suntem</a></li>
         <li><a href="#">Cum funcționăm</a></li>
         <li><a href="#">Recenzii</a></li>
-        <li><a href="#">Blog ciclism</a></li>
+        <li><a href="/blog">Blog</a></li>
         <li><a href="#">FAQ</a></li>
       </ul>
     </div>
@@ -1184,6 +1216,7 @@
       <a href="#">Politică confidențialitate</a>
       <a href="#">Termeni și condiții</a>
       <a href="#">ANPC</a>
+      <a href="#" id="cookieSettingsLink">Setări cookie-uri</a>
     </div>
   </div>
 </footer>
@@ -1196,16 +1229,104 @@
     <div class="price" id="modalPrice">120 LEI</div>
     <ul id="modalList"></ul>
     <form class="modal-form" onsubmit="handleBooking(event)">
-      <input type="text" class="modal-input" placeholder="Numele tău" required>
-      <input type="tel" class="modal-input" placeholder="Număr de telefon" required>
-      <input type="email" class="modal-input" placeholder="Email (opțional)">
-      <input type="date" class="modal-input" required style="color-scheme:dark">
+      <input type="hidden" name="access_key" value="">
+      <input type="hidden" name="subject" value="Programare bicicletă — Xpert Point">
+      <input type="hidden" name="lead_source" value="">
+      <input type="text" name="full_name" class="modal-input" placeholder="Numele tău" required>
+      <input type="tel" name="phone" class="modal-input" placeholder="Număr de telefon" required>
+      <input type="email" name="email" class="modal-input" placeholder="Email (opțional)">
+      <input type="date" name="date" class="modal-input" required style="color-scheme:dark">
       <button type="submit" class="btn-primary" style="text-align:center;width:100%;clip-path:none">Confirmă programarea</button>
     </form>
   </div>
 </div>
 
+<!-- COOKIE-CONSENT:START -->
+<div class="cookie-banner" id="cookieBanner" hidden>
+  <div class="cookie-banner-inner">
+    <p class="cookie-banner-text">Folosim cookie-uri pentru a îmbunătăți experiența ta pe site și pentru statistici și marketing (Google, Meta). Poți accepta sau refuza cookie-urile non-esențiale.</p>
+    <div class="cookie-banner-actions">
+      <button type="button" class="cookie-btn-reject" id="cookieRejectBtn">Refuz</button>
+      <button type="button" class="cookie-btn-accept" id="cookieAcceptBtn">Accept</button>
+    </div>
+  </div>
+</div>
+<!-- COOKIE-CONSENT:END -->
+
 <script>
+  // LEAD-SOURCE:START
+  function detectLeadSource() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('gclid')) return 'google_ads';
+    if (params.get('fbclid') || ['facebook', 'instagram'].includes(params.get('utm_source'))) return 'meta_ads';
+    if (params.get('utm_source')) return `${params.get('utm_source')}/${params.get('utm_medium') || 'n/a'}`;
+    return 'organic_direct';
+  }
+  if (!sessionStorage.getItem('xp_lead_source')) {
+    sessionStorage.setItem('xp_lead_source', detectLeadSource());
+  }
+  // LEAD-SOURCE:END
+
+  // TRACKING:START
+  const GA4_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // TODO: paste real GA4 Measurement ID
+  const GOOGLE_ADS_ID = 'AW-XXXXXXXXX'; // TODO: paste real Google Ads Conversion ID
+  const GOOGLE_ADS_CONVERSION_LABEL = 'XXXXXXXXXXXX'; // TODO: paste real Conversion Label
+  const META_PIXEL_ID = 'XXXXXXXXXXXXXXX'; // TODO: paste real Meta Pixel ID
+
+  function loadTrackingScripts() {
+    if (window.__xpTrackingLoaded) return;
+    window.__xpTrackingLoaded = true;
+
+    // Google Analytics 4 + Google Ads
+    const gaScript = document.createElement('script');
+    gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`;
+    gaScript.async = true;
+    document.head.appendChild(gaScript);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('config', GA4_MEASUREMENT_ID);
+    gtag('config', GOOGLE_ADS_ID);
+
+    // Meta Pixel
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = true; n.version = '2.0'; n.queue = [];
+      t = b.createElement(e); t.async = true; t.src = v;
+      s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', META_PIXEL_ID);
+    fbq('track', 'PageView');
+  }
+
+  function fireConversionEvent(kind) {
+    if (localStorage.getItem(COOKIE_CONSENT_KEY) !== 'accepted') return;
+    if (window.gtag) gtag('event', 'conversion', { send_to: `${GOOGLE_ADS_ID}/${GOOGLE_ADS_CONVERSION_LABEL}` });
+    if (window.fbq) fbq('track', 'Lead');
+  }
+  // TRACKING:END
+
+  // COOKIE-CONSENT:START
+  const COOKIE_CONSENT_KEY = 'xp_cookie_consent';
+  const cookieBanner = document.getElementById('cookieBanner');
+  function setCookieConsent(value) {
+    localStorage.setItem(COOKIE_CONSENT_KEY, value);
+    cookieBanner.hidden = true;
+    if (value === 'accepted' && typeof loadTrackingScripts === 'function') loadTrackingScripts();
+  }
+  function showCookieBanner() { cookieBanner.hidden = false; }
+  const existingCookieConsent = localStorage.getItem(COOKIE_CONSENT_KEY);
+  if (!existingCookieConsent) {
+    showCookieBanner();
+  } else if (existingCookieConsent === 'accepted' && typeof loadTrackingScripts === 'function') {
+    loadTrackingScripts();
+  }
+  document.getElementById('cookieAcceptBtn').addEventListener('click', () => setCookieConsent('accepted'));
+  document.getElementById('cookieRejectBtn').addEventListener('click', () => setCookieConsent('rejected'));
+  const cookieSettingsLink = document.getElementById('cookieSettingsLink');
+  if (cookieSettingsLink) cookieSettingsLink.addEventListener('click', e => { e.preventDefault(); showCookieBanner(); });
+  // COOKIE-CONSENT:END
+
   // CURSOR
   const cursor = document.getElementById('cursor');
   const ring = cursor.querySelector('.cursor-ring');
@@ -1267,21 +1388,62 @@
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  function handleBooking(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button');
-    btn.textContent = '✓ Programat! Te contactăm în curând.';
-    btn.style.background = '#2d6a2d';
-    setTimeout(closeModal, 2000);
+  // WEB3FORMS SUBMISSION
+  const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY_HERE'; // TODO: paste real Web3Forms access key
+  async function submitToWeb3Forms(form) {
+    form.querySelector('[name="access_key"]').value = WEB3FORMS_ACCESS_KEY;
+    const leadSourceField = form.querySelector('[name="lead_source"]');
+    if (leadSourceField) leadSourceField.value = sessionStorage.getItem('xp_lead_source') || 'organic_direct';
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message || 'Web3Forms submission failed');
+    return data;
   }
 
-  function handleNewsletter(e) {
+  async function handleBooking(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('button');
-    btn.textContent = '✓ Abonare reușită!';
-    btn.style.background = '#2d6a2d';
-    e.target.querySelector('input').value = '';
-    setTimeout(() => { btn.textContent = 'Abonează-te'; btn.style.background = ''; }, 3000);
+    const form = e.target;
+    const btn = form.querySelector('button');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Se trimite...';
+    try {
+      await submitToWeb3Forms(form);
+      btn.textContent = '✓ Programat! Te contactăm în curând.';
+      btn.style.background = '#2d6a2d';
+      if (typeof fireConversionEvent === 'function') fireConversionEvent('booking');
+      setTimeout(closeModal, 2000);
+    } catch (err) {
+      console.error('Booking submission failed:', err);
+      btn.textContent = 'Eroare — încearcă din nou sau sună-ne';
+      btn.disabled = false;
+      setTimeout(() => { btn.textContent = originalText; }, 3000);
+    }
+  }
+
+  async function handleNewsletter(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('button');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Se trimite...';
+    try {
+      await submitToWeb3Forms(form);
+      btn.textContent = '✓ Abonare reușită!';
+      btn.style.background = '#2d6a2d';
+      form.querySelector('input[type="email"]').value = '';
+      setTimeout(() => { btn.textContent = originalText; btn.style.background = ''; btn.disabled = false; }, 3000);
+    } catch (err) {
+      console.error('Newsletter submission failed:', err);
+      btn.textContent = 'Eroare — încearcă din nou';
+      btn.disabled = false;
+      setTimeout(() => { btn.textContent = originalText; }, 3000);
+    }
   }
 
   // SCROLL REVEAL
