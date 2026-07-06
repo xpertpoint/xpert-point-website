@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Politică de Confidențialitate — XpertPoint</title>
+<meta name="robots" content="noindex, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a08;
+    --white: #f5f3ee;
+    --rust: #c0410b;
+    --rust-light: #e05a20;
+    --tan: #c9b99a;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--white); font-family: var(--font-body); font-weight: 300; line-height: 1.7; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.4;
+  }
+  nav { position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 3rem; background: rgba(10,10,8,0.98); border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .nav-logo { font-family: var(--font-display); font-size: 2rem; letter-spacing: 0.05em; color: var(--white); text-decoration: none; }
+  .nav-logo span { color: var(--rust); }
+  .nav-back { color: var(--tan); text-decoration: none; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid rgba(201,185,154,0.3); padding: 0.5rem 1rem; border-radius: 2px; transition: border-color .2s; }
+  .nav-back:hover { border-color: var(--rust); }
+
+  main { max-width: 800px; margin: 0 auto; padding: 5rem 2rem 6rem; }
+  .page-eyebrow { font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--rust); margin-bottom: 1rem; }
+  h1 { font-family: var(--font-display); font-size: clamp(2.25rem, 5vw, 3.5rem); letter-spacing: 0.02em; margin-bottom: 0.5rem; }
+  .updated { color: rgba(245,243,238,0.45); font-size: 0.85rem; margin-bottom: 3rem; }
+  h2 { font-family: var(--font-display); font-size: 1.6rem; letter-spacing: 0.02em; color: var(--white); margin: 2.5rem 0 1rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); }
+  h2:first-of-type { border-top: none; padding-top: 0; }
+  p { color: rgba(245,243,238,0.75); margin-bottom: 1rem; font-size: 0.98rem; }
+  ul { color: rgba(245,243,238,0.75); margin: 0 0 1rem 1.3rem; font-size: 0.98rem; }
+  li { margin-bottom: 0.5rem; }
+  strong { color: var(--white); font-weight: 500; }
+  a.inline { color: var(--rust); text-decoration: none; border-bottom: 1px solid rgba(192,65,11,0.4); }
+  a.inline:hover { color: var(--rust-light); }
+  .contact-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; padding: 1.5rem; margin-top: 1rem; }
+  .contact-box p { margin-bottom: 0.4rem; }
+  footer { text-align: center; padding: 3rem 2rem 2.5rem; border-top: 1px solid rgba(255,255,255,0.06); }
+  .footer-nav { display: flex; gap: 1rem; justify-content: center; max-width: 520px; margin: 0 auto 1.75rem; }
+  .footer-nav-btn {
+    flex: 1; display: block; padding: 1.35rem 1.5rem;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px; text-decoration: none; transition: border-color .2s, background .2s;
+  }
+  .footer-nav-btn:hover { border-color: var(--rust); background: rgba(255,255,255,0.07); }
+  .footer-nav-btn h4 { font-family: var(--font-display); font-weight: normal; font-size: 1.15rem; letter-spacing: 0.03em; color: var(--white); }
+  .footer-copy { color: rgba(245,243,238,0.35); font-size: 0.8rem; }
+  @media (max-width: 600px) {
+    nav { padding: 1.2rem 1.5rem; }
+    main { padding: 3rem 1.5rem 4rem; }
+    .footer-nav { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">XPERT<span>POINT</span></a>
+  <a href="javascript:history.back()" class="nav-back">← Înapoi</a>
+</nav>
+<main>
+  <div class="page-eyebrow">Protecția datelor</div>
+  <h1>Politică de Confidențialitate</h1>
+  <p class="updated">Ultima actualizare: 6 iulie 2026</p>
+
+  <h2>1. Cine suntem</h2>
+  <p>XpertPoint SRL ("XpertPoint", "noi") operează site-ul xpertpoint.ro și serviciile de reparații și întreținere pentru biciclete și aparate de cafea. Suntem operator de date cu caracter personal conform Regulamentului (UE) 2016/679 (GDPR).</p>
+  <div class="contact-box">
+    <p><strong>XpertPoint SRL</strong></p>
+    <p>📍 Strada General Petre Popovăț 9, 060314 București</p>
+    <p>📞 0773 565 576</p>
+    <p>✉️ <a href="mailto:hello@xpertpoint.ro" class="inline">hello@xpertpoint.ro</a></p>
+  </div>
+
+  <h2>2. Ce date colectăm</h2>
+  <p>Colectăm date personale doar atunci când ni le furnizezi direct sau prin utilizarea site-ului:</p>
+  <ul>
+    <li><strong>Date de programare/contact:</strong> nume, număr de telefon, adresă de e-mail — completate în formularele de programare sau abonare la newsletter.</li>
+    <li><strong>Date tehnice și de utilizare:</strong> adresă IP, tip dispozitiv/browser, pagini vizitate — colectate automat prin cookie-uri, dacă ai acceptat.</li>
+    <li><strong>Date de comunicare:</strong> conținutul mesajelor trimise prin formular, telefon sau e-mail.</li>
+  </ul>
+
+  <h2>3. Cookie-uri și instrumente de tracking</h2>
+  <p>Site-ul folosește un banner de consimțământ pentru cookie-uri non-esențiale. Poți accepta sau refuza oricând din secțiunea <strong>„Setări cookie-uri”</strong> din subsolul paginii.</p>
+  <ul>
+    <li><strong>Cookie-uri strict necesare:</strong> mențin funcționarea site-ului (ex. reținerea preferinței tale privind cookie-urile). Nu pot fi dezactivate.</li>
+    <li><strong>Google Analytics (GA4):</strong> statistici de trafic și comportament, activate doar după acceptare.</li>
+    <li><strong>Meta Pixel (Facebook/Instagram):</strong> măsurare și optimizare campanii de marketing, activat doar după acceptare.</li>
+  </ul>
+  <p>Dacă alegi „Refuz”, aceste scripturi de analiză și marketing nu se încarcă și nu se plasează cookie-uri asociate.</p>
+
+  <h2>4. Scopul și temeiul legal al prelucrării</h2>
+  <ul>
+    <li><strong>Onorarea programărilor/comenzilor</strong> — executarea unui contract sau demersuri precontractuale (art. 6 (1) (b) GDPR).</li>
+    <li><strong>Comunicare și suport clienți</strong> — interes legitim (art. 6 (1) (f) GDPR).</li>
+    <li><strong>Newsletter și marketing</strong> — consimțământ (art. 6 (1) (a) GDPR), retractabil oricând.</li>
+    <li><strong>Analiză trafic și publicitate (GA4, Meta Pixel)</strong> — consimțământ exprimat prin bannerul de cookie-uri.</li>
+    <li><strong>Obligații legale</strong> — evidențe contabile/fiscale, unde este cazul (art. 6 (1) (c) GDPR).</li>
+  </ul>
+
+  <h2>5. Durata stocării</h2>
+  <p>Păstrăm datele de contact și programare atât timp cât este necesar pentru derularea relației comerciale și pentru îndeplinirea obligațiilor legale (de regulă până la 5 ani pentru documente financiar-contabile). Datele colectate prin cookie-uri de analiză/marketing sunt păstrate conform politicilor Google și Meta, de regulă până la 24 de luni.</p>
+
+  <h2>6. Cui transmitem datele</h2>
+  <p>Nu vindem datele tale. Le putem transmite către:</p>
+  <ul>
+    <li>Furnizori de servicii tehnice (găzduire site, curierat pentru pickup/return).</li>
+    <li>Google (Google Analytics) și Meta (Facebook/Instagram Pixel), doar dacă ai acceptat cookie-urile de analiză/marketing.</li>
+    <li>Autorități publice, atunci când legea o impune.</li>
+  </ul>
+
+  <h2>7. Drepturile tale conform GDPR</h2>
+  <p>Ai dreptul de a solicita:</p>
+  <ul>
+    <li>Acces la datele tale personale;</li>
+    <li>Rectificarea datelor inexacte;</li>
+    <li>Ștergerea datelor ("dreptul de a fi uitat"), în condițiile legii;</li>
+    <li>Restricționarea sau opoziția la prelucrare;</li>
+    <li>Portabilitatea datelor;</li>
+    <li>Retragerea oricând a consimțământului (fără a afecta prelucrările anterioare);</li>
+    <li>Depunerea unei plângeri la <a href="https://www.dataprotection.ro" target="_blank" rel="noopener" class="inline">Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal (ANSPDCP)</a>.</li>
+  </ul>
+  <p>Pentru exercitarea oricărui drept, scrie-ne la <a href="mailto:hello@xpertpoint.ro" class="inline">hello@xpertpoint.ro</a>.</p>
+
+  <h2>8. Securitatea datelor</h2>
+  <p>Aplicăm măsuri tehnice și organizatorice rezonabile pentru a proteja datele împotriva accesului neautorizat, pierderii sau divulgării accidentale.</p>
+
+  <h2>9. Modificări ale acestei politici</h2>
+  <p>Putem actualiza periodic această politică. Data ultimei actualizări este afișată în partea de sus a paginii. Recomandăm revizuirea periodică a acestui document.</p>
+</main>
+<footer>
+  <div class="footer-nav">
+    <a href="terms.html" class="footer-nav-btn"><h4>Termeni și condiții</h4></a>
+    <a href="index.html" class="footer-nav-btn"><h4>Acasă</h4></a>
+  </div>
+  <p class="footer-copy">© 2026 XpertPoint SRL</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Termeni și Condiții — XpertPoint</title>
+<meta name="robots" content="noindex, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a08;
+    --white: #f5f3ee;
+    --rust: #c0410b;
+    --rust-light: #e05a20;
+    --tan: #c9b99a;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--white); font-family: var(--font-body); font-weight: 300; line-height: 1.7; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.4;
+  }
+  nav { position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 3rem; background: rgba(10,10,8,0.98); border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .nav-logo { font-family: var(--font-display); font-size: 2rem; letter-spacing: 0.05em; color: var(--white); text-decoration: none; }
+  .nav-logo span { color: var(--rust); }
+  .nav-back { color: var(--tan); text-decoration: none; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid rgba(201,185,154,0.3); padding: 0.5rem 1rem; border-radius: 2px; transition: border-color .2s; }
+  .nav-back:hover { border-color: var(--rust); }
+
+  main { max-width: 800px; margin: 0 auto; padding: 5rem 2rem 6rem; }
+  .page-eyebrow { font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--rust); margin-bottom: 1rem; }
+  h1 { font-family: var(--font-display); font-size: clamp(2.25rem, 5vw, 3.5rem); letter-spacing: 0.02em; margin-bottom: 0.5rem; }
+  .updated { color: rgba(245,243,238,0.45); font-size: 0.85rem; margin-bottom: 3rem; }
+  h2 { font-family: var(--font-display); font-size: 1.6rem; letter-spacing: 0.02em; color: var(--white); margin: 2.5rem 0 1rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); }
+  h2:first-of-type { border-top: none; padding-top: 0; }
+  p { color: rgba(245,243,238,0.75); margin-bottom: 1rem; font-size: 0.98rem; }
+  ul { color: rgba(245,243,238,0.75); margin: 0 0 1rem 1.3rem; font-size: 0.98rem; }
+  li { margin-bottom: 0.5rem; }
+  strong { color: var(--white); font-weight: 500; }
+  a.inline { color: var(--rust); text-decoration: none; border-bottom: 1px solid rgba(192,65,11,0.4); }
+  a.inline:hover { color: var(--rust-light); }
+  .contact-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; padding: 1.5rem; margin-top: 1rem; }
+  .contact-box p { margin-bottom: 0.4rem; }
+  footer { text-align: center; padding: 3rem 2rem 2.5rem; border-top: 1px solid rgba(255,255,255,0.06); }
+  .footer-nav { display: flex; gap: 1rem; justify-content: center; max-width: 520px; margin: 0 auto 1.75rem; }
+  .footer-nav-btn {
+    flex: 1; display: block; padding: 1.35rem 1.5rem;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px; text-decoration: none; transition: border-color .2s, background .2s;
+  }
+  .footer-nav-btn:hover { border-color: var(--rust); background: rgba(255,255,255,0.07); }
+  .footer-nav-btn h4 { font-family: var(--font-display); font-weight: normal; font-size: 1.15rem; letter-spacing: 0.03em; color: var(--white); }
+  .footer-copy { color: rgba(245,243,238,0.35); font-size: 0.8rem; }
+  @media (max-width: 600px) {
+    nav { padding: 1.2rem 1.5rem; }
+    main { padding: 3rem 1.5rem 4rem; }
+    .footer-nav { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">XPERT<span>POINT</span></a>
+  <a href="javascript:history.back()" class="nav-back">← Înapoi</a>
+</nav>
+<main>
+  <div class="page-eyebrow">Cadru contractual</div>
+  <h1>Termeni și Condiții</h1>
+  <p class="updated">Ultima actualizare: 6 iulie 2026</p>
+
+  <h2>1. Operatorul serviciului</h2>
+  <div class="contact-box">
+    <p><strong>XpertPoint SRL</strong></p>
+    <p>📍 Strada General Petre Popovăț 9, 060314 București</p>
+    <p>📞 0773 565 576</p>
+    <p>✉️ <a href="mailto:hello@xpertpoint.ro" class="inline">hello@xpertpoint.ro</a></p>
+  </div>
+  <p>Prin accesarea și utilizarea site-ului xpertpoint.ro și prin programarea unui serviciu, ești de acord cu acești termeni și condiții.</p>
+
+  <h2>2. Serviciile oferite</h2>
+  <p>XpertPoint oferă servicii de întreținere și reparație pentru biciclete și aparate de cafea, prezentate pe site cu descriere, conținut inclus și preț orientativ. Prețurile afișate pot varia în funcție de starea reală a produsului constatată la diagnostic, situație comunicată clientului înainte de efectuarea lucrării.</p>
+
+  <h2>3. Programarea serviciilor</h2>
+  <ul>
+    <li>Programarea se face prin formularul de pe site, telefonic sau prin e-mail.</li>
+    <li>Confirmarea programării se face de către un reprezentant XpertPoint.</li>
+    <li>Diagnosticul este gratuit; orice lucrare suplimentară față de pachetul ales necesită acordul clientului.</li>
+    <li>Clientul poate anula sau reprograma o programare contactându-ne cu cel puțin 24 de ore înainte.</li>
+  </ul>
+
+  <h2>4. Preț și plată</h2>
+  <p>Prețurile sunt exprimate în lei (LEI) și includ TVA, unde este cazul. Plata se efectuează la finalizarea lucrării, prin metodele acceptate la punctul de lucru (numerar, card sau transfer bancar).</p>
+
+  <h2>5. Garanție</h2>
+  <p>Lucrările efectuate beneficiază de garanție conform celor comunicate la predarea produsului (de regulă 6 luni pentru reparații), acoperind exclusiv defectele legate direct de intervenția realizată. Garanția nu acoperă uzura normală, deteriorările ulterioare cauzate de utilizare necorespunzătoare sau intervenția unor terți neautorizați.</p>
+
+  <h2>6. Pickup & return</h2>
+  <p>Serviciul de ridicare și livrare prin curier, acolo unde este disponibil, se desfășoară în București & Ilfov, în intervalul comunicat la programare. XpertPoint nu răspunde pentru întârzieri cauzate de terți furnizori de curierat.</p>
+
+  <h2>7. Drepturile și obligațiile clientului</h2>
+  <ul>
+    <li>Clientul are obligația de a furniza informații corecte cu privire la produsul adus la reparație.</li>
+    <li>Clientul are dreptul de a solicita un deviz detaliat înainte de efectuarea oricărei lucrări suplimentare.</li>
+    <li>Produsele nepreluate în termen de 30 de zile de la finalizarea lucrării pot genera costuri de depozitare, comunicate în prealabil clientului.</li>
+  </ul>
+
+  <h2>8. Limitarea răspunderii</h2>
+  <p>XpertPoint depune diligențe rezonabile pentru calitatea serviciilor, însă nu răspunde pentru daune indirecte derivate din întârzieri sau din informații incomplete furnizate de client cu privire la produsul supus reparației.</p>
+
+  <h2>9. Proprietate intelectuală</h2>
+  <p>Conținutul site-ului (texte, imagini, logo, design) este proprietatea XpertPoint SRL sau a partenerilor săi și nu poate fi reprodus fără acord scris prealabil.</p>
+
+  <h2>10. Soluționarea litigiilor</h2>
+  <p>Eventualele neînțelegeri se rezolvă pe cale amiabilă. Dacă acest lucru nu este posibil, consumatorii se pot adresa Autorității Naționale pentru Protecția Consumatorilor (ANPC) sau platformei europene de <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener" class="inline">Soluționare Alternativă a Litigiilor (SOL)</a>.</p>
+
+  <h2>11. Legea aplicabilă</h2>
+  <p>Prezentii termeni sunt guvernați de legea română. Pentru orice aspect legat de protecția datelor personale, consultă <a href="privacy-policy.html" class="inline">Politica de Confidențialitate</a>.</p>
+
+  <h2>12. Modificări ale termenilor</h2>
+  <p>XpertPoint își rezervă dreptul de a actualiza acești termeni. Data ultimei actualizări este afișată în partea de sus a paginii.</p>
+</main>
+<footer>
+  <div class="footer-nav">
+    <a href="privacy-policy.html" class="footer-nav-btn"><h4>Politică de confidențialitate</h4></a>
+    <a href="index.html" class="footer-nav-btn"><h4>Acasă</h4></a>
+  </div>
+  <p class="footer-copy">© 2026 XpertPoint SRL</p>
+</footer>
+</body>
+</html>
