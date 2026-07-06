@@ -15,7 +15,7 @@ function sanitize_header_value($value) {
     return trim(preg_replace('/[\r\n]+/', ' ', (string) $value));
 }
 
-$businessEmail = 'contact@xpertpoint.ro';
+$businessEmail = 'hello@xpertpoint.ro';
 $fromDomain = 'xpertpoint.ro';
 
 $subject = sanitize_header_value($_POST['subject'] ?? 'Mesaj nou de pe site');
