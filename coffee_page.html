@@ -514,7 +514,7 @@
 </section>
 <div class="newsletter">
   <div class="newsletter-text"><h3>Sfaturi & promoții cafea</h3><p>Lasă adresa ta și primești sfaturi de întreținere și ofertele lunare ale tehnicienilor noștri.</p></div>
-  <form class="newsletter-form" onsubmit="handleNewsletter(event)"><input type="hidden" name="access_key" value=""><input type="hidden" name="subject" value="Abonare newsletter — Xpert Point Cafea"><input type="hidden" name="lead_source" value=""><input type="email" name="email" class="newsletter-input" placeholder="adresa@ta.ro" required><button type="submit" class="newsletter-btn">Abonează-te</button></form>
+  <form class="newsletter-form" onsubmit="handleNewsletter(event)"><input type="hidden" name="subject" value="Abonare newsletter — Xpert Point Cafea"><input type="hidden" name="lead_source" value=""><input type="email" name="email" class="newsletter-input" placeholder="adresa@ta.ro" required><button type="submit" class="newsletter-btn">Abonează-te</button></form>
 </div>
 <footer>
   <div class="footer-top">
@@ -534,11 +534,11 @@
     <div class="price" id="modalPrice">120 LEI</div>
     <ul id="modalList"></ul>
     <form class="modal-form" onsubmit="handleBooking(event)">
-      <input type="hidden" name="access_key" value="">
       <input type="hidden" name="subject" value="Programare cafea — Xpert Point">
       <input type="hidden" name="lead_source" value="">
       <input type="text" name="full_name" class="modal-input" placeholder="Numele tău" required>
       <input type="tel" name="phone" class="modal-input" placeholder="Număr de telefon" required>
+      <input type="email" name="email" class="modal-input" placeholder="Email (opțional)">
       <input type="text" name="equipment" class="modal-input" placeholder="Tip aparat / brand & model (ex. De'Longhi Magnifica S)">
       <textarea name="defect_description" class="modal-input" placeholder="Descriere defect (opțional)"></textarea>
       <input type="date" name="date" class="modal-input" required style="color-scheme:dark">
@@ -676,19 +676,17 @@
   function closeModalOutside(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  // WEB3FORMS SUBMISSION
-  const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY_HERE'; // TODO: paste real Web3Forms access key
-  async function submitToWeb3Forms(form) {
-    form.querySelector('[name="access_key"]').value = WEB3FORMS_ACCESS_KEY;
+  // FORM SUBMISSION (send-form.php, hosted alongside this site on cPanel)
+  async function submitForm(form) {
     const leadSourceField = form.querySelector('[name="lead_source"]');
     if (leadSourceField) leadSourceField.value = sessionStorage.getItem('xp_lead_source') || 'organic_direct';
-    const res = await fetch('https://api.web3forms.com/submit', {
+    const res = await fetch('send-form.php', {
       method: 'POST',
       headers: { 'Accept': 'application/json' },
       body: new FormData(form)
     });
     const data = await res.json();
-    if (!data.success) throw new Error(data.message || 'Web3Forms submission failed');
+    if (!data.success) throw new Error(data.message || 'Form submission failed');
     return data;
   }
 
@@ -700,7 +698,7 @@
     btn.disabled = true;
     btn.textContent = 'Se trimite...';
     try {
-      await submitToWeb3Forms(form);
+      await submitForm(form);
       btn.textContent = '✓ Programat! Te contactăm în curând.';
       btn.style.background = '#2d6a2d';
       if (typeof fireConversionEvent === 'function') fireConversionEvent('booking');
@@ -721,7 +719,7 @@
     btn.disabled = true;
     btn.textContent = 'Se trimite...';
     try {
-      await submitToWeb3Forms(form);
+      await submitForm(form);
       btn.textContent = '✓ Abonare reușită!';
       btn.style.background = '#2d6a2d';
       form.querySelector('input[type="email"]').value = '';
