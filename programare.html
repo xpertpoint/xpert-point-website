@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programează-te — XpertPoint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a08;
+    --white: #f5f3ee;
+    --accent: #ffffff;
+    --accent-dim: #cfcac2;
+    --tan: #c9b99a;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--white); font-family: var(--font-body); font-weight: 300; line-height: 1.7; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.4;
+  }
+
+  /* NAV */
+  nav { position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 3rem; background: rgba(10,10,8,0.98); border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .nav-logo { font-family: var(--font-display); font-size: 2rem; letter-spacing: 0.05em; color: var(--white); text-decoration: none; }
+  .nav-logo span { color: var(--accent); }
+  .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+  .nav-switch, .nav-back {
+    color: var(--tan); text-decoration: none; font-size: 0.8rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    border: 1px solid rgba(201,185,154,0.3); padding: 0.5rem 1rem; border-radius: 2px;
+    transition: border-color .2s; white-space: nowrap;
+  }
+  .nav-switch:hover, .nav-back:hover { border-color: var(--accent); }
+
+  /* MAIN */
+  main { max-width: 620px; margin: 0 auto; padding: 5rem 2rem 6rem; }
+  .page-eyebrow { font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--tan); margin-bottom: 1rem; }
+  h1 { font-family: var(--font-display); font-size: clamp(2.25rem, 5vw, 3.5rem); letter-spacing: 0.02em; margin-bottom: 0.5rem; }
+  .page-sub { color: rgba(245,243,238,0.5); font-size: 0.98rem; margin-bottom: 3rem; }
+
+  .booking-form { display: flex; flex-direction: column; gap: 1rem; }
+  .modal-input {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--white); padding: 0.85rem 1rem;
+    font-family: var(--font-body); font-size: 0.9rem;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .modal-input:focus { border-color: var(--accent); }
+  .modal-input::placeholder { color: rgba(245,243,238,0.3); }
+  textarea.modal-input { min-height: 80px; resize: vertical; }
+  .btn-primary {
+    background: var(--accent); color: var(--black);
+    padding: 1rem 2.5rem;
+    font-family: var(--font-body); font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; white-space: nowrap;
+    border: none; cursor: pointer;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+    transition: background .2s, transform .2s;
+  }
+  .btn-primary:hover { background: var(--accent-dim); transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer { padding: 5rem 3rem 2rem; }
+  .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 4rem; padding-bottom: 4rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .footer-brand .nav-logo { display: block; margin-bottom: 1.2rem; }
+  .footer-brand p { font-size: 0.85rem; line-height: 1.7; color: rgba(245,243,238,0.45); max-width: 260px; }
+  .footer-col h4 { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--tan); margin-bottom: 1.25rem; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-col a { font-size: 0.875rem; color: rgba(245,243,238,0.5); text-decoration: none; transition: color .2s; }
+  .footer-col a:hover { color: var(--white); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: rgba(245,243,238,0.25); flex-wrap: wrap; gap: 1rem; }
+  .footer-bottom a { color: rgba(245,243,238,0.35); text-decoration: none; transition: color .2s; }
+  .footer-bottom a:hover { color: rgba(245,243,238,0.6); }
+  .social-links { display: flex; gap: 1rem; }
+  .social-link { width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; text-decoration: none; color: rgba(245,243,238,0.4); font-size: 0.75rem; transition: all .2s; }
+  .social-link:hover { border-color: var(--accent); color: var(--white); }
+
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    main { padding: 3rem 1.5rem 4rem; }
+    footer { padding: 3rem 1.5rem 2rem; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+  @media (max-width: 600px) {
+    .footer-top { grid-template-columns: 1fr; }
+  }
+
+  /* COOKIE-CONSENT:START */
+  .cookie-banner { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; background: #141410; border-top: 1px solid rgba(255,255,255,0.08); padding: 1.25rem 2rem; }
+  .cookie-banner[hidden] { display: none; }
+  .cookie-overlay { position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.4); }
+  .cookie-overlay[hidden] { display: none; }
+  .cookie-banner-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; }
+  .cookie-banner-text { font-size: 0.85rem; line-height: 1.6; color: rgba(245,243,238,0.75); flex: 1 1 420px; }
+  .cookie-banner-actions { display: flex; gap: 0.75rem; flex-shrink: 0; }
+  .cookie-btn-reject, .cookie-btn-accept { font-family: var(--font-body); font-size: 0.8rem; letter-spacing: 0.05em; padding: 0.65rem 1.4rem; border-radius: 2px; cursor: pointer; transition: opacity .2s, background .2s; }
+  .cookie-btn-reject { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--white); }
+  .cookie-btn-reject:hover { border-color: rgba(255,255,255,0.4); }
+  .cookie-btn-accept { background: var(--accent); border: 1px solid transparent; color: var(--black); }
+  .cookie-btn-accept:hover { opacity: 0.85; }
+  @media (max-width: 700px) {
+    .cookie-banner-inner { flex-direction: column; align-items: stretch; text-align: center; }
+    .cookie-banner-actions { justify-content: center; }
+  }
+  /* COOKIE-CONSENT:END */
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://xpertpoint.ro/" class="nav-logo">XPERT<span>POINT</span></a>
+  <div class="nav-right">
+    <a href="https://xpertpoint.ro/bike_page.html" class="nav-switch">Biciclete</a>
+    <a href="https://xpertpoint.ro/coffee_page.html" class="nav-switch">Espressoare</a>
+    <a href="https://xpertpoint.ro/" class="nav-back">Acasă</a>
+  </div>
+</nav>
+
+<main>
+  <div class="page-eyebrow">Programare</div>
+  <h1>Programează un serviciu</h1>
+  <p class="page-sub">Alege serviciul dorit, lasă-ne datele tale și te contactăm pentru confirmare.</p>
+
+  <form class="booking-form" onsubmit="handleBooking(event)">
+    <input type="hidden" name="subject" value="Programare — Xpert Point">
+    <input type="hidden" name="lead_source" value="">
+    <select name="service_type" class="modal-input" required>
+      <option value="" disabled selected>Alege serviciul</option>
+      <optgroup label="Biciclete">
+        <option>Revizie Standard — 120 LEI</option>
+        <option>Revizie Completă — 160 LEI</option>
+        <option>Revizie Custom — Deviz personalizat</option>
+      </optgroup>
+      <optgroup label="Espressoare">
+        <option>Întreținere Esențială — 120 LEI</option>
+        <option>Revizie Completă — 180 LEI</option>
+        <option>Reparație / Deviz — Deviz personalizat</option>
+      </optgroup>
+    </select>
+    <input type="text" name="full_name" class="modal-input" placeholder="Numele tău" required>
+    <input type="tel" name="phone" class="modal-input" placeholder="Număr de telefon" required>
+    <input type="email" name="email" class="modal-input" placeholder="Email" required>
+    <input type="date" name="date" class="modal-input" style="color-scheme:dark">
+    <textarea name="comment" class="modal-input" placeholder="Comentariu (opțional)"></textarea>
+    <button type="submit" class="btn-primary" style="text-align:center;width:100%;clip-path:none">Trimite programarea</button>
+  </form>
+</main>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="https://xpertpoint.ro/" class="nav-logo">XPERT<span>POINT</span></a>
+      <p>Service specializat de biciclete și espressoare în București. Calitate, transparență și rapiditate.</p>
+      <div class="social-links" style="margin-top:1.5rem">
+        <a href="https://www.facebook.com/profile.php?id=61591523255375" class="social-link" aria-label="Facebook" target="_blank" rel="noopener">f</a>
+        <a href="https://www.instagram.com/xpertpoint.ro/" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">ig</a>
+        <a href="https://www.tiktok.com/@xpertpoint.ro" class="social-link" aria-label="TikTok" target="_blank" rel="noopener">tt</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Servicii</h4>
+      <ul>
+        <li><a href="https://xpertpoint.ro/bike_page.html">Service Biciclete</a></li>
+        <li><a href="https://xpertpoint.ro/coffee_page.html">Service Espressoare</a></li>
+        <li><a href="https://xpertpoint.ro/programare.html">Programare</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Informații</h4>
+      <ul>
+        <li><a href="https://xpertpoint.ro/">Acasă</a></li>
+        <li><a href="https://xpertpoint.ro/blog/">Blog</a></li>
+        <li><a href="https://xpertpoint.ro/privacy-policy.html">Politică de confidențialitate</a></li>
+        <li><a href="https://xpertpoint.ro/terms.html">Termeni și condiții</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="https://maps.google.com/?q=Strada+General+Petre+Popov%C4%83%C8%9B+9,+060314+Bucure%C8%99ti" target="_blank" rel="noopener">📍 Strada General Petre Popovăț 9, 060314 București</a></li>
+        <li><a href="tel:+40773565576">📞 0773 565 576</a></li>
+        <li><a href="mailto:hello@xpertpoint.ro">✉️ hello@xpertpoint.ro</a></li>
+        <li><a href="#">🕐 Luni–Vineri: 10:00–19:00</a></li>
+        <li><a href="#">🕐 Sâmbătă: 10:00–14:00</a></li>
+        <li><a href="#">🕐 Duminică: închis</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 XpertPoint SRL — Toate drepturile rezervate</span>
+    <div style="display:flex;gap:1.5rem">
+      <a href="https://xpertpoint.ro/privacy-policy.html">Politică confidențialitate</a>
+      <a href="https://xpertpoint.ro/terms.html">Termeni și condiții</a>
+      <a href="https://anpc.ro" target="_blank" rel="noopener">ANPC</a>
+      <a href="#" id="cookieSettingsLink">Setări cookie-uri</a>
+    </div>
+  </div>
+</footer>
+
+<!-- COOKIE-CONSENT:START -->
+<div class="cookie-overlay" id="cookieOverlay" hidden></div>
+<div class="cookie-banner" id="cookieBanner" hidden>
+  <div class="cookie-banner-inner">
+    <p class="cookie-banner-text">Folosim cookie-uri pentru a îmbunătăți experiența ta pe site și pentru statistici și marketing (Google, Meta). Poți accepta sau refuza cookie-urile non-esențiale.</p>
+    <div class="cookie-banner-actions">
+      <button type="button" class="cookie-btn-reject" id="cookieRejectBtn">Refuz</button>
+      <button type="button" class="cookie-btn-accept" id="cookieAcceptBtn">Accept</button>
+    </div>
+  </div>
+</div>
+<!-- COOKIE-CONSENT:END -->
+
+<script>
+  // LEAD-SOURCE:START
+  function detectLeadSource() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('gclid')) return 'google_ads';
+    if (params.get('fbclid') || ['facebook', 'instagram'].includes(params.get('utm_source'))) return 'meta_ads';
+    if (params.get('utm_source')) return `${params.get('utm_source')}/${params.get('utm_medium') || 'n/a'}`;
+    return 'organic_direct';
+  }
+  if (!sessionStorage.getItem('xp_lead_source')) {
+    sessionStorage.setItem('xp_lead_source', detectLeadSource());
+  }
+  // LEAD-SOURCE:END
+
+  // TRACKING:START
+  const GA4_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // TODO: paste real GA4 Measurement ID
+  const GOOGLE_ADS_ID = 'AW-XXXXXXXXX'; // TODO: paste real Google Ads Conversion ID
+  const GOOGLE_ADS_CONVERSION_LABEL = 'XXXXXXXXXXXX'; // TODO: paste real Conversion Label
+  const META_PIXEL_ID = 'XXXXXXXXXXXXXXX'; // TODO: paste real Meta Pixel ID
+
+  function loadTrackingScripts() {
+    if (window.__xpTrackingLoaded) return;
+    window.__xpTrackingLoaded = true;
+    const gaScript = document.createElement('script');
+    gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`;
+    gaScript.async = true;
+    document.head.appendChild(gaScript);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('config', GA4_MEASUREMENT_ID);
+    gtag('config', GOOGLE_ADS_ID);
+
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = true; n.version = '2.0'; n.queue = [];
+      t = b.createElement(e); t.async = true; t.src = v;
+      s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', META_PIXEL_ID);
+    fbq('track', 'PageView');
+  }
+
+  function fireConversionEvent(kind) {
+    if (localStorage.getItem(COOKIE_CONSENT_KEY) !== 'accepted') return;
+    if (window.gtag) gtag('event', 'conversion', { send_to: `${GOOGLE_ADS_ID}/${GOOGLE_ADS_CONVERSION_LABEL}` });
+    if (window.fbq) fbq('track', 'Lead');
+  }
+  // TRACKING:END
+
+  // COOKIE-CONSENT:START
+  const COOKIE_CONSENT_KEY = 'xp_cookie_consent';
+  const cookieBanner = document.getElementById('cookieBanner');
+  const cookieOverlay = document.getElementById('cookieOverlay');
+  function setCookieConsent(value) {
+    localStorage.setItem(COOKIE_CONSENT_KEY, value);
+    cookieBanner.hidden = true;
+    cookieOverlay.hidden = true;
+    document.body.style.overflow = '';
+    if (value === 'accepted' && typeof loadTrackingScripts === 'function') loadTrackingScripts();
+  }
+  function showCookieBanner() {
+    cookieBanner.hidden = false;
+    cookieOverlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  const existingCookieConsent = localStorage.getItem(COOKIE_CONSENT_KEY);
+  if (!existingCookieConsent) {
+    showCookieBanner();
+  } else if (existingCookieConsent === 'accepted' && typeof loadTrackingScripts === 'function') {
+    loadTrackingScripts();
+  }
+  document.getElementById('cookieAcceptBtn').addEventListener('click', () => setCookieConsent('accepted'));
+  document.getElementById('cookieRejectBtn').addEventListener('click', () => setCookieConsent('rejected'));
+  const cookieSettingsLink = document.getElementById('cookieSettingsLink');
+  if (cookieSettingsLink) cookieSettingsLink.addEventListener('click', e => { e.preventDefault(); showCookieBanner(); });
+  // COOKIE-CONSENT:END
+
+  // FORM SUBMISSION (send-form.php, hosted alongside this site on cPanel)
+  async function submitForm(form) {
+    const leadSourceField = form.querySelector('[name="lead_source"]');
+    if (leadSourceField) leadSourceField.value = sessionStorage.getItem('xp_lead_source') || 'organic_direct';
+    const res = await fetch('send-form.php', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message || 'Form submission failed');
+    return data;
+  }
+
+  async function handleBooking(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('button');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Se trimite...';
+    try {
+      await submitForm(form);
+      btn.textContent = '✓ Programat! Te contactăm în curând.';
+      btn.style.background = '#2d6a2d';
+      if (typeof fireConversionEvent === 'function') fireConversionEvent('booking');
+      form.reset();
+      setTimeout(() => { btn.textContent = originalText; btn.style.background = ''; btn.disabled = false; }, 4000);
+    } catch (err) {
+      console.error('Booking submission failed:', err);
+      btn.textContent = 'Eroare — încearcă din nou sau sună-ne';
+      btn.disabled = false;
+      setTimeout(() => { btn.textContent = originalText; }, 3000);
+    }
+  }
+</script>
+
+</body>
+</html>

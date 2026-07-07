@@ -5,4 +5,5 @@ deployment:
     - /bin/cp -f index.html $DEPLOYPATH
     - /bin/cp -f bike_page.html $DEPLOYPATH
     - /bin/cp -f coffee_page.html $DEPLOYPATH
+    - /bin/cp -f programare.html $DEPLOYPATH
     - /bin/cp -f send-form.php $DEPLOYPATH
