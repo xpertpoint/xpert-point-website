@@ -1,0 +1,45 @@
+<!-- wp:html -->
+<section class="xp-newsletter-cta">
+  <div class="xp-newsletter-cta-inner">
+    <div class="xp-newsletter-cta-text">
+      <span class="xp-eyebrow">Newsletter</span>
+      <h3>Sfaturi de întreținere, direct în inbox</h3>
+      <p>Un email pe lună cu sfaturi de la mecanicii noștri și oferte pentru biciclete și espressoare. Fără spam.</p>
+    </div>
+    <form class="xp-newsletter-form" onsubmit="xpHandleNewsletter(event)">
+      <input type="hidden" name="subject" value="Abonare newsletter — Blog XpertPoint">
+      <input type="email" name="email" class="xp-newsletter-input" placeholder="adresa@ta.ro" required>
+      <button type="submit" class="xp-newsletter-btn">Abonează-te</button>
+    </form>
+  </div>
+</section>
+
+<script>
+async function xpHandleNewsletter(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('button');
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Se trimite...';
+  try {
+    const res = await fetch('/send-form.php', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message || 'Form submission failed');
+    btn.textContent = '✓ Abonare reușită!';
+    btn.style.background = '#2d6a2d';
+    form.querySelector('input[type="email"]').value = '';
+    setTimeout(() => { btn.textContent = originalText; btn.style.background = ''; btn.disabled = false; }, 3000);
+  } catch (err) {
+    console.error('Newsletter submission failed:', err);
+    btn.textContent = 'Eroare — încearcă din nou';
+    btn.disabled = false;
+    setTimeout(() => { btn.textContent = originalText; }, 3000);
+  }
+}
+</script>
+<!-- /wp:html -->

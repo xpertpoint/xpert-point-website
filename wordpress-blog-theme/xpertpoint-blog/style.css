@@ -3,7 +3,7 @@ Theme Name: XpertPoint Blog
 Description: Tema custom pentru blogul XpertPoint, cu identitatea vizuala a site-ului principal (xpertpoint.ro).
 Author: XpertPoint
 Template: twentytwentyfive
-Version: 1.0
+Version: 1.2
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
@@ -76,25 +76,71 @@ a { color: inherit; }
 .xp-eyebrow { font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--rust); margin-bottom: 1rem; display: block; }
 .xp-main h1 { font-family: var(--font-display); font-size: clamp(2.25rem, 5vw, 3.5rem); letter-spacing: 0.02em; margin: 0 0 2.5rem; }
 
+/* FILTER PILLS */
+.xp-filter-pills {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;
+  margin: 0 0 3rem;
+}
+.xp-filter-pills .wp-block-categories { display: contents; }
+.xp-filter-pills .wp-block-categories li { list-style: none; margin: 0; }
+.xp-filter-pill, .xp-filter-pills a {
+  display: inline-block;
+  color: var(--tan); text-decoration: none; font-size: 0.8rem; font-weight: 500;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  border: 1px solid rgba(201,185,154,0.3); border-radius: 999px;
+  padding: 0.55rem 1.3rem;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.xp-filter-pill:hover, .xp-filter-pills a:hover { border-color: var(--rust); color: var(--white); }
+.xp-filter-pill.is-active, .xp-filter-pills a.is-active { background: var(--white); color: var(--black); border-color: var(--white); }
+
 /* ARCHIVE GRID / CARDS */
 .xp-grid.wp-block-post-template {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem; list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 3rem 2.5rem; list-style: none; margin: 0; padding: 0;
 }
-.xp-grid .wp-block-post {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 4px;
-  padding: 0; overflow: hidden;
-  transition: border-color .2s, background .2s;
+.xp-grid .wp-block-post { padding: 0; }
+.xp-grid .wp-block-post-featured-image { margin: 0 0 1.25rem; border-radius: 8px; overflow: hidden; }
+.xp-grid .wp-block-post-featured-image img {
+  display: block; width: 100%; aspect-ratio: 16/9; object-fit: cover;
+  transition: transform .4s ease;
 }
-.xp-grid .wp-block-post:hover { border-color: var(--rust); background: rgba(255,255,255,0.05); }
-.xp-grid .wp-block-post-featured-image { margin: 0; }
-.xp-grid .wp-block-post-featured-image img { display: block; width: 100%; aspect-ratio: 16/10; object-fit: cover; }
-.xp-grid .wp-block-post-title { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 0.02em; margin: 1.25rem 1.25rem 0.5rem; }
+.xp-grid .wp-block-post:hover .wp-block-post-featured-image img { transform: scale(1.04); }
+.xp-card-meta { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.75rem; }
+.xp-card-meta, .xp-card-meta * { color: var(--tan); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.xp-card-meta a { color: var(--tan); text-decoration: none; }
+.xp-card-meta .wp-block-post-date { position: relative; }
+.xp-card-meta .wp-block-post-terms + .wp-block-post-date::before { content: '/'; margin-right: 0.6rem; opacity: 0.5; }
+.xp-grid .wp-block-post-title { font-family: var(--font-display); font-size: 1.65rem; letter-spacing: 0.02em; margin: 0 0 0.6rem; line-height: 1.15; }
 .xp-grid .wp-block-post-title a { color: var(--white); text-decoration: none; }
-.xp-grid .wp-block-post-excerpt { color: rgba(245,243,238,0.65); font-size: 0.92rem; margin: 0 1.25rem 1rem; }
-.xp-grid .wp-block-post-date { color: var(--tan); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 1.25rem 1.25rem; display: block; }
+.xp-grid .wp-block-post:hover .wp-block-post-title a { color: var(--rust-light); }
+.xp-grid .wp-block-post-excerpt { color: rgba(245,243,238,0.55); font-size: 0.95rem; margin: 0; }
+
+/* NEWSLETTER CTA */
+.xp-newsletter-cta { margin: 5rem 0 1rem; padding: 3rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; }
+.xp-newsletter-cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 3rem; flex-wrap: wrap; }
+.xp-newsletter-cta-text { max-width: 480px; }
+.xp-newsletter-cta-text h3 { font-family: var(--font-display); font-size: 1.75rem; letter-spacing: 0.02em; margin: 0 0 0.6rem; }
+.xp-newsletter-cta-text p { color: rgba(245,243,238,0.55); font-size: 0.92rem; margin: 0; }
+.xp-newsletter-form { display: flex; gap: 0; flex-shrink: 0; }
+.xp-newsletter-input {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-right: none;
+  color: var(--white); padding: 0.9rem 1.2rem; font-family: var(--font-body); font-size: 0.9rem;
+  outline: none; width: 260px; transition: border-color .2s;
+}
+.xp-newsletter-input::placeholder { color: rgba(245,243,238,0.3); }
+.xp-newsletter-input:focus { border-color: rgba(255,255,255,0.5); }
+.xp-newsletter-btn {
+  background: var(--accent); color: var(--black); border: none; cursor: pointer;
+  padding: 0 1.75rem; font-family: var(--font-body); font-size: 0.85rem; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; transition: background .2s;
+}
+.xp-newsletter-btn:hover { background: var(--accent-dim); }
+@media (max-width: 700px) {
+  .xp-newsletter-cta { padding: 2rem 1.5rem; }
+  .xp-newsletter-form { flex-direction: column; width: 100%; }
+  .xp-newsletter-input { width: 100%; border-right: 1px solid rgba(255,255,255,0.1); }
+}
 
 /* PAGINATION */
 .wp-block-query-pagination { display: flex; justify-content: center; gap: 1rem; margin-top: 3.5rem; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; }
