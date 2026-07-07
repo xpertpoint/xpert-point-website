@@ -845,6 +845,11 @@
     padding: 1.25rem 2rem;
   }
   .cookie-banner[hidden] { display: none; }
+  .cookie-overlay {
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(0,0,0,0.4);
+  }
+  .cookie-overlay[hidden] { display: none; }
   .cookie-banner-inner {
     display: flex; align-items: center; justify-content: space-between; gap: 2rem;
     max-width: 1200px; margin: 0 auto; flex-wrap: wrap;
@@ -1324,6 +1329,7 @@
 </div>
 
 <!-- COOKIE-CONSENT:START -->
+<div class="cookie-overlay" id="cookieOverlay" hidden></div>
 <div class="cookie-banner" id="cookieBanner" hidden>
   <div class="cookie-banner-inner">
     <p class="cookie-banner-text">Folosim cookie-uri pentru a îmbunătăți experiența ta pe site și pentru statistici și marketing (Google, Meta). Poți accepta sau refuza cookie-urile non-esențiale.</p>
@@ -1391,12 +1397,19 @@
   // COOKIE-CONSENT:START
   const COOKIE_CONSENT_KEY = 'xp_cookie_consent';
   const cookieBanner = document.getElementById('cookieBanner');
+  const cookieOverlay = document.getElementById('cookieOverlay');
   function setCookieConsent(value) {
     localStorage.setItem(COOKIE_CONSENT_KEY, value);
     cookieBanner.hidden = true;
+    cookieOverlay.hidden = true;
+    document.body.style.overflow = '';
     if (value === 'accepted' && typeof loadTrackingScripts === 'function') loadTrackingScripts();
   }
-  function showCookieBanner() { cookieBanner.hidden = false; }
+  function showCookieBanner() {
+    cookieBanner.hidden = false;
+    cookieOverlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
   const existingCookieConsent = localStorage.getItem(COOKIE_CONSENT_KEY);
   if (!existingCookieConsent) {
     showCookieBanner();

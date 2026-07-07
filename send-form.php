@@ -21,6 +21,12 @@ $fromDomain = 'xpertpoint.ro';
 $subject = sanitize_header_value($_POST['subject'] ?? 'Mesaj nou de pe site');
 $customerEmail = filter_var($_POST['email'] ?? '', FILTER_VALIDATE_EMAIL);
 
+// Surface the chosen package in the subject line so it's visible from the inbox list, not just after opening the email.
+$serviceType = sanitize_header_value($_POST['service_type'] ?? '');
+if ($serviceType !== '') {
+    $subject .= ' — ' . $serviceType;
+}
+
 // Build the business notification body from every submitted field (skip internal-only ones).
 $skipFields = ['subject'];
 $body = "Mesaj nou de pe xpertpoint.ro\n\n";
