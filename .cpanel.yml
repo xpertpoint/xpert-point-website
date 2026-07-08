@@ -7,3 +7,5 @@ deployment:
     - /bin/cp -f coffee_page.html $DEPLOYPATH
     - /bin/cp -f programare.html $DEPLOYPATH
     - /bin/cp -f send-form.php $DEPLOYPATH
+    - /bin/cp -f sitemap.xml $DEPLOYPATH
+    - /bin/cp -f robots.txt $DEPLOYPATH
