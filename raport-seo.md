@@ -10,6 +10,19 @@ Am editat, cum am confirmat împreună, **`index.html` direct**, la fel ca celel
 
 Am inclus și **`programare.html`** în lucrare (nu era în planul inițial, dar e o pagină live, listată în `.cpanel.yml`) — i-am adăugat meta description, canonical și Open Graph.
 
+## Actualizare 2026-07-08 (bis) — fixuri din auditul Ubersuggest
+
+Daniil a rulat un audit SEO cu Ubersuggest și a trimis rapoartele CSV. Am verificat fiecare găsire față de starea reală a site-ului:
+
+- **Title prea lung** pe `service-espressoare-bucuresti.html` (71 caractere, peste pragul de 65) — scurtat la **„Service Espressoare București — Reparații | XpertPoint"** (54 caractere), actualizat și `og:title`.
+- **Title prea scurt** pe `programare.html` (28 caractere, sub pragul de 30) — extins la **„Programează-te la XpertPoint — Biciclete și Espressoare"** (55 caractere), actualizat și `og:title`.
+- **Conținut sărac (low word count)**: homepage avea doar 114 cuvinte, `programare.html` 92. Am extins paragraful ascuns (`sr-only`) de pe homepage cu informații reale despre serviciile de biciclete și cafea (acum ~157 cuvinte total pe pagină, verificat) și am adăugat pe `programare.html` un paragraf vizibil, util (telefon + program + ce se întâmplă după trimiterea formularului) — nimic inventat, doar date deja confirmate.
+- **Pagini blocate de la crawling** (`privacy-policy.html`, `terms.html`, `wp-login.php`) — verificat, sunt blocate intenționat prin `noindex`, practică standard pentru pagini legale/admin. Nu am schimbat nimic.
+- **URL neprietenos pe `programare.html`** — semnalat de Ubersuggest, dar rămâne neatins; e o schimbare de URL live (ca la Task 6) și necesită confirmarea ta explicită înainte s-o fac.
+- Găsirile de pe `/blog/` (no meta description, low word count) — în afara scopului, blogul WordPress e gestionat separat.
+
+Am verificat vizual în preview toate paginile modificate — aspectul e neschimbat, fără erori în consolă.
+
 ## Ce s-a schimbat pe fiecare fișier
 
 ### `index.html` (14 074 octeți)
