@@ -50,21 +50,55 @@ Am adăugat linii de `cp -f` pentru `sitemap.xml` și `robots.txt`, ca să ajung
 ## Fișiere de urcat în cPanel
 
 - `index.html`
-- `bike_page.html`
-- `coffee_page.html`
+- `service-biciclete-bucuresti.html` (nou nume, înlocuiește `bike_page.html`)
+- `service-espressoare-bucuresti.html` (nou nume, înlocuiește `coffee_page.html`)
 - `programare.html`
-- `sitemap.xml` (nou)
-- `robots.txt` (nou)
+- `sitemap.xml`
+- `robots.txt`
+- `.htaccess` (nou — conține redirect 301 de la URL-urile vechi)
 - `.cpanel.yml` (dacă folosiți integrarea git → cPanel; dacă upload-ul e manual prin File Manager, acest fișier nu trebuie urcat)
+
+**Notă:** dacă urci manual prin File Manager, `bike_page.html` și `coffee_page.html` vechi nu mai trebuie urcate — pot rămâne pe server (redirectul le acoperă) sau le poți șterge.
 
 ## Actualizare: coordonate GPS și Google Business Profile — completate
 
 Ai trimis linkul `https://maps.app.goo.gl/LRug4v5BZkffBh4p6` — l-am rezolvat și am extras coordonatele exacte ale profilului „XpertPoint" din Google Maps: **latitudine 44.4511992, longitudine 26.0472499**. Am completat câmpul `geo` în schema JSON-LD pe toate cele 3 pagini (index, bike, coffee) și am adăugat linkul Google Business Profile în lista `sameAs`, alături de Facebook/Instagram/TikTok. Am validat JSON-ul după modificare — e corect pe toate cele 3 fișiere.
 
+## Task 6 — URL-uri prietenoase (executat, cu confirmarea ta)
+
+Am redenumit fișierele și actualizat toate linkurile interne:
+
+- `bike_page.html` → **`service-biciclete-bucuresti.html`**
+- `coffee_page.html` → **`service-espressoare-bucuresti.html`**
+
+Ce am actualizat ca să nu rămână nimic rupt:
+- Linkurile din `index.html` (cele două butoane BICICLETE/ESPRESSOARE)
+- Linkurile încrucișate dintre cele două pagini (nav-switch „↩ Biciclete" / „↩ Espressoare")
+- Linkurile din `programare.html` (nav + footer, URL-uri absolute)
+- `canonical`, `og:url` și `url` din schema JSON-LD, în ambele pagini redenumite
+- `sitemap.xml` — cele două URL-uri noi
+- `.cpanel.yml` — liniile de `cp -f` cu noile nume de fișiere, plus `.htaccess`
+
+Am creat **`.htaccess`** în root cu redirect 301:
+```
+Redirect 301 /bike_page.html /service-biciclete-bucuresti.html
+Redirect 301 /coffee_page.html /service-espressoare-bucuresti.html
+```
+Așa, cine are un link vechi salvat (favorite, share-uri, backlink-uri externe) ajunge automat pe pagina nouă.
+
+Am verificat cu un grep în tot repo-ul: nu au rămas linkuri rupte către numele vechi, în afară de tema WordPress a blogului (`wordpress-blog-theme/xpertpoint-blog/parts/footer.html` și `header.html`), pe care nu am atins-o conform regulii „nu intra în blog" — acele linkuri vechi vor funcționa oricum datorită redirect-ului 301, dar ideal ar fi actualizate cândva și acolo, ca vizitatorii să nu mai facă un hop în plus.
+
+Am testat în preview: ambele pagini se încarcă corect la noile URL-uri, linkurile încrucișate dintre ele și cele din `programare.html` duc unde trebuie, fără erori în consolă.
+
+**Important — pași manuali rămași pentru Task 6:**
+1. **Google Ads** — dacă ai campanii cu final URL către `xpertpoint.ro/bike_page.html` sau `xpertpoint.ro/coffee_page.html`, actualizează-le manual cu noile URL-uri. Redirectul 301 funcționează, dar Google Ads poate afișa avertismente sau penaliza scorul de calitate dacă final URL-ul redirectează.
+2. **Fișierele vechi de pe server** — după ce urci fișierele noi, cele vechi (`bike_page.html`, `coffee_page.html`) pot rămâne fizic în `public_html`. Nu strică nimic (`.htaccess` interceptează cererea înainte să servească fișierul vechi), dar poți să le ștergi din File Manager pentru curățenie.
+3. Dacă ai linkuri către paginile vechi în alte locuri (Google Business Profile, postări sociale, semnătură de email), actualizează-le treptat — nu urgent, redirectul le acoperă.
+
 ## Ce rămâne pentru tine, Cristian
 
 1. **Search Console** — trebuie să adaugi site-ul în Google Search Console și să trimiți manual `sitemap.xml`. Nu pot face asta eu (necesită verificare de proprietate a domeniului).
-2. **Task 6 (URL-uri prietenoase)** — nu a fost executat, cum am convenit. Rămâne pentru o confirmare separată, pentru că schimbă URL-uri live și trebuie sincronizat cu Google Ads.
+2. **Google Ads final URLs** — actualizate manual (vezi Task 6 de mai sus).
 
 ## Imagini Unsplash rămase (de înlocuit treptat cu poze reale din atelier)
 

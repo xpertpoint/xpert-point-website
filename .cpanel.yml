@@ -3,9 +3,10 @@ deployment:
   tasks:
     - export DEPLOYPATH=$HOME/public_html/
     - /bin/cp -f index.html $DEPLOYPATH
-    - /bin/cp -f bike_page.html $DEPLOYPATH
-    - /bin/cp -f coffee_page.html $DEPLOYPATH
+    - /bin/cp -f service-biciclete-bucuresti.html $DEPLOYPATH
+    - /bin/cp -f service-espressoare-bucuresti.html $DEPLOYPATH
     - /bin/cp -f programare.html $DEPLOYPATH
     - /bin/cp -f send-form.php $DEPLOYPATH
     - /bin/cp -f sitemap.xml $DEPLOYPATH
     - /bin/cp -f robots.txt $DEPLOYPATH
+    - /bin/cp -f .htaccess $DEPLOYPATH
