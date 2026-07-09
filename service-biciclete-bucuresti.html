@@ -987,6 +987,13 @@
   .faq-item.open .faq-q::after { content: '−'; }
   .faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease, padding .35s ease; color: rgba(10,10,8,0.7); font-size: 0.95rem; line-height: 1.75; }
   .faq-item.open .faq-a { max-height: 320px; padding-bottom: 1.5rem; }
+  .faq-cta { margin-top: 3rem; padding-top: 2.5rem; border-top: 1px solid rgba(10,10,8,0.12); }
+  .faq-cta-title { font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.1rem); letter-spacing: 0.02em; color: var(--black); margin-bottom: 0.75rem; }
+  .faq-cta-text { font-size: 0.95rem; color: rgba(10,10,8,0.65); max-width: 460px; margin-bottom: 1.5rem; }
+  .faq-cta-text a { color: var(--olive); text-decoration: none; border-bottom: 1px solid rgba(74,82,64,0.35); }
+  .faq-cta-text a:hover { color: var(--black); border-color: var(--black); }
+  .faq-cta-btn { display: inline-block; background: var(--olive); color: var(--cream); padding: 1rem 2.5rem; font-family: var(--font-body); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%); transition: background .2s, transform .2s; }
+  .faq-cta-btn:hover { background: var(--black); transform: translateY(-2px); }
   @media (max-width: 900px) { .faq { padding: 4rem 1.5rem; } }
 
   /* COOKIE-CONSENT:START */
@@ -1480,6 +1487,11 @@
       <button class="faq-q" type="button">Unde se află atelierul?</button>
       <div class="faq-a"><p>Atelierul XpertPoint este în București, Sector 6, pe Strada General Petre Popovăț nr. 9. Suntem deschiși de luni până vineri între 10:00 și 19:00 și sâmbăta între 10:00 și 14:00. Ne poți suna la 0773 565 576 pentru orice detaliu.</p></div>
     </div>
+  </div>
+  <div class="faq-cta">
+    <h3 class="faq-cta-title">Încă nelămurit?</h3>
+    <p class="faq-cta-text">Sună-ne la <a href="tel:+40773565576">0773 565 576</a> pentru un răspuns rapid, sau sari direct la treabă — programarea durează mai puțin de un minut.</p>
+    <a href="programeaza-te.html" class="faq-cta-btn">Programează-te</a>
   </div>
 </section>
 

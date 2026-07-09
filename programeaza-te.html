@@ -12,6 +12,64 @@
 <meta property="og:url" content="https://www.xpertpoint.ro/programeaza-te.html">
 <meta property="og:image" content="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=900&q=85&fit=crop">
 <meta property="og:locale" content="ro_RO">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Ce se întâmplă după ce trimit programarea pentru bicicletă?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Te sunăm în cel mai scurt timp, în orele de program, ca să confirmăm ziua și ora exactă și să notăm orice detaliu util despre bicicletă înainte să vii." }
+    },
+    {
+      "@type": "Question",
+      "name": "Trebuie să plătesc în avans pentru revizia bicicletei?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Nu. Programarea online nu presupune nicio plată — achiți la atelier, după ce vezi diagnosticul și ești de acord cu el." }
+    },
+    {
+      "@type": "Question",
+      "name": "Pot anula sau muta programarea la bicicletă?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Da, sună-ne sau scrie-ne cu puțin timp înainte și reprogramăm fără nicio problemă, în funcție de disponibilitate." }
+    },
+    {
+      "@type": "Question",
+      "name": "Ce informații ar trebui să am pregătite pentru programarea la bicicletă?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Tipul bicicletei (simplă sau electrică) și ce observi în timp ce pedalezi — frâne care scârțâie, schimbător care sare, zgomote ciudate. Dacă nu ești sigur exact ce e, notează pur și simplu ce simți, ne dăm seama noi la diagnostic." }
+    },
+    {
+      "@type": "Question",
+      "name": "Pot veni cu bicicleta fără programare?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Poți încerca, dar programarea online îți garantează un interval de timp rezervat pentru bicicleta ta, fără așteptare la coadă." }
+    },
+    {
+      "@type": "Question",
+      "name": "Ce se întâmplă după ce trimit programarea pentru espressor?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Te sunăm în cel mai scurt timp, în orele de program, ca să confirmăm detaliile și să stabilim dacă aduci aparatul la atelier sau alegi ridicarea de acasă." }
+    },
+    {
+      "@type": "Question",
+      "name": "Trebuie să aduc espressorul la atelier sau vine cineva să îl ridice?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Poți aduce aparatul direct la atelier sau poți alege opțiunea de preluare și livrare (pickup & return), disponibilă în București." }
+    },
+    {
+      "@type": "Question",
+      "name": "Nu știu exact ce problemă are aparatul de cafea, e în regulă?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Da — spune-ne pur și simplu ce observi: nu pornește, nu mai face cafea, curge apă, scoate zgomot sau nu mai încălzește. Detaliile astea ne ajută să pregătim diagnosticul înainte să ajungă aparatul la noi." }
+    },
+    {
+      "@type": "Question",
+      "name": "Trebuie să plătesc diagnosticul pentru espressor?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Nu, diagnosticul e gratuit. Plătești doar dacă accepți reparația, după ce primești devizul transparent." }
+    },
+    {
+      "@type": "Question",
+      "name": "Pot anula sau muta programarea la espressor?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Da, sună-ne sau scrie-ne cu puțin timp înainte și reprogramăm fără nicio problemă." }
+    }
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
@@ -75,6 +133,23 @@
     transition: background .2s, transform .2s;
   }
   .btn-primary:hover { background: var(--accent-dim); transform: translateY(-2px); }
+
+  /* FAQ */
+  .faq { margin-top: 5rem; }
+  .faq-title { font-family: var(--font-display); font-size: clamp(1.75rem, 4vw, 2.5rem); letter-spacing: 0.02em; margin-bottom: 2rem; }
+  .faq-switch { display: flex; gap: 0.75rem; margin-bottom: 2rem; }
+  .faq-switch-btn { flex: 1; background: transparent; border: 1px solid rgba(255,255,255,0.15); color: var(--tan); font-family: var(--font-body); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.85rem 1rem; cursor: pointer; transition: all .2s; }
+  .faq-switch-btn.active { background: var(--accent); border-color: var(--accent); color: var(--black); }
+  .faq-switch-btn:not(.active):hover { border-color: rgba(255,255,255,0.35); color: var(--white); }
+  .faq-item { border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .faq-q { width: 100%; background: none; border: none; color: var(--white); font-family: var(--font-body); font-size: 1rem; font-weight: 500; text-align: left; padding: 1.25rem 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .faq-q::after { content: '+'; color: var(--tan); font-weight: 400; flex-shrink: 0; font-size: 1.2rem; }
+  .faq-item.open .faq-q::after { content: '−'; }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease, padding .35s ease; color: rgba(245,243,238,0.55); font-size: 0.9rem; line-height: 1.7; }
+  .faq-item.open .faq-a { max-height: 240px; padding-bottom: 1.25rem; }
+  .faq-cta { margin-top: 2rem; font-size: 0.9rem; color: rgba(245,243,238,0.5); }
+  .faq-cta a { color: var(--tan); text-decoration: none; border-bottom: 1px solid rgba(201,185,154,0.35); transition: color .2s, border-color .2s; }
+  .faq-cta a:hover { color: var(--white); border-color: var(--white); }
 
   /* FOOTER */
   footer { padding: 5rem 3rem 2rem; }
@@ -163,6 +238,62 @@
     <textarea name="comment" class="modal-input" placeholder="Comentariu (opțional)"></textarea>
     <button type="submit" class="btn-primary" style="text-align:center;width:100%;clip-path:none">Trimite programarea</button>
   </form>
+
+  <section class="faq">
+    <h2 class="faq-title">Ai întrebări despre programare?</h2>
+    <div class="faq-switch">
+      <button type="button" class="faq-switch-btn active" data-faq="biciclete">Biciclete</button>
+      <button type="button" class="faq-switch-btn" data-faq="espressoare">Espressoare</button>
+    </div>
+
+    <div class="faq-group" data-faq-group="biciclete">
+      <div class="faq-item">
+        <button class="faq-q" type="button">Ce se întâmplă după ce trimit programarea?</button>
+        <div class="faq-a"><p>Te sunăm în cel mai scurt timp, în orele de program, ca să confirmăm ziua și ora exactă și să notăm orice detaliu util despre bicicletă înainte să vii.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Trebuie să plătesc în avans?</button>
+        <div class="faq-a"><p>Nu. Programarea online nu presupune nicio plată — achiți la atelier, după ce vezi diagnosticul și ești de acord cu el.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Pot anula sau muta programarea?</button>
+        <div class="faq-a"><p>Da, sună-ne sau scrie-ne cu puțin timp înainte și reprogramăm fără nicio problemă, în funcție de disponibilitate.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Ce informații ar trebui să am pregătite?</button>
+        <div class="faq-a"><p>Tipul bicicletei (simplă sau electrică) și ce observi în timp ce pedalezi — frâne care scârțâie, schimbător care sare, zgomote ciudate. Dacă nu ești sigur exact ce e, notează pur și simplu ce simți, ne dăm seama noi la diagnostic.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Pot veni fără programare?</button>
+        <div class="faq-a"><p>Poți încerca, dar programarea online îți garantează un interval de timp rezervat pentru bicicleta ta, fără așteptare la coadă.</p></div>
+      </div>
+    </div>
+
+    <div class="faq-group" data-faq-group="espressoare" hidden>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Ce se întâmplă după ce trimit programarea?</button>
+        <div class="faq-a"><p>Te sunăm în cel mai scurt timp, în orele de program, ca să confirmăm detaliile și să stabilim dacă aduci aparatul la atelier sau alegi ridicarea de acasă.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Trebuie să aduc aparatul la atelier sau vine cineva să îl ridice?</button>
+        <div class="faq-a"><p>Poți aduce aparatul direct la atelier sau poți alege opțiunea de preluare și livrare (pickup & return), disponibilă în București.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Nu știu exact ce problemă are aparatul, e în regulă?</button>
+        <div class="faq-a"><p>Da — spune-ne pur și simplu ce observi: nu pornește, nu mai face cafea, curge apă, scoate zgomot sau nu mai încălzește. Detaliile astea ne ajută să pregătim diagnosticul înainte să ajungă aparatul la noi.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Trebuie să plătesc diagnosticul?</button>
+        <div class="faq-a"><p>Nu, diagnosticul e gratuit. Plătești doar dacă accepți reparația, după ce primești devizul transparent.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Pot anula sau muta programarea?</button>
+        <div class="faq-a"><p>Da, sună-ne sau scrie-ne cu puțin timp înainte și reprogramăm fără nicio problemă.</p></div>
+      </div>
+    </div>
+
+    <p class="faq-cta">Nu ai găsit răspunsul? Sună-ne la <a href="tel:+40773565576">0773 565 576</a> sau scrie-ne pe <a href="mailto:hello@xpertpoint.ro">hello@xpertpoint.ro</a>.</p>
+  </section>
 </main>
 
 <footer>
@@ -342,6 +473,19 @@
       setTimeout(() => { btn.textContent = originalText; }, 3000);
     }
   }
+
+  // FAQ SWITCH + ACCORDION
+  document.querySelectorAll('.faq-switch-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.faq-switch-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const target = btn.dataset.faq;
+      document.querySelectorAll('.faq-group').forEach(g => { g.hidden = g.dataset.faqGroup !== target; });
+    });
+  });
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => q.parentElement.classList.toggle('open'));
+  });
 </script>
 
 </body>

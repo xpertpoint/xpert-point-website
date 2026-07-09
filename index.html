@@ -161,13 +161,11 @@
   #itemCafea:hover .menu-title em { color: var(--rust); }
   .menu-sub {
     font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;
-    color: rgba(245,243,238,0.3);
+    color: rgba(245,243,238,0.42);
     margin-top: 0.5rem;
-    opacity: 0;
-    transform: translateY(6px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition: color 0.4s ease;
   }
-  .menu-item:hover .menu-sub { opacity: 1; transform: translateY(0); }
+  .menu-item:hover .menu-sub { color: rgba(245,243,238,0.75); }
 
   @media (max-width: 700px) {
     .menu-title { font-size: clamp(2.8rem, 15vw, 4.5rem); }
@@ -223,11 +221,11 @@
 <div class="menu">
   <a href="service-biciclete-bucuresti.html" class="menu-item" id="itemBiciclete">
     <div class="menu-title">BICI<em>CLETE</em></div>
-    <div class="menu-sub">Revizii & reparații — programare rapidă</div>
+    <div class="menu-sub">Revizie de la 120 lei · Diagnostic gratuit</div>
   </a>
   <a href="service-espressoare-bucuresti.html" class="menu-item" id="itemCafea">
     <div class="menu-title">ESPRESS<em>OARE</em></div>
-    <div class="menu-sub">Aparate espressor — curățare & reparații</div>
+    <div class="menu-sub">Diagnostic gratuit · Garanție 6 luni</div>
   </a>
 </div>
 
