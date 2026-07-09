@@ -56,6 +56,78 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Cât durează reparația unui espressor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Timpul mediu de reparație la noi este de aproximativ 48 de ore de la primire. Unele intervenții simple, precum o decalcifiere sau o igienizare, se rezolvă mai repede, în timp ce reparațiile care necesită piese comandate pot dura ceva mai mult. Îți comunicăm un termen estimativ la diagnostic."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Ce mărci de aparate reparați?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Lucrăm cu orice brand de aparat de cafea — De'Longhi, Philips, Saeco, Jura, Krups, Bosch, Siemens, Gaggia, Melitta, Nespresso, Lavazza, Dolce Gusto și multe altele. Dacă nu îți vezi brandul în listă, întreabă-ne: cel mai probabil îl reparăm."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Cât costă diagnosticul?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Diagnosticul este gratuit la acceptarea reparației. Verificăm aparatul, îți prezentăm defectul și devizul transparent, iar tu decizi dacă mergi mai departe. Nu atingem nimic fără acordul tău și nu ai costuri ascunse."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Trebuie să aduc aparatul la atelier?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Nu neapărat. Poți aduce aparatul la atelierul nostru din București, Sector 6, sau poți programa ridicarea prin curier: venim la tine în București sau Ilfov, tur-retur, și îți aducem aparatul reparat înapoi la ușă."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Oferiți garanție pentru reparații?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Da. Oferim garanție de 6 luni pentru reparații. Folosim piese verificate sau originale, iar decalcifierea este inclusă gratuit la orice reparație."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Cât de des trebuie decalcifiat un espressor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La uz casnic intens, decalcifierea este de obicei necesară la fiecare 1–2 luni. Apa dură — cum e cea din București — grăbește depunerile de calcar și afectează gustul cafelei. Folosirea apei filtrate reduce calcarul și poate mări intervalul dintre decalcifieri."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Ce fac dacă aparatul nu mai face cremă?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Lipsa cremei vine de obicei din presiune scăzută, un grup de cafea înfundat sau un măciniș prea grosier. O revizie de grup, verificarea presiunii și, la superautomate, recalibrarea râșniței readuc de regulă crema. La diagnostic identificăm cauza exactă pentru aparatul tău."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Aveți abonament de mentenanță?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Da. Cu un abonament de mentenanță ne ocupăm noi de decalcifiere, igienizare și verificările periodice, la intervalul potrivit pentru consumul tău. Abonamentul include și prioritate la programare, deviz preferențial la reparații și ridicare prin curier în București și Ilfov."
+      }
+    }
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -445,6 +517,27 @@
   .tip-card p{font-size:0.88rem;line-height:1.7;color:rgba(10,10,8,0.6)}
   .tip-link{margin-top:1rem;display:inline-block;font-size:0.76rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--rust);text-decoration:none}
   @media(max-width:900px){.tips-grid{grid-template-columns:1fr}.tips{padding:4rem 1.5rem}}
+
+  /* CONȚINUT EXTINS */
+  .content-strip{background:var(--black);padding:7rem 3rem}
+  .content-strip .services-header{margin-bottom:2.5rem}
+  .content-intro{color:rgba(245,243,238,0.6);max-width:720px;font-size:1rem;line-height:1.8;margin-top:1rem}
+  .content-intro a{color:var(--rust);text-decoration:none;border-bottom:1px solid rgba(192,65,11,0.4)}
+  .content-intro a:hover{border-bottom-color:var(--rust)}
+  .signs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:1rem}
+  .sign-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);padding:2.25rem;transition:background .3s,border-color .3s}
+  .sign-card:hover{background:rgba(192,65,11,0.06);border-color:rgba(192,65,11,0.3)}
+  .sign-card h3{font-family:var(--font-display);font-size:1.5rem;letter-spacing:0.04em;margin-bottom:0.75rem;color:var(--white)}
+  .sign-card p{font-size:0.9rem;line-height:1.7;color:rgba(245,243,238,0.6)}
+  @media(max-width:900px){.content-strip{padding:4rem 1.5rem}.signs-grid{grid-template-columns:1fr}}
+
+  /* FAQ pe fundal cream */
+  .faq.faq-cream{background:var(--cream);color:var(--black)}
+  .faq.faq-cream .section-title{color:var(--black)}
+  .faq.faq-cream .section-title small{color:var(--rust)}
+  .faq.faq-cream .faq-item{border-bottom:1px solid rgba(10,10,8,0.12)}
+  .faq.faq-cream .faq-q{color:var(--black)}
+  .faq.faq-cream .faq-a{color:rgba(10,10,8,0.7)}
 </style>
 </head>
 <body>
@@ -584,6 +677,137 @@
     <div class="tip-card"><div class="tip-tag">Apă</div><h3>Folosește apă filtrată</h3><p>Apa filtrată reduce calcarul și protejează pompa și boilerul. Un filtru bun îți poate dubla intervalul dintre revizii.</p><a href="#contact" class="tip-link">Întreabă-ne →</a></div>
   </div>
 </section>
+<!-- CUM DECURGE DIAGNOSTICAREA -->
+<section class="content-strip" id="cum-decurge">
+  <div class="services-header">
+    <h2 class="section-title"><small>Pas cu pas</small>CUM DECURGE<br>DIAGNOSTICAREA</h2>
+  </div>
+  <p class="content-intro">Când espressorul nu mai face presiune, curge sau dă eroare, primul pas nu e să schimbi piese la întâmplare, ci să înțelegi exact ce s-a stricat. La atelierul XpertPoint din București, orice reparație de aparat de cafea pornește de la un diagnostic clar. Iată cum decurge, de la momentul în care ne aduci aparatul până când îl iei înapoi.</p>
+  <div class="signs-grid" style="margin-top:2.5rem">
+    <div class="sign-card">
+      <h3>1. Ne spui simptomele</h3>
+      <p>La programare ne spui brandul, modelul și ce face aparatul: nu mai face presiune, curge, scoate cafea fără cremă sau dă o eroare. Aceste detalii scurtează mult diagnosticarea, pentru că ne îndreaptă din start spre zona corectă.</p>
+    </div>
+    <div class="sign-card">
+      <h3>2. Verificare tehnică</h3>
+      <p>În atelier verificăm circuitul de apă, pompa, presiunea, temperatura, grupul de cafea și — la superautomate — râșnița. Căutăm cauza reală a defectului, nu doar simptomul vizibil, ca reparația să rezolve problema de fond.</p>
+    </div>
+    <div class="sign-card">
+      <h3>3. Deviz transparent</h3>
+      <p>Îți prezentăm ce s-a stricat și cât costă reparația, cu manopera și piesele detaliate, înainte de orice intervenție. Diagnosticul este gratuit la acceptarea reparației și nu atingem nimic fără acordul tău.</p>
+    </div>
+    <div class="sign-card">
+      <h3>4. Reparația</h3>
+      <p>După ce aprobi devizul, reparăm cu piese verificate sau originale: înlocuim garnituri, curățăm circuitul, reglăm presiunea sau recalibrăm râșnița, în funcție de ce a ieșit la diagnostic. Decalcifierea e inclusă gratuit la orice reparație.</p>
+    </div>
+    <div class="sign-card">
+      <h3>5. Test cu cafea adevărată</h3>
+      <p>Nu declarăm aparatul reparat până nu îl testăm cu cafea adevărată. Verificăm presiunea, temperatura și crema, ca să fim siguri că prima cafea de acasă e exact cum trebuie.</p>
+    </div>
+    <div class="sign-card">
+      <h3>6. Ridici sau îți aducem</h3>
+      <p>Primești aparatul curat, calibrat și testat, cu garanție 6 luni pentru reparație. Dacă nu vrei să te deplasezi, îl ridicăm și ți-l aducem prin curier în București și Ilfov.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TIPURI DE APARATE -->
+<section class="content-strip" id="tipuri" style="background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)">
+  <div class="services-header">
+    <h2 class="section-title"><small>Ce deservim</small>TIPURI DE<br>APARATE</h2>
+  </div>
+  <p class="content-intro">Nu toate espressoarele se strică la fel și nu toate se repară la fel. Lucrăm cu toate tipurile de aparate de cafea, de la cele manuale până la superautomate și cele cu capsule. Iată ce presupune service-ul pentru fiecare categorie.</p>
+  <div class="signs-grid" style="margin-top:2.5rem">
+    <div class="sign-card">
+      <h3>Espressoare manuale</h3>
+      <p>Aparatele cu portafiltru, unde tu controlezi extracția. Aici service-ul se concentrează pe grupul de cafea, pe garnituri, pe presiunea pompei și pe circuitul de apă. Sunt aparatele care răspund cel mai bine la o întreținere regulată și la o decalcifiere corectă.</p>
+    </div>
+    <div class="sign-card">
+      <h3>Aparate automate și superautomate</h3>
+      <p>Aparatele care macină, dozează și prepară singure. Pe lângă decalcifiere și curățarea circuitului, aici intervin reglajul și recalibrarea râșniței, verificarea grupului de infuzare și înlocuirea garniturilor uzate. Sunt cele mai complexe, dar și cele pe care le vedem cel mai des la reparație.</p>
+    </div>
+    <div class="sign-card">
+      <h3>Aparate cu capsule</h3>
+      <p>Aparatele compacte pe bază de capsule. Chiar dacă par simple, și ele au nevoie de decalcifiere și igienizare periodică, iar problemele tipice țin de presiune scăzută, înfundări sau scurgeri. Le verificăm, le curățăm și îți spunem sincer când mai merită reparate și când nu.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SEMNE CĂ APARATUL ARE NEVOIE DE SERVICE -->
+<section class="content-strip" id="diagnostic">
+  <div class="services-header">
+    <h2 class="section-title"><small>Simptome frecvente</small>SEMNE CĂ AI<br>NEVOIE DE SERVICE</h2>
+  </div>
+  <p class="content-intro">Espressorul dă semne înainte să se strice de tot. Dacă recunoști vreunul dintre simptomele de mai jos, e momentul unei revizii sau al unei decalcifieri — cu cât intervii mai repede, cu atât reparația e mai simplă și mai ieftină.</p>
+  <div class="signs-grid" style="margin-top:2.5rem">
+    <div class="sign-card">
+      <h3>Depuneri de calcar</h3>
+      <p>Vezi depuneri albe, apa curge mai greu sau aparatul îți cere decalcifierea. Calcarul se depune în boiler și pe circuitul de apă, mai ales în București, unde apa e dură. Lăsat prea mult, înfundă aparatul și schimbă gustul cafelei.</p>
+    </div>
+    <div class="sign-card">
+      <h3>Presiune scăzută</h3>
+      <p>Cafeaua iese fără cremă, curge prea repede sau prea slab. De obicei e vorba de presiune scăzută din cauza pompei, a unui grup înfundat sau a măcinișului. O revizie de grup și verificarea pompei readuc extracția corectă.</p>
+    </div>
+    <div class="sign-card">
+      <h3>Zgomote neobișnuite</h3>
+      <p>Aparatul face zgomote pe care nu le auzeai înainte când pompează sau când macină. Sunt semne că pompa, râșnița sau un rulment cer atenție. Cu cât le prinzi mai devreme, cu atât eviți o defecțiune mai serioasă.</p>
+    </div>
+    <div class="sign-card">
+      <h3>Scurgeri de apă</h3>
+      <p>Găsești apă sub aparat sau observi scurgeri din zona grupului sau a rezervorului. De cele mai multe ori sunt garnituri uzate care trebuie înlocuite. E o reparație frecventă și, prinsă la timp, una rapidă.</p>
+    </div>
+    <div class="sign-card">
+      <h3>Erori și butoane care clipesc</h3>
+      <p>Aparatul afișează un cod de eroare sau un led clipește insistent. Poate fi de la senzori, de la circuitul de apă sau de la nevoia de decalcifiere. La diagnostic identificăm exact ce înseamnă eroarea pentru modelul tău.</p>
+    </div>
+    <div class="sign-card">
+      <h3>Gust schimbat al cafelei</h3>
+      <p>Cafeaua are gust amar, „de ars" sau pur și simplu nu mai e ce era. De vină pot fi calcarul, un grup neîntreținut sau un măciniș dereglat. O igienizare și o revizie readuc gustul curat al cafelei.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq faq-cream" id="faq">
+  <div class="faq-header">
+    <h2 class="section-title"><small>Întrebări frecvente</small>ÎNTREBĂRI<br>FRECVENTE</h2>
+  </div>
+  <div class="faq-grid">
+    <div class="faq-item">
+      <button class="faq-q" type="button">Cât durează reparația unui espressor?</button>
+      <div class="faq-a"><p>Timpul mediu de reparație la noi este de aproximativ 48 de ore de la primire. Unele intervenții simple, precum o decalcifiere sau o igienizare, se rezolvă mai repede, în timp ce reparațiile care necesită piese comandate pot dura ceva mai mult. Îți comunicăm un termen estimativ la diagnostic.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Ce mărci de aparate reparați?</button>
+      <div class="faq-a"><p>Lucrăm cu orice brand de aparat de cafea — De'Longhi, Philips, Saeco, Jura, Krups, Bosch, Siemens, Gaggia, Melitta, Nespresso, Lavazza, Dolce Gusto și multe altele. Dacă nu îți vezi brandul în listă, întreabă-ne: cel mai probabil îl reparăm.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Cât costă diagnosticul?</button>
+      <div class="faq-a"><p>Diagnosticul este gratuit la acceptarea reparației. Verificăm aparatul, îți prezentăm defectul și devizul transparent, iar tu decizi dacă mergi mai departe. Nu atingem nimic fără acordul tău și nu ai costuri ascunse.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Trebuie să aduc aparatul la atelier?</button>
+      <div class="faq-a"><p>Nu neapărat. Poți aduce aparatul la atelierul nostru din București, Sector 6, sau poți programa ridicarea prin curier: venim la tine în București sau Ilfov, tur-retur, și îți aducem aparatul reparat înapoi la ușă.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Oferiți garanție pentru reparații?</button>
+      <div class="faq-a"><p>Da. Oferim garanție de 6 luni pentru reparații. Folosim piese verificate sau originale, iar decalcifierea este inclusă gratuit la orice reparație.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Cât de des trebuie decalcifiat un espressor?</button>
+      <div class="faq-a"><p>La uz casnic intens, decalcifierea este de obicei necesară la fiecare 1–2 luni. Apa dură — cum e cea din București — grăbește depunerile de calcar și afectează gustul cafelei. Folosirea apei filtrate reduce calcarul și poate mări intervalul dintre decalcifieri.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Ce fac dacă aparatul nu mai face cremă?</button>
+      <div class="faq-a"><p>Lipsa cremei vine de obicei din presiune scăzută, un grup de cafea înfundat sau un măciniș prea grosier. O revizie de grup, verificarea presiunii și, la superautomate, recalibrarea râșniței readuc de regulă crema. La diagnostic identificăm cauza exactă pentru aparatul tău.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Aveți abonament de mentenanță?</button>
+      <div class="faq-a"><p>Da. Cu un abonament de mentenanță ne ocupăm noi de decalcifiere, igienizare și verificările periodice, la intervalul potrivit pentru consumul tău. Abonamentul include și prioritate la programare, deviz preferențial la reparații și ridicare prin curier în București și Ilfov.</p></div>
+    </div>
+  </div>
+</section>
+
 <section class="cta-band" id="contact">
   <div><h2 class="cta-headline">CAFEAUA TA<br>TE AȘTEAPTĂ.</h2><p class="cta-sub">Programează-te acum — diagnosticul e gratuit la acceptarea reparației, iar decalcifierea e inclusă.</p></div>
   <div class="cta-actions"><a href="tel:+40773565576" class="btn-white">📞 Sună acum</a><a href="https://wa.me/40773565576" target="_blank" class="btn-white alt">WhatsApp</a></div>
@@ -855,8 +1079,6 @@
     if (links.style.display === 'flex') { links.style.display = 'none'; }
     else { links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:70px;left:0;right:0;background:rgba(10,10,8,0.98);padding:2rem 1.5rem;gap:1.5rem;z-index:99'; }
   });
-
-  document.querySelectorAll('.faq-q').forEach(q => { q.addEventListener('click', () => { q.parentElement.classList.toggle('open'); }); });
 </script>
 
 </body>

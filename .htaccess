@@ -1,2 +1,22 @@
 Redirect 301 /bike_page.html /service-biciclete-bucuresti.html
 Redirect 301 /coffee_page.html /service-espressoare-bucuresti.html
+
+# Forțare https://www.xpertpoint.ro pentru tot site-ul static, EXCEPTÂND /blog/.
+#
+# Motiv excludere /blog/: WordPress are siteurl/home setat pe non-www (confirmat
+# 9 iulie 2026: https://www.xpertpoint.ro/blog/ -> 301 -> https://xpertpoint.ro/blog/,
+# antet "x-redirect-by: WordPress"). Fără excludere s-ar crea o buclă infinită:
+# www -> (regula de mai jos) -> non-www -> (WordPress redirect) -> www -> ...
+#
+# Cum se elimină excluderea în viitor: în WP Admin -> Settings -> General, schimbă
+# "WordPress Address (URL)" și "Site Address (URL)" din https://xpertpoint.ro/blog
+# în https://www.xpertpoint.ro/blog, apoi rulează un search-replace în baza de date
+# (plugin Better Search Replace) pentru orice URL non-www rămas în conținut/opțiuni.
+# Abia după ce https://xpertpoint.ro/blog/ redirecționează EL ÎNSUȘI spre www
+# (verifică cu: curl -sI https://xpertpoint.ro/blog/ -> trebuie 301 spre www),
+# se poate șterge linia "RewriteCond %{REQUEST_URI} !^/blog/" de mai jos.
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/blog/
+RewriteCond %{HTTP_HOST} ^xpertpoint\.ro$ [NC,OR]
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://www.xpertpoint.ro/$1 [R=301,L]

@@ -56,6 +56,78 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Cât durează o revizie la bicicletă?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Timpul mediu de service la noi este de aproximativ 24 de ore de la primire. O revizie standard poate fi gata mai repede, în timp ce o revizie completă sau o reparație care necesită piese comandate poate dura ceva mai mult. Îți comunicăm un termen estimativ la diagnostic, ca să știi din start la ce să te aștepți."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Ce tipuri de biciclete reparați?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Lucrăm cu orice tip de bicicletă, indiferent de marcă: biciclete de oraș și trekking, de șosea, MTB, biciclete pentru copii și biciclete electrice. La programarea online poți selecta categoria (simplă sau electrică) și modelul, ca mecanicul să fie pregătit pentru specificul bicicletei tale."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "E nevoie de programare sau pot veni direct?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Recomandăm programarea online — durează un minut, alegi data și pachetul dorit și primești confirmare, fără telefoane sau drumuri inutile. Programarea ne ajută să te preluăm fără așteptare și să rezervăm timpul necesar pentru bicicleta ta."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Ce se întâmplă la diagnostic?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La sosire, mecanicul face un diagnostic complet: verifică transmisia, frânele, roțile, rulmenții și cadrul, apoi îți prezintă transparent tot ce trebuie rezolvat. Diagnosticul este gratuit la orice revizie și nu începem nicio lucrare peste pachetul ales fără acordul tău."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Cât costă o revizie?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Revizia Standard pornește de la 120 lei, iar Revizia Completă de la 160 lei. Pentru situații specifice avem varianta Revizie Custom, unde primești un deviz gratuit și plătești exact ce ai nevoie. Toate prețurile și ce include fiecare pachet sunt afișate în secțiunea de servicii."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Oferiți garanție pentru lucrări?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Da. Oferim garanție de 30 de zile pentru lucrările efectuate. Dacă ceva nu e în regulă cu reparația în această perioadă, revii la atelier și rezolvăm."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Cât de des ar trebui făcută o revizie?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depinde de cât și pe ce fel de teren folosești bicicleta, dar ca regulă generală o revizie o dată pe sezon (primăvara și toamna) ține bicicleta sigură și funcțională. Dacă rulezi des sau observi semne de uzură la frâne, schimbătoare, lanț sau anvelope, nu aștepta următorul sezon."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Unde se află atelierul?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Atelierul XpertPoint este în București, Sector 6, pe Strada General Petre Popovăț nr. 9. Suntem deschiși de luni până vineri între 10:00 și 19:00 și sâmbăta între 10:00 și 14:00. Ne poți suna la 0773 565 576 pentru orice detaliu."
+      }
+    }
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -889,6 +961,34 @@
     .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
   }
 
+  /* ── DETALII / CONȚINUT EXTINS ── */
+  .content-strip { background: var(--black); padding: 7rem 3rem; }
+  .content-strip .services-header { margin-bottom: 3rem; }
+  .content-intro { color: rgba(245,243,238,0.6); max-width: 720px; font-size: 1rem; line-height: 1.8; margin-top: 1rem; }
+  .content-intro a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.3); }
+  .content-intro a:hover { border-bottom-color: var(--accent); }
+
+  .signs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 1rem; }
+  .sign-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 2.25rem; transition: background .3s, border-color .3s; }
+  .sign-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.25); }
+  .sign-card h3 { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.04em; margin-bottom: 0.75rem; color: var(--white); }
+  .sign-card p { font-size: 0.9rem; line-height: 1.7; color: rgba(245,243,238,0.6); }
+  @media (max-width: 900px) { .content-strip { padding: 4rem 1.5rem; } .signs-grid { grid-template-columns: 1fr; } }
+
+  /* ── FAQ ── */
+  .faq { background: var(--cream); color: var(--black); padding: 7rem 3rem; }
+  .faq .section-title { color: var(--black); }
+  .faq .section-title small { color: var(--olive); }
+  .faq-header { margin-bottom: 3.5rem; }
+  .faq-grid { max-width: 860px; }
+  .faq-item { border-bottom: 1px solid rgba(10,10,8,0.12); }
+  .faq-q { width: 100%; background: none; border: none; color: var(--black); font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.03em; text-align: left; padding: 1.5rem 0; cursor: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .faq-q::after { content: '+'; color: var(--olive); font-family: var(--font-body); font-weight: 400; flex-shrink: 0; }
+  .faq-item.open .faq-q::after { content: '−'; }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease, padding .35s ease; color: rgba(10,10,8,0.7); font-size: 0.95rem; line-height: 1.75; }
+  .faq-item.open .faq-a { max-height: 320px; padding-bottom: 1.5rem; }
+  @media (max-width: 900px) { .faq { padding: 4rem 1.5rem; } }
+
   /* COOKIE-CONSENT:START */
   .cookie-banner {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000;
@@ -1265,6 +1365,124 @@
   </div>
 </section>
 
+<!-- CUM DECURGE O REVIZIE -->
+<section class="content-strip" id="cum-decurge">
+  <div class="services-header">
+    <h2 class="section-title">
+      <small>Pas cu pas</small>
+      CUM DECURGE<br>O REVIZIE
+    </h2>
+  </div>
+  <p class="content-intro">Un service de biciclete bine făcut înseamnă mai mult decât „strâns câteva șuruburi". La atelierul nostru din București, fiecare revizie urmează același traseu clar, indiferent că vii cu o bicicletă de oraș, un MTB sau o electrică. Ne place să lucrăm ordonat și transparent, așa că știi în orice moment ce se întâmplă cu bicicleta ta și de ce. Iată, pas cu pas, cum decurge o revizie la XpertPoint, de la programare până în momentul în care pedalezi din nou.</p>
+  <div class="signs-grid" style="margin-top:2.5rem">
+    <div class="sign-card">
+      <h3>1. Programare și primire</h3>
+      <p>Îți alegi data și pachetul direct de pe site, apoi ne aduci bicicleta la atelier. La primire notăm ce te deranjează și cum folosești bicicleta — urban, tură lungă sau teren — pentru că de aici pornește orice reparație bine gândită.</p>
+    </div>
+    <div class="sign-card">
+      <h3>2. Diagnostic complet</h3>
+      <p>Înainte de orice intervenție, mecanicul verifică transmisia, frânele, roțile, rulmenții și cadrul. Diagnosticul e gratuit la orice revizie și scoate la iveală și problemele pe care nu le vezi cu ochiul liber — un lanț uzat, o placuță de frână la limită sau o spiță slăbită.</p>
+    </div>
+    <div class="sign-card">
+      <h3>3. Deviz transparent</h3>
+      <p>Îți prezentăm exact ce trebuie făcut și cât costă, înainte să începem. Nu atingem nimic peste pachetul ales fără să discutăm mai întâi cu tine. Fără costuri ascunse și fără „surprize" la ridicare.</p>
+    </div>
+    <div class="sign-card">
+      <h3>4. Lucrarea propriu-zisă</h3>
+      <p>Efectuăm reglajele și reparațiile agreate: curățare, reglaj frâne și schimbătoare, ungerea lanțului, verificarea presiunii în anvelope și a rulmenților. La reviziile complete demontăm și curățăm grupajul, centrăm roțile și recalibrăm fin transmisia.</p>
+    </div>
+    <div class="sign-card">
+      <h3>5. Verificare și actualizări</h3>
+      <p>După lucrare, testăm bicicleta ca să confirmăm că totul funcționează cum trebuie. Pe parcurs te ținem la curent prin SMS, așa că știi în orice moment în ce stadiu e reparația.</p>
+    </div>
+    <div class="sign-card">
+      <h3>6. Ridici și pedalezi</h3>
+      <p>Primești bicicleta curată, reglată și gata de drum, cu garanție 30 de zile pentru lucrările efectuate. Îți explicăm ce am făcut și ce merită urmărit până la următoarea revizie.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CÂND E CAZUL DE REVIZIE -->
+<section class="content-strip" id="cand-revizie" style="background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)">
+  <div class="services-header">
+    <h2 class="section-title">
+      <small>Semne pe componente</small>
+      CÂND E CAZUL<br>DE REVIZIE
+    </h2>
+  </div>
+  <p class="content-intro">Bicicleta îți spune singură când are nevoie de atelier — doar trebuie să știi la ce să fii atent. Mai jos sunt semnele pe componentele principale care indică faptul că e momentul unei revizii sau al unei reparații. Le vedem zilnic în atelierul nostru din București și, de fiecare dată, aceeași concluzie: dacă recunoști vreunul, cel mai bine e să nu amâni. O problemă mică prinsă la timp — un cablu întins, o placuță de frână aproape consumată — costă mult mai puțin decât una lăsată să se agraveze și să afecteze piesele din jur.</p>
+  <div class="signs-grid" style="margin-top:2.5rem">
+    <div class="sign-card">
+      <h3>Frâne</h3>
+      <p>Frânezi și bicicleta se oprește greu, maneta ajunge aproape de ghidon sau auzi un scârțâit metalic. Sunt semne clasice de plăcuțe uzate, cabluri întinse sau, la frânele hidraulice, aer în circuit. Frânele sunt componenta de siguranță numărul unu — nu se amână.</p>
+    </div>
+    <div class="sign-card">
+      <h3>Schimbătoare</h3>
+      <p>Lanțul sare peste pinioane, schimbă viteza cu întârziere sau face zgomot când pedalezi. De obicei e nevoie de un reglaj al schimbătoarelor și, uneori, de cabluri noi. Un reglaj corect îți readuce schimbările de viteză precise și silențioase.</p>
+    </div>
+    <div class="sign-card">
+      <h3>Lanț și transmisie</h3>
+      <p>Lanțul e ruginit, uscat sau întins peste limita normală. Un lanț uzat mănâncă pinioanele și foaia, așa că înlocuit la timp îți protejează restul transmisiei. Dacă auzi scârțâituri la pedalare, aproape sigur lanțul cere curățare și ungere.</p>
+    </div>
+    <div class="sign-card">
+      <h3>Anvelope</h3>
+      <p>Pierzi presiune des, vezi crăpături în cauciuc sau profilul e tocit. Anvelopele uzate se pot desface sau aluneca pe umed. Verificarea presiunii și starea cauciucului fac parte din orice revizie de bază.</p>
+    </div>
+    <div class="sign-card">
+      <h3>Direcție și rulmenți</h3>
+      <p>Ghidonul „joacă", simți un clic în furcă la frânare sau roțile nu se învârt lin. Sunt semne de rulmenți uzați sau nereglați la ghidon, butuci sau pedalier. Lăsați prea mult, uzează piesele din jur.</p>
+    </div>
+    <div class="sign-card">
+      <h3>Roți și spițe</h3>
+      <p>Roata are un „opt" (nu mai e dreaptă), simți vibrații sau auzi un clinchet metalic la spițe. E momentul unei centrări de roată — detensionarea și tensionarea spitelor readuc roata perfect rotundă și sigură.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="faq-header">
+    <h2 class="section-title">
+      <small>Întrebări frecvente</small>
+      ÎNTREBĂRI<br>FRECVENTE
+    </h2>
+  </div>
+  <div class="faq-grid">
+    <div class="faq-item">
+      <button class="faq-q" type="button">Cât durează o revizie la bicicletă?</button>
+      <div class="faq-a"><p>Timpul mediu de service la noi este de aproximativ 24 de ore de la primire. O revizie standard poate fi gata mai repede, în timp ce o revizie completă sau o reparație care necesită piese comandate poate dura ceva mai mult. Îți comunicăm un termen estimativ la diagnostic, ca să știi din start la ce să te aștepți.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Ce tipuri de biciclete reparați?</button>
+      <div class="faq-a"><p>Lucrăm cu orice tip de bicicletă, indiferent de marcă: biciclete de oraș și trekking, de șosea, MTB, biciclete pentru copii și biciclete electrice. La programarea online poți selecta categoria (simplă sau electrică) și modelul, ca mecanicul să fie pregătit pentru specificul bicicletei tale.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">E nevoie de programare sau pot veni direct?</button>
+      <div class="faq-a"><p>Recomandăm programarea online — durează un minut, alegi data și pachetul dorit și primești confirmare, fără telefoane sau drumuri inutile. Programarea ne ajută să te preluăm fără așteptare și să rezervăm timpul necesar pentru bicicleta ta.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Ce se întâmplă la diagnostic?</button>
+      <div class="faq-a"><p>La sosire, mecanicul face un diagnostic complet: verifică transmisia, frânele, roțile, rulmenții și cadrul, apoi îți prezintă transparent tot ce trebuie rezolvat. Diagnosticul este gratuit la orice revizie și nu începem nicio lucrare peste pachetul ales fără acordul tău.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Cât costă o revizie?</button>
+      <div class="faq-a"><p>Revizia Standard pornește de la 120 lei, iar Revizia Completă de la 160 lei. Pentru situații specifice avem varianta Revizie Custom, unde primești un deviz gratuit și plătești exact ce ai nevoie. Toate prețurile și ce include fiecare pachet sunt afișate în secțiunea de servicii de mai sus.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Oferiți garanție pentru lucrări?</button>
+      <div class="faq-a"><p>Da. Oferim garanție de 30 de zile pentru lucrările efectuate. Dacă ceva nu e în regulă cu reparația în această perioadă, revii la atelier și rezolvăm.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Cât de des ar trebui făcută o revizie?</button>
+      <div class="faq-a"><p>Depinde de cât și pe ce fel de teren folosești bicicleta, dar ca regulă generală o revizie o dată pe sezon (primăvara și toamna) ține bicicleta sigură și funcțională. Dacă rulezi des sau observi vreunul dintre semnele de la secțiunea „Când e cazul de revizie", nu aștepta următorul sezon.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Unde se află atelierul?</button>
+      <div class="faq-a"><p>Atelierul XpertPoint este în București, Sector 6, pe Strada General Petre Popovăț nr. 9. Suntem deschiși de luni până vineri între 10:00 și 19:00 și sâmbăta între 10:00 și 14:00. Ne poți suna la 0773 565 576 pentru orice detaliu.</p></div>
+    </div>
+  </div>
+</section>
+
 <!-- CTA BAND -->
 <section class="cta-band" id="contact">
   <div>
@@ -1632,6 +1850,11 @@
     } else {
       links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:70px;left:0;right:0;background:rgba(10,10,8,0.98);padding:2rem 1.5rem;gap:1.5rem;z-index:99';
     }
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => { q.parentElement.classList.toggle('open'); });
   });
 </script>
 </body>
