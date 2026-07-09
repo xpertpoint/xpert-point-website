@@ -5,7 +5,7 @@ deployment:
     - /bin/cp -f index.html $DEPLOYPATH
     - /bin/cp -f service-biciclete-bucuresti.html $DEPLOYPATH
     - /bin/cp -f service-espressoare-bucuresti.html $DEPLOYPATH
-    - /bin/cp -f programare.html $DEPLOYPATH
+    - /bin/cp -f programeaza-te.html $DEPLOYPATH
     - /bin/cp -f send-form.php $DEPLOYPATH
     - /bin/cp -f sitemap.xml $DEPLOYPATH
     - /bin/cp -f robots.txt $DEPLOYPATH

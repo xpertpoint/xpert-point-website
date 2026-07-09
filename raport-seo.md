@@ -10,15 +10,22 @@ Planul complet e în `plan-seo-audit-ubersuggest.md`. Execuție cu agenți (Opus
 - **Task 2 (pagini de serviciu) ✅** — extinse cu secțiuni vizibile în designul existent: biciclete **841 → 1.884 cuvinte** (proces revizie, semne pe componente, FAQ 8 întrebări), espressoare **1.075 → 2.175 cuvinte** (diagnosticare, tipuri de aparate, semne de service, FAQ 8 întrebări). Schema `FAQPage` validă pe ambele, separată de `LocalBusiness`. Verificat: nav/footer byte-identice cu versiunea anterioară, H1 unic, toate afirmațiile din FAQ (48h, 24h, 120/160 lei, garanție 30 zile/6 luni, diagnostic gratuit) preluate din conținutul deja existent al paginilor — nimic inventat.
 - **Bug preexistent reparat** — pagina espressoare avea DOI listeneri identici pe `.faq-q` (toggle dublu → accordion-ul nu se deschidea deloc). Duplicatul (fost rând 1083) a fost șters; accordion-ul funcționează acum pe ambele pagini (testat în preview, zero erori în consolă).
 - **Task 3 (temă blog) ✅** — linkurile vechi `bike_page`/`coffee_page` din header/footer-ul temei înlocuite cu noile URL-uri (cu www), `Version: 1.4`, `xpertpoint-blog.zip` regenerat.
-- **Task 4 (URL programare)** — rămâne neschimbat, conform recomandării (pagină de conversie).
+- **Task 4 (URL programare) ✅ — redenumit, la cererea explicită a lui Daniil** — `programare.html` → **`programeaza-te.html`**. Verificare dublă înainte de execuție: URL-ul vechi respecta deja toate criteriile din articolul Neil Patel despre URL-uri SEO (41 car. sub pragul de 50–60, minuscule, fără underscore, fără sub-foldere) și toate criteriile afișate chiar de Ubersuggest la acest test (lungime, simboluri, session ID, sub-foldere) — găsirea „poorly formatted URL" era, tehnic, un fals pozitiv (comparație text literală URL↔title, fără stemming pe diacritice românești). Daniil a decis totuși să redenumească pentru a rezolva ambele găsiri din Ubersuggest (URL nu apărea în listă ca fiind bifabil „Ignore" fără upgrade de plan). Noul slug `programeaza-te` se potrivește literal cu „Programează-te" din title, rezolvând și testul „keywords check".
+  - Actualizat: canonical, `og:url`, linkul propriu din footer-ul paginii, `.cpanel.yml`, `sitemap.xml`, linkurile din tema blogului (`header.html`, `footer.html`), redirect 301 adăugat în `.htaccess` (`/programare.html` → `/programeaza-te.html`).
+  - Verificat cu grep pe tot repo-ul: zero referințe rupte rămase la vechiul nume de fișier.
+  - Temă blog re-arhivată la **`Version: 1.6`**.
+  - **Atenție Daniil:** dacă ai campanii Google Ads cu final URL către `xpertpoint.ro/programare.html`, actualizează-le manual — redirectul 301 funcționează, dar Google Ads poate afișa avertisment de calitate pentru URL-uri redirecționate.
 - **Task 5 (.htaccess) ✅** — 301 non-www → www + http → https pentru site-ul static, cu excluderea `/blog/` (WordPress are siteurl pe non-www și ar fi creat buclă — confirmat cu curl pe site-ul live, antet `x-redirect-by: WordPress`). Pașii de eliminare a excluderii sunt documentați în comentariul din `.htaccess`.
+- **Automatizare blog → social media (Facebook/Instagram) — în curs, configurată manual de Daniil în Make.com.** Am adăugat în `functions.php` al temei un filtru pe `rss2_item` care expune imaginea reprezentativă a articolului ca `<enclosure>` în feed-ul RSS (`xpertpoint.ro/blog/feed/`), necesar pentru că Instagram cere obligatoriu o imagine la fiecare postare prin API — Facebook nu are această cerință. Temă re-arhivată la **`Version: 1.5`** pentru acest pas (apoi 1.6 pentru Task 4 de mai sus). Arhitectura aleasă: Make.com „Watch RSS feed items" → „Facebook Pages: Create a Post with Photos" + „Instagram for Business: Create a Photo Post". Decizie confirmată cu Daniil: fiecare articol nou trebuie să aibă o imagine reprezentativă setată în WordPress înainte de publicare (nu se folosește o imagine generică de rezervă).
 
 ### Pași manuali rămași pentru Daniil
-1. Commit + push + deploy cPanel (include `.htaccess`, cele 2 pagini de serviciu, tema).
-2. Re-upload temă blog v1.4 în WP admin (Appearance → Themes) sau prin File Manager.
-3. Urmează `seo-execution/task1-blog/ghid-wordpress.md`: ștergere demo, Rank Math, publicare cele 2 articole.
-4. După deploy, verificările curl din comentariile Task 5 (fără buclă de redirect pe blog).
-5. Search Console + sitemap; re-rulare audit Ubersuggest peste 1–2 săptămâni.
+1. Commit + push + deploy cPanel (include `.htaccess`, `programeaza-te.html` nou, `sitemap.xml`, `.cpanel.yml`, cele 2 pagini de serviciu).
+2. Re-upload temă blog **v1.6** în WP admin (Appearance → Themes) sau prin File Manager — include linkurile actualizate spre `programeaza-te.html` și filtrul RSS pentru imagine.
+3. Urmează `seo-execution/task1-blog/ghid-wordpress.md`: ștergere demo, Rank Math, publicare cele 2 articole (cu imagine reprezentativă obligatorie, pentru automatizarea Instagram).
+4. După deploy, verificările curl din comentariile Task 5 (fără buclă de redirect pe blog) + verifică `https://www.xpertpoint.ro/programeaza-te.html` (200 OK) și `https://www.xpertpoint.ro/programare.html` (301 → noul URL).
+5. Dacă ai campanii Google Ads către `programare.html`, actualizează final URL-urile manual.
+6. Finalizează scenariul Make.com (RSS → Facebook → Instagram) și activează programarea automată („Every 15 minutes").
+7. Search Console + sitemap; re-rulare audit Ubersuggest peste 1–2 săptămâni.
 
 ## Constatare importantă înainte de a începe
 

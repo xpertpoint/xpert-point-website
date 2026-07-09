@@ -1,5 +1,6 @@
 Redirect 301 /bike_page.html /service-biciclete-bucuresti.html
 Redirect 301 /coffee_page.html /service-espressoare-bucuresti.html
+Redirect 301 /programare.html /programeaza-te.html
 
 # Forțare https://www.xpertpoint.ro pentru tot site-ul static, EXCEPTÂND /blog/.
 #
