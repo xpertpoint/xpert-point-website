@@ -163,9 +163,10 @@
     font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;
     color: rgba(245,243,238,0.42);
     margin-top: 0.5rem;
+    text-shadow: 0 1px 3px rgba(10,10,8,0.8);
     transition: color 0.4s ease;
   }
-  .menu-item:hover .menu-sub { color: rgba(245,243,238,0.75); }
+  .menu-item:hover .menu-sub { color: rgba(245,243,238,0.92); }
 
   @media (max-width: 700px) {
     .menu-title { font-size: clamp(2.8rem, 15vw, 4.5rem); }
@@ -192,7 +193,7 @@
   .cookie-banner-text { font-size: 0.85rem; line-height: 1.6; color: rgba(245,243,238,0.75); flex: 1 1 420px; }
   .cookie-banner-actions { display: flex; gap: 0.75rem; flex-shrink: 0; }
   .cookie-btn-reject, .cookie-btn-accept {
-    font-family: var(--font-body); font-size: 0.8rem; letter-spacing: 0.05em;
+    font-family: var(--font-display); font-size: 0.95rem; letter-spacing: 0.08em;
     padding: 0.65rem 1.4rem; border-radius: 2px; cursor: pointer;
     transition: opacity .2s, background .2s;
   }

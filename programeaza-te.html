@@ -97,8 +97,9 @@
   .nav-logo span { color: var(--accent); }
   .nav-right { display: flex; align-items: center; gap: 0.75rem; }
   .nav-switch, .nav-back {
-    color: var(--tan); text-decoration: none; font-size: 0.8rem; font-weight: 500;
-    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--tan); text-decoration: none;
+    font-family: var(--font-display); font-size: 0.95rem; font-weight: 400;
+    letter-spacing: 0.08em;
     border: 1px solid rgba(201,185,154,0.3); padding: 0.5rem 1rem; border-radius: 2px;
     transition: border-color .2s; white-space: nowrap;
   }
@@ -121,12 +122,21 @@
   }
   .modal-input:focus { border-color: var(--accent); }
   .modal-input::placeholder { color: rgba(245,243,238,0.3); }
+  .modal-input option { color: var(--black); background: var(--white); }
   textarea.modal-input { min-height: 80px; resize: vertical; }
+  select.modal-input {
+    appearance: none; -webkit-appearance: none; -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%23f5f3ee' stroke-width='1.5' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 11px 7px;
+    padding-right: 2.5rem;
+  }
   .btn-primary {
     background: var(--accent); color: var(--black);
     padding: 1rem 2.5rem;
-    font-family: var(--font-body); font-size: 0.85rem; font-weight: 500;
-    letter-spacing: 0.1em; text-transform: uppercase;
+    font-family: var(--font-display); font-size: 1.1rem; font-weight: 400;
+    letter-spacing: 0.08em;
     text-decoration: none; white-space: nowrap;
     border: none; cursor: pointer;
     clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
@@ -138,7 +148,7 @@
   .faq { margin-top: 5rem; }
   .faq-title { font-family: var(--font-display); font-size: clamp(1.75rem, 4vw, 2.5rem); letter-spacing: 0.02em; margin-bottom: 2rem; }
   .faq-switch { display: flex; gap: 0.75rem; margin-bottom: 2rem; }
-  .faq-switch-btn { flex: 1; background: transparent; border: 1px solid rgba(255,255,255,0.15); color: var(--tan); font-family: var(--font-body); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.85rem 1rem; cursor: pointer; transition: all .2s; }
+  .faq-switch-btn { flex: 1; background: transparent; border: 1px solid rgba(255,255,255,0.15); color: var(--tan); font-family: var(--font-display); font-size: 0.95rem; font-weight: 400; letter-spacing: 0.08em; padding: 0.85rem 1rem; cursor: pointer; transition: all .2s; }
   .faq-switch-btn.active { background: var(--accent); border-color: var(--accent); color: var(--black); }
   .faq-switch-btn:not(.active):hover { border-color: rgba(255,255,255,0.35); color: var(--white); }
   .faq-item { border-bottom: 1px solid rgba(255,255,255,0.08); }
@@ -186,7 +196,7 @@
   .cookie-banner-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; }
   .cookie-banner-text { font-size: 0.85rem; line-height: 1.6; color: rgba(245,243,238,0.75); flex: 1 1 420px; }
   .cookie-banner-actions { display: flex; gap: 0.75rem; flex-shrink: 0; }
-  .cookie-btn-reject, .cookie-btn-accept { font-family: var(--font-body); font-size: 0.8rem; letter-spacing: 0.05em; padding: 0.65rem 1.4rem; border-radius: 2px; cursor: pointer; transition: opacity .2s, background .2s; }
+  .cookie-btn-reject, .cookie-btn-accept { font-family: var(--font-display); font-size: 0.95rem; letter-spacing: 0.08em; padding: 0.65rem 1.4rem; border-radius: 2px; cursor: pointer; transition: opacity .2s, background .2s; }
   .cookie-btn-reject { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--white); }
   .cookie-btn-reject:hover { border-color: rgba(255,255,255,0.4); }
   .cookie-btn-accept { background: var(--accent); border: 1px solid transparent; color: var(--black); }
@@ -218,17 +228,17 @@
   <form class="booking-form" onsubmit="handleBooking(event)">
     <input type="hidden" name="subject" value="Programare — Xpert Point">
     <input type="hidden" name="lead_source" value="">
-    <select name="service_type" class="modal-input" required>
+    <select name="service_type" class="modal-input" id="serviceTypeSelect" required>
       <option value="" disabled selected>Alege serviciul</option>
       <optgroup label="Biciclete">
-        <option>Revizie Standard — 120 LEI</option>
-        <option>Revizie Completă — 160 LEI</option>
-        <option>Revizie Custom — Deviz personalizat</option>
+        <option data-slug="bici-standard">Revizie Standard — 120 LEI</option>
+        <option data-slug="bici-completa">Revizie Completă — 160 LEI</option>
+        <option data-slug="bici-custom">Revizie Custom — Deviz personalizat</option>
       </optgroup>
       <optgroup label="Espressoare">
-        <option>Întreținere Esențială — 120 LEI</option>
-        <option>Revizie Completă — 180 LEI</option>
-        <option>Reparație / Deviz — Deviz personalizat</option>
+        <option data-slug="cafea-esentiala">Întreținere Esențială — 120 LEI</option>
+        <option data-slug="cafea-completa">Revizie Completă — 180 LEI</option>
+        <option data-slug="cafea-reparatie">Reparație / Deviz — Deviz personalizat</option>
       </optgroup>
     </select>
     <input type="text" name="full_name" class="modal-input" placeholder="Numele tău" required>
@@ -473,6 +483,15 @@
       setTimeout(() => { btn.textContent = originalText; }, 3000);
     }
   }
+
+  // PRESELECT SERVICE FROM URL (?serviciu=slug)
+  (function () {
+    const slug = new URLSearchParams(window.location.search).get('serviciu');
+    if (!slug) return;
+    const select = document.getElementById('serviceTypeSelect');
+    const match = [...select.options].find(o => o.dataset.slug === slug);
+    if (match) select.value = match.value;
+  })();
 
   // FAQ SWITCH + ACCORDION
   document.querySelectorAll('.faq-switch-btn').forEach(btn => {
