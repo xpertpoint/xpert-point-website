@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>Service Espressoare București — Reparații | XpertPoint</title>
 <meta name="description" content="Reparații și decalcifiere pentru espressoare în București. Diagnostic rapid, piese de schimb și service pentru toate tipurile de aparate de cafea.">
 <link rel="canonical" href="https://www.xpertpoint.ro/service-espressoare-bucuresti.html">
@@ -187,11 +191,14 @@
   .nav-cta:hover { background: var(--rust-light); }
   .nav-mobile-actions { justify-self: end; display: none; align-items: center; gap: 1rem; }
   .nav-cta-mobile { display: none; background: var(--rust); color: var(--white); padding: 0.55rem 1.1rem; clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 0 100%); font-family: var(--font-display); font-size: 0.85rem; font-weight: 400; letter-spacing: 0.08em; text-decoration: none; white-space: nowrap; flex-shrink: 0; }
-  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: none; background: none; border: none; flex-shrink: 0; }
+  .hamburger { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: none; background: none; border: none; flex-shrink: 0; width: 44px; height: 44px; padding: 0; }
   .hamburger span { width: 24px; height: 1px; background: var(--white); transition: all .3s; display: block; }
+  .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
   /* ── HERO ── */
-  .hero { height: 100vh; position: relative; display: flex; align-items: flex-end; overflow: hidden; padding-top: clamp(96px, 14vh, 160px); box-sizing: border-box; }
+  .hero { height: 100vh; height: 100dvh; position: relative; display: flex; align-items: flex-end; overflow: hidden; padding-top: clamp(96px, 14vh, 160px); box-sizing: border-box; }
   .hero-slides { position: absolute; inset: 0; }
   .hero-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.2s ease; }
   .hero-slide.active { opacity: 1; }
@@ -378,7 +385,21 @@
   /* ── MOBILE ── */
   @media (max-width: 900px) {
     nav { padding: 1.2rem 1.5rem; }
-    .nav-links { display: none; }
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      position: fixed;
+      top: 70px; left: 0; right: 0; bottom: 0;
+      justify-self: auto;
+      background: rgba(10,10,8,0.98);
+      padding: 2rem 1.5rem;
+      gap: 1.5rem;
+      z-index: 99;
+      overflow-y: auto;
+      width: auto;
+    }
+    .nav-links.open { display: flex; }
+    body.mobile-menu-open { overflow: hidden; }
     .nav-switch-in-menu { display: flex; }
     .nav-buttons { display: none; }
     .nav-mobile-actions { display: flex; }
@@ -406,7 +427,7 @@
     .cta-band { grid-template-columns: 1fr; }
     .newsletter { flex-direction: column; padding: 3rem 1.5rem; }
     .newsletter-form { flex-direction: column; width: 100%; }
-    .newsletter-input { width: 100%; }
+    .newsletter-input { width: 100%; font-size: 16px; }
     .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
     footer { padding: 3rem 1.5rem 1.5rem; }
     .testimonials { padding: 4rem 1.5rem; }
@@ -417,6 +438,11 @@
     .footer-top { grid-template-columns: 1fr; }
     .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
     .price-table th, .price-table td { padding: 0.8rem 0.6rem; }
+  }
+
+  /* Custom cursor is mouse-only: hide it on touch devices so it doesn't render as a static phantom circle */
+  @media (hover: none), (pointer: coarse) {
+    .cursor { display: none; }
   }
 </style>
 
@@ -539,14 +565,14 @@
 <div class="cursor" id="cursor"><div class="cursor-ring"></div><div class="cursor-dot"></div></div>
 <nav id="navbar">
   <a href="#" class="nav-logo">XPERT<span>POINT</span></a>
-  <ul class="nav-links"><li><a href="#servicii">Servicii</a></li><li><a href="#abonament">Abonament</a></li><li><a href="#branduri">Branduri</a></li><li><a href="#sfaturi">Sfaturi</a></li><li><a href="/blog">Blog</a></li><li><a href="service-biciclete-bucuresti.html" class="nav-switch nav-switch-in-menu">↩ Biciclete</a></li></ul>
+  <ul class="nav-links" id="navLinks"><li><a href="#servicii">Servicii</a></li><li><a href="#abonament">Abonament</a></li><li><a href="#branduri">Branduri</a></li><li><a href="#sfaturi">Sfaturi</a></li><li><a href="/blog">Blog</a></li><li><a href="service-biciclete-bucuresti.html" class="nav-switch nav-switch-in-menu">↩ Biciclete</a></li></ul>
   <div class="nav-buttons">
     <a href="service-biciclete-bucuresti.html" class="nav-switch">↩ Biciclete</a>
     <a href="programeaza-te.html" class="nav-cta">Programează-te</a>
   </div>
   <div class="nav-mobile-actions">
     <a href="programeaza-te.html" class="nav-cta-mobile">Programează-te</a>
-    <button class="hamburger" id="hamburger" aria-label="Meniu"><span></span><span></span><span></span></button>
+    <button class="hamburger" id="hamburger" aria-label="Meniu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
   </div>
 </nav>
 <section class="hero">
@@ -921,18 +947,20 @@
   if (cookieSettingsLink) cookieSettingsLink.addEventListener('click', e => { e.preventDefault(); showCookieBanner(); });
   // COOKIE-CONSENT:END
 
-  // CURSOR
-  const cursor = document.getElementById('cursor');
-  const ring = cursor.querySelector('.cursor-ring');
-  const dot = cursor.querySelector('.cursor-dot');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
-  function animCursor() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animCursor); }
-  animCursor();
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px'; ring.style.borderColor = 'rgba(192,65,11,0.6)'; });
-    el.addEventListener('mouseleave', () => { ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderColor = 'rgba(245,243,238,0.5)'; });
-  });
+  // CURSOR (mouse-only — skip entirely on touch devices, matches the CSS that hides .cursor there)
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const cursor = document.getElementById('cursor');
+    const ring = cursor.querySelector('.cursor-ring');
+    const dot = cursor.querySelector('.cursor-dot');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+    function animCursor() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animCursor); }
+    animCursor();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px'; ring.style.borderColor = 'rgba(192,65,11,0.6)'; });
+      el.addEventListener('mouseleave', () => { ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderColor = 'rgba(245,243,238,0.5)'; });
+    });
+  }
 
   // NAV SCROLL
   const navbar = document.getElementById('navbar');
@@ -998,12 +1026,26 @@
     el.style.opacity = 0; el.style.transform = 'translateY(24px)'; el.style.transition = 'opacity 0.6s ease, transform 0.6s ease'; observer.observe(el);
   });
 
-  // HAMBURGER
-  document.getElementById('hamburger').addEventListener('click', () => {
-    const links = document.querySelector('.nav-links');
-    if (links.style.display === 'flex') { links.style.display = 'none'; }
-    else { links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:70px;left:0;right:0;background:rgba(10,10,8,0.98);padding:2rem 1.5rem;gap:1.5rem;z-index:99'; }
+  // HAMBURGER (mobile)
+  const hamburgerBtn = document.getElementById('hamburger');
+  const navLinksEl = document.getElementById('navLinks');
+  function openMobileMenu() {
+    navLinksEl.classList.add('open');
+    hamburgerBtn.classList.add('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('mobile-menu-open');
+  }
+  function closeMobileMenu() {
+    navLinksEl.classList.remove('open');
+    hamburgerBtn.classList.remove('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('mobile-menu-open');
+  }
+  hamburgerBtn.addEventListener('click', () => {
+    navLinksEl.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
   });
+  navLinksEl.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileMenu));
+  window.addEventListener('resize', () => { if (window.innerWidth > 900) closeMobileMenu(); });
 </script>
 
 </body>

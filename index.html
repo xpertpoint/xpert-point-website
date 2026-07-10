@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="9ofimDF401nECQ_3JMwlXN_gqrv3uLbrTxDeDD7KYaY" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>Service Biciclete și Espressoare București | XpertPoint</title>
 <meta name="description" content="Atelier de service pentru biciclete și aparate de cafea în București, Sector 6. Revizii, reparații frâne și schimbătoare, decalcifiere espressoare.">
 <link rel="canonical" href="https://www.xpertpoint.ro/">
@@ -57,7 +62,7 @@
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
   .sr-only {
     position: absolute;
@@ -71,9 +76,16 @@
   :root {
     --black: #0a0a08;
     --white: #f5f3ee;
+    --cream: #ede9e0;
     --rust: #c0410b;
+    --rust-light: #e05a20;
+    --accent: var(--rust);
+    --accent-dim: var(--rust-light);
+    --olive: #4a5240;
     --tan: #c9b99a;
+    --mid: #6b6760;
     --font-display: 'Bebas Neue', sans-serif;
+    --font-serif: 'DM Serif Display', serif;
     --font-body: 'DM Sans', sans-serif;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -83,7 +95,8 @@
     color: var(--white);
     font-family: var(--font-body);
     font-weight: 300;
-    overflow: hidden;
+    overflow-x: hidden;
+    cursor: none;
     position: relative;
   }
   body::after {
@@ -95,9 +108,39 @@
     opacity: 0.4;
   }
 
-  /* FULL-BLEED HOVER BACKGROUNDS */
+  /* CUSTOM CURSOR */
+  .cursor { position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none; mix-blend-mode: difference; }
+  .cursor-dot { width: 8px; height: 8px; background: var(--white); border-radius: 50%; transform: translate(-50%, -50%); transition: width .2s, height .2s; }
+  .cursor-ring { width: 40px; height: 40px; border: 1px solid rgba(245,243,238,0.5); border-radius: 50%; transform: translate(-50%, -50%); transition: all .15s ease-out; position: absolute; top: 0; left: 0; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: grid; grid-template-columns: 1fr auto 1fr auto; align-items: center;
+    padding: 1.5rem 3rem;
+    background: linear-gradient(to bottom, rgba(10,10,8,0.95), transparent);
+    transition: background .3s;
+  }
+  nav.scrolled { background: rgba(10,10,8,0.98); }
+  .nav-logo { justify-self: start; font-family: var(--font-display); font-size: 2rem; letter-spacing: 0.05em; color: var(--white); text-decoration: none; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { justify-self: center; display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+  .nav-buttons { justify-self: end; display: flex; align-items: center; gap: 12px; }
+  .nav-links a { color: rgba(245,243,238,0.7); text-decoration: none; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; white-space: nowrap; transition: color .2s; position: relative; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--accent); transition: width .3s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta { background: var(--accent); color: var(--white); padding: 0.6rem 1.5rem; clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%); font-family: var(--font-display); font-size: 0.95rem; font-weight: 400; letter-spacing: 0.08em; text-decoration: none; white-space: nowrap; transition: background .2s; }
+  .nav-cta:hover { background: var(--accent-dim); }
+  .nav-mobile-actions { justify-self: end; display: none; align-items: center; gap: 1rem; }
+  .nav-cta-mobile { display: none; background: var(--accent); color: var(--white); padding: 0.55rem 1.1rem; clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 0 100%); font-family: var(--font-display); font-size: 0.85rem; font-weight: 400; letter-spacing: 0.08em; text-decoration: none; white-space: nowrap; flex-shrink: 0; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; flex-shrink: 0; }
+  .hamburger span { width: 24px; height: 1px; background: var(--white); transition: all .3s; display: block; }
+
+  /* HERO CHOOSER (full-bleed hover) */
+  .hero-chooser { position: relative; height: 100vh; overflow: hidden; }
   .bg-layer {
-    position: fixed; inset: 0;
+    position: absolute; inset: 0;
     background-size: cover; background-position: center;
     opacity: 0;
     transform: scale(1.06);
@@ -107,31 +150,20 @@
   .bg-layer.active { opacity: 1; transform: scale(1); }
   .bg-biciclete { background-image: url('https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=1920&q=85'); }
   .bg-cafea { background-image: url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1920&q=85'); }
-  .bg-scrim {
-    position: fixed; inset: 0;
-    background: rgba(10,10,8,0.72);
-    z-index: 1;
-    transition: background 0.6s ease;
-  }
-  body.hovering .bg-scrim { background: rgba(10,10,8,0.55); }
+  .bg-scrim { position: absolute; inset: 0; background: rgba(10,10,8,0.72); z-index: 1; transition: background 0.6s ease; }
+  .hero-chooser.hovering .bg-scrim { background: rgba(10,10,8,0.55); }
 
-  .brand {
-    position: fixed; top: 2.2rem; left: 50%; transform: translateX(-50%);
-    z-index: 5;
-    font-family: var(--font-display);
-    font-size: 1.5rem; letter-spacing: 0.05em;
+  .chooser-eyebrow {
+    position: relative; z-index: 5;
     text-align: center;
-  }
-  .brand span { color: var(--rust); }
-  .brand small {
-    display: block; font-family: var(--font-body);
-    font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
-    color: rgba(245,243,238,0.45); margin-top: 0.3rem;
+    padding-top: clamp(96px, 16vh, 160px);
+    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(245,243,238,0.45);
   }
 
   .menu {
     position: relative; z-index: 5;
-    height: 100vh;
+    height: calc(100% - clamp(96px, 16vh, 160px));
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     gap: 0;
@@ -157,8 +189,8 @@
   .menu-title em { font-style: normal; }
   #itemBiciclete:hover .menu-title { color: var(--white); }
   #itemBiciclete:hover .menu-title em { color: var(--white); }
-  #itemCafea:hover .menu-title { color: var(--rust); }
-  #itemCafea:hover .menu-title em { color: var(--rust); }
+  #itemCafea:hover .menu-title { color: var(--accent); }
+  #itemCafea:hover .menu-title em { color: var(--accent); }
   .menu-sub {
     font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;
     color: rgba(245,243,238,0.42);
@@ -167,10 +199,175 @@
     transition: color 0.4s ease;
   }
   .menu-item:hover .menu-sub { color: rgba(245,243,238,0.92); }
+  .hero-scroll {
+    position: absolute; z-index: 5; left: 50%; bottom: 2rem; transform: translateX(-50%);
+    font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: rgba(245,243,238,0.4);
+    display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+  }
+  .hero-scroll::after { content: ''; width: 1px; height: 34px; background: rgba(245,243,238,0.25); }
 
   @media (max-width: 700px) {
     .menu-title { font-size: clamp(2.8rem, 15vw, 4.5rem); }
-    .brand { top: 1.3rem; }
+  }
+
+  /* ── ABOUT / DESPRE ── */
+  .about-strip { display: grid; grid-template-columns: 1fr 1fr; min-height: 60vh; }
+  .about-image { position: relative; overflow: hidden; }
+  .about-image img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(30%) contrast(1.1); transition: transform 0.8s ease; }
+  .about-image:hover img { transform: scale(1.04); }
+  .about-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, transparent 70%, var(--black)); }
+  .about-text { background: var(--cream); color: var(--black); padding: 5rem; display: flex; flex-direction: column; justify-content: center; }
+  .section-label { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--black); display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+  .section-label::before { content: ''; width: 30px; height: 1px; background: var(--black); }
+  .about-heading { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; color: var(--black); margin-bottom: 1.5rem; }
+  .about-heading em { color: var(--black); text-decoration: underline; text-decoration-color: rgba(10,10,8,0.3); text-underline-offset: 4px; font-style: normal; }
+  .about-body { font-size: 1rem; line-height: 1.8; color: rgba(10,10,8,0.72); max-width: 480px; margin-bottom: 1.1rem; }
+  .about-subheading { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 0.04em; color: var(--black); margin-top: 1.75rem; margin-bottom: 0.75rem; }
+  .feature-list { list-style: none; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.6rem; }
+  .feature-list li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; }
+  .feature-list li::before { content: ''; width: 6px; height: 6px; background: var(--accent); flex-shrink: 0; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
+  .feature-list a { color: rgba(10,10,8,0.75); text-decoration: none; }
+  .feature-list a:hover { color: var(--black); text-decoration: underline; }
+
+  /* ── SECTION TITLES (shared) ── */
+  .section-title { font-family: var(--font-display); font-size: clamp(3rem, 7vw, 6rem); line-height: 0.9; letter-spacing: 0.02em; }
+  .section-title small { display: block; font-family: var(--font-body); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; }
+  .section-intro { color: rgba(245,243,238,0.6); max-width: 720px; font-size: 1rem; line-height: 1.8; margin-top: 1.25rem; }
+
+  /* ── SERVICII PE SCURT ── */
+  .services { padding: 7rem 3rem; background: var(--black); }
+  .services-header { margin-bottom: 3rem; }
+  .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
+  .service-card { position: relative; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 3rem; overflow: hidden; transition: background .3s, border-color .3s; display: flex; flex-direction: column; }
+  .service-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.3); }
+  .service-card.featured { background: var(--accent); border-color: var(--accent); color: var(--white); }
+  .service-card.featured:hover { background: var(--accent-dim); }
+  .card-name { font-family: var(--font-display); font-size: 2rem; letter-spacing: 0.05em; margin-bottom: 1rem; }
+  .card-desc { font-size: 0.9rem; line-height: 1.7; color: rgba(245,243,238,0.6); flex: 1; }
+  .service-card.featured .card-desc { color: rgba(245,243,238,0.85); }
+  .card-includes { list-style: none; margin: 1.5rem 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .card-includes li { font-size: 0.8rem; color: rgba(245,243,238,0.5); display: flex; align-items: center; gap: 0.5rem; }
+  .service-card.featured .card-includes li { color: rgba(245,243,238,0.85); }
+  .card-includes li::before { content: '—'; color: var(--accent); }
+  .service-card.featured .card-includes li::before { color: rgba(245,243,238,0.7); }
+  .card-price { display: flex; align-items: baseline; gap: 0.4rem; margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 0.04em; }
+  .service-card.featured .card-price { border-top-color: rgba(255,255,255,0.2); }
+  .card-cta { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.5rem; font-family: var(--font-display); font-size: 1rem; font-weight: 400; letter-spacing: 0.08em; color: var(--accent); text-decoration: none; transition: gap .2s; }
+  .service-card.featured .card-cta { color: var(--white); }
+  .card-cta:hover { gap: 1rem; }
+
+  /* ── DE CE XPERTPOINT ── */
+  .content-strip { background: var(--black); padding: 7rem 3rem; }
+  .content-strip .services-header { margin-bottom: 3rem; }
+  .signs-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 1rem; }
+  .sign-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 2.25rem; transition: background .3s, border-color .3s; }
+  .sign-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.25); }
+  .sign-card h3 { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.04em; margin-bottom: 0.75rem; color: var(--white); }
+  .sign-card p { font-size: 0.9rem; line-height: 1.7; color: rgba(245,243,238,0.6); }
+
+  /* ── PROCES ── */
+  .process { background: var(--cream); color: var(--black); padding: 7rem 3rem; }
+  .process-header { margin-bottom: 4rem; }
+  .process-header .section-title { color: var(--black); }
+  .process-header .section-title small { color: var(--olive); }
+  .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3rem; counter-reset: steps; }
+  .process-step { position: relative; }
+  .process-step::before { counter-increment: steps; content: counter(steps, decimal-leading-zero); display: block; font-family: var(--font-display); font-size: 5rem; line-height: 1; color: rgba(10,10,8,0.08); margin-bottom: 1.5rem; }
+  .step-title { font-family: var(--font-serif); font-size: 1.4rem; color: var(--black); margin-bottom: 0.75rem; }
+  .step-desc { font-size: 0.9rem; line-height: 1.7; color: rgba(10,10,8,0.6); }
+  .step-connector { position: absolute; top: 2.5rem; right: -1.5rem; width: 3rem; height: 1px; background: var(--tan); }
+  .process-step:last-child .step-connector { display: none; }
+
+  /* ── TESTIMONIALE ── */
+  .testimonials { background: var(--black); padding: 7rem 3rem; overflow: hidden; }
+  .testimonials-header { margin-bottom: 4rem; }
+  .testimonials-track { display: flex; gap: 2rem; animation: slideTestimonials 30s linear infinite; }
+  .testimonials-track:hover { animation-play-state: paused; }
+  @keyframes slideTestimonials { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .testimonial-card { flex-shrink: 0; width: 380px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); padding: 2.5rem; border-radius: 2px; }
+  .testimonial-stars { color: var(--accent); font-size: 0.9rem; letter-spacing: 0.1em; margin-bottom: 1rem; }
+  .testimonial-text { font-family: var(--font-serif); font-style: italic; font-size: 1.05rem; line-height: 1.6; color: rgba(245,243,238,0.85); margin-bottom: 1.5rem; }
+  .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+  .author-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 1rem; color: var(--white); flex-shrink: 0; }
+  .author-name { font-size: 0.9rem; font-weight: 500; }
+  .author-city { font-size: 0.75rem; color: var(--tan); margin-top: 0.1rem; }
+
+  /* ── FAQ ── */
+  .faq { background: var(--cream); color: var(--black); padding: 7rem 3rem; }
+  .faq .section-title { color: var(--black); }
+  .faq .section-title small { color: var(--olive); }
+  .faq-header { margin-bottom: 3.5rem; text-align: center; }
+  .faq-grid { max-width: 860px; margin: 0 auto; }
+  .faq-item { border-bottom: 1px solid rgba(10,10,8,0.12); }
+  .faq-q { width: 100%; background: none; border: none; color: var(--black); font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.03em; text-align: left; padding: 1.5rem 0; cursor: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .faq-q::after { content: '+'; color: var(--olive); font-family: var(--font-body); font-weight: 400; flex-shrink: 0; }
+  .faq-item.open .faq-q::after { content: '−'; }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease, padding .35s ease; color: rgba(10,10,8,0.7); font-size: 0.95rem; line-height: 1.75; }
+  .faq-item.open .faq-a { max-height: 320px; padding-bottom: 1.5rem; }
+  .faq-cta { margin-top: 3rem; text-align: center; }
+  .faq-cta-title { font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.1rem); letter-spacing: 0.02em; color: var(--black); margin-bottom: 0.75rem; }
+  .faq-cta-text { font-size: 0.95rem; color: rgba(10,10,8,0.65); max-width: 460px; margin: 0 auto 1.5rem; }
+  .faq-cta-text a { color: var(--olive); text-decoration: none; border-bottom: 1px solid rgba(74,82,64,0.35); }
+  .faq-cta-text a:hover { color: var(--black); border-color: var(--black); }
+  .faq-cta-btn { display: inline-block; background: var(--olive); color: var(--cream); padding: 1rem 2.5rem; font-family: var(--font-display); font-size: 1.1rem; font-weight: 400; letter-spacing: 0.08em; text-decoration: none; clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%); transition: background .2s, transform .2s; }
+  .faq-cta-btn:hover { background: var(--black); transform: translateY(-2px); }
+
+  /* ── CTA BAND ── */
+  .cta-band { background: var(--accent); padding: 5rem 3rem; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 3rem; }
+  .cta-headline { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1; color: var(--white); }
+  .cta-sub { font-size: 1rem; color: rgba(245,243,238,0.85); margin-top: 0.75rem; }
+  .btn-white { background: var(--black); color: var(--white); padding: 1.1rem 2.5rem; font-family: var(--font-display); font-size: 1.1rem; font-weight: 400; letter-spacing: 0.08em; text-decoration: none; border: none; white-space: nowrap; clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%); transition: transform .2s, opacity .2s; display: inline-block; }
+  .btn-white:hover { transform: translateY(-2px); opacity: 0.85; }
+  .cta-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-white.alt { background: var(--white); color: var(--black); }
+
+  /* ── FOOTER ── */
+  footer { padding: 5rem 3rem 2rem; }
+  .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 4rem; padding-bottom: 4rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .footer-brand .nav-logo { display: block; margin-bottom: 1.2rem; }
+  .footer-brand p { font-size: 0.85rem; line-height: 1.7; color: rgba(245,243,238,0.45); max-width: 260px; }
+  .footer-col h4 { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--tan); margin-bottom: 1.25rem; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-col a { font-size: 0.875rem; color: rgba(245,243,238,0.5); text-decoration: none; transition: color .2s; }
+  .footer-col a:hover { color: var(--white); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: rgba(245,243,238,0.25); flex-wrap: wrap; gap: 1rem; }
+  .footer-bottom a { color: rgba(245,243,238,0.35); text-decoration: none; transition: color .2s; }
+  .footer-bottom a:hover { color: rgba(245,243,238,0.6); }
+  .social-links { display: flex; gap: 1rem; }
+  .social-link { width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; text-decoration: none; color: rgba(245,243,238,0.4); font-size: 0.75rem; transition: all .2s; }
+  .social-link:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    .nav-buttons { display: none; }
+    .nav-mobile-actions { display: flex; }
+    .nav-cta-mobile { display: inline-block; }
+    .hamburger { display: flex; }
+    .chooser-eyebrow { padding-top: clamp(76px, 12vh, 120px); }
+    .about-strip { grid-template-columns: 1fr; }
+    .about-image { height: 300px; }
+    .about-text { padding: 3rem 1.5rem; }
+    .services { padding: 4rem 1.5rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .content-strip { padding: 4rem 1.5rem; }
+    .signs-grid { grid-template-columns: 1fr 1fr; }
+    .process { padding: 4rem 1.5rem; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .step-connector { display: none; }
+    .testimonials { padding: 4rem 1.5rem; }
+    .faq { padding: 4rem 1.5rem; }
+    .cta-band { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    footer { padding: 3rem 1.5rem 1.5rem; }
+  }
+  @media (max-width: 500px) {
+    .signs-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
   }
 
   /* COOKIE-CONSENT:START */
@@ -199,8 +396,8 @@
   }
   .cookie-btn-reject { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--white); }
   .cookie-btn-reject:hover { border-color: rgba(255,255,255,0.4); }
-  .cookie-btn-accept { background: var(--rust); border: 1px solid transparent; color: var(--white); }
-  .cookie-btn-accept:hover { opacity: 0.85; }
+  .cookie-btn-accept { background: var(--accent); border: 1px solid transparent; color: var(--white); }
+  .cookie-btn-accept:hover { background: var(--accent-dim); }
   @media (max-width: 700px) {
     .cookie-banner-inner { flex-direction: column; align-items: stretch; text-align: center; }
     .cookie-banner-actions { justify-content: center; }
@@ -211,33 +408,321 @@
 <body>
 
 <h1 class="sr-only">Service biciclete și espressoare în București</h1>
-<p class="sr-only">XpertPoint este un atelier de service pentru biciclete și aparate de cafea, situat pe Strada General Petre Popovăț 9, în Sector 6, București, deschis Luni–Vineri 10:00–19:00 și Sâmbătă 10:00–14:00. Pentru biciclete, oferim revizie standard, completă sau personalizată, reglaj schimbătoare și frâne, centrare roți și schimb anvelope — cu o echipă cu peste 11 ani de experiență în domeniu. Pentru aparate de cafea, ne ocupăm de întreținere, reparații și decalcifiere espressoare, cu diagnostic transparent înainte de orice lucrare și opțiune de preluare și livrare (pickup & return). Alege mai jos serviciul de care ai nevoie — biciclete sau espressoare — și programează-te rapid, direct de pe site sau telefonic.</p>
 
-<div class="bg-layer bg-biciclete" id="bgBiciclete"></div>
-<div class="bg-layer bg-cafea" id="bgCafea"></div>
-<div class="bg-scrim" id="scrim"></div>
-
-<div class="brand">XPERT<span>POINT</span><small>Ce reparăm astăzi?</small></div>
-
-<div class="menu">
-  <a href="service-biciclete-bucuresti.html" class="menu-item" id="itemBiciclete">
-    <div class="menu-title">BICI<em>CLETE</em></div>
-    <div class="menu-sub">Revizie de la 120 lei · Diagnostic gratuit</div>
-  </a>
-  <a href="service-espressoare-bucuresti.html" class="menu-item" id="itemCafea">
-    <div class="menu-title">ESPRESS<em>OARE</em></div>
-    <div class="menu-sub">Diagnostic gratuit · Garanție 6 luni</div>
-  </a>
+<!-- CURSOR -->
+<div class="cursor" id="cursor">
+  <div class="cursor-ring"></div>
+  <div class="cursor-dot"></div>
 </div>
 
-<footer class="sr-only">
-  <span>XpertPoint SRL</span>
-  <a href="https://maps.google.com/?q=Strada+General+Petre+Popov%C4%83%C8%9B+9,+060314+Bucure%C8%99ti" target="_blank" rel="noopener">📍 Strada General Petre Popovăț 9, 060314 București</a>
-  <a href="tel:+40773565576">📞 0773 565 576</a>
-  <a href="mailto:hello@xpertpoint.ro">✉️ hello@xpertpoint.ro</a>
-  <span>🕐 Luni–Vineri: 10:00–19:00</span>
-  <span>🕐 Sâmbătă: 10:00–14:00</span>
-  <span>🕐 Duminică: închis</span>
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">XPERT<span>POINT</span></a>
+  <ul class="nav-links">
+    <li><a href="#despre">Despre</a></li>
+    <li><a href="#servicii">Servicii</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="/blog">Blog</a></li>
+  </ul>
+  <div class="nav-buttons">
+    <a href="programeaza-te.html" class="nav-cta">Programează-te</a>
+  </div>
+  <div class="nav-mobile-actions">
+    <a href="programeaza-te.html" class="nav-cta-mobile">Programează-te</a>
+    <button class="hamburger" id="hamburger" aria-label="Meniu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO CHOOSER -->
+<section class="hero-chooser" id="heroChooser">
+  <div class="bg-layer bg-biciclete" id="bgBiciclete"></div>
+  <div class="bg-layer bg-cafea" id="bgCafea"></div>
+  <div class="bg-scrim" id="scrim"></div>
+
+  <div class="chooser-eyebrow">Ce reparăm astăzi?</div>
+
+  <div class="menu">
+    <a href="service-biciclete-bucuresti.html" class="menu-item" id="itemBiciclete">
+      <div class="menu-title">BICI<em>CLETE</em></div>
+      <div class="menu-sub">Revizie de la 120 lei · Diagnostic gratuit</div>
+    </a>
+    <a href="service-espressoare-bucuresti.html" class="menu-item" id="itemCafea">
+      <div class="menu-title">ESPRESS<em>OARE</em></div>
+      <div class="menu-sub">Diagnostic gratuit · Garanție 6 luni</div>
+    </a>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- DESPRE + UNDE NE AFLĂM -->
+<section class="about-strip" id="despre">
+  <div class="about-image">
+    <img src="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=900&q=85&fit=crop" alt="Atelierul XpertPoint din Sector 6, București" loading="lazy" width="900" height="600">
+  </div>
+  <div class="about-text">
+    <div class="section-label">Cine suntem</div>
+    <h2 class="about-heading">Un atelier.<br>Două <em>meserii.</em></h2>
+    <p class="about-body">XpertPoint este un atelier de service din București, Sector 6, care reunește două meserii sub același acoperiș: mecanică de bicicletă și service pentru aparate de cafea. Echipa noastră are peste 11 ani de experiență acumulată în domeniu, aplicată cu aceeași disciplină în ambele specializări — diagnostic corect înainte de orice intervenție, piese potrivite pentru fiecare marcă și model, și o reparație care ține, nu doar una care „merge" până acasă.</p>
+    <p class="about-body">Ideea din spatele XpertPoint e simplă: în același cartier, aceiași oameni au nevoie fie de o bicicletă gata de drum pentru naveta zilnică, fie de un espressor care să facă o cafea ca la carte dimineața. În loc să cauți două ateliere diferite, la noi găsești ambele servicii sub un singur standard de transparență — diagnostic gratuit, deviz clar înainte de orice lucrare și garanție pentru munca depusă, indiferent care dintre cele două te aduce pe ușa noastră.</p>
+    <p class="about-body">Nu tratăm bicicleta sau espressorul ca pe un obiect oarecare de reparat. Fiecare lucrare trece printr-un diagnostic complet, ți se explică exact ce e de făcut și de ce, iar dacă ceva nu se încadrează în bugetul sau termenul discutat, te anunțăm înainte, nu după ce factura e deja făcută. E motivul pentru care majoritatea clienților noștri revin cu a doua bicicletă sau cu al doilea espressor din casă, în loc să caute alt service prin oraș.</p>
+    <p class="about-body">Lucrăm cu orice marcă și model, de la biciclete de oraș, trekking sau MTB, până la biciclete electrice, și de la espressoare clasice cu pârghie, până la aparate automate cu râșniță integrată. Nu contează dacă vii cu prima bicicletă cumpărată la mâna a doua sau cu un espressor scump adus din străinătate — primești același diagnostic atent și aceeași explicație clară înainte de orice reparație.</p>
+    <h3 class="about-subheading">Unde ne găsești</h3>
+    <p class="about-body">Atelierul este pe Strada General Petre Popovăț nr. 9, în Sector 6, București — ușor accesibil din Drumul Taberei, Militari, Crângași sau Giulești, cu parcare disponibilă în zonă. Suntem deschiși de luni până vineri, între 10:00 și 19:00, și sâmbăta între 10:00 și 14:00. Duminica stăm închis, dar poți lăsa un mesaj sau programa online oricând.</p>
+    <ul class="feature-list">
+      <li><a href="https://maps.google.com/?q=Strada+General+Petre+Popov%C4%83%C8%9B+9,+060314+Bucure%C8%99ti" target="_blank" rel="noopener">📍 Strada General Petre Popovăț 9, 060314 București — vezi traseul pe hartă</a></li>
+      <li><a href="tel:+40773565576">📞 0773 565 576</a></li>
+      <li><a href="mailto:hello@xpertpoint.ro">✉️ hello@xpertpoint.ro</a></li>
+      <li>🕐 Luni–Vineri: 10:00–19:00</li>
+      <li>🕐 Sâmbătă: 10:00–14:00 · Duminică: închis</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SERVICII PE SCURT -->
+<section class="services" id="servicii">
+  <div class="services-header">
+    <h2 class="section-title"><small>Ce facem</small>SERVICII<br>PE SCURT</h2>
+    <p class="section-intro">Alege ce te aduce la XpertPoint — programarea durează un minut, iar diagnosticul e mereu gratuit, indiferent de serviciul ales. Mai jos găsești un rezumat scurt al fiecărui serviciu; pentru toate pachetele, prețurile complete și lista detaliată de lucrări, intră pe pagina dedicată.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="card-name">BICICLETE</div>
+      <p class="card-desc">Revizii complete, reparații de frâne și schimbătoare, centrare roți și schimb de anvelope — pentru orice tip de bicicletă, de la modele de oraș până la MTB și biciclete electrice. Diagnostic gratuit la orice vizită și trei pachete de revizie, de la simplu la personalizat, în funcție de cât vrei să investești în bicicleta ta. Lucrăm cu piese potrivite pentru fiecare marcă, nu variante universale „cam se potrivesc".</p>
+      <ul class="card-includes">
+        <li>Revizie standard, completă sau custom</li>
+        <li>Reglaj schimbătoare și frâne</li>
+        <li>Centrare roți și schimb anvelope</li>
+        <li>Verificare transmisie și rulmenți</li>
+      </ul>
+      <p class="card-desc">Fie că vii cu o bicicletă de oraș pe care o folosești zilnic pentru navetă, fie cu una de performanță pe care o scoți doar în weekend, tratamentul e la fel de serios — verificăm transmisia, frânele, roțile, rulmenții și cadrul înainte să recomandăm orice pachet.</p>
+      <div class="card-price">de la 120 lei</div>
+      <a href="service-biciclete-bucuresti.html" class="card-cta">Vezi tot despre biciclete →</a>
+    </div>
+    <div class="service-card featured">
+      <div class="card-name">ESPRESSOARE</div>
+      <p class="card-desc">Reparații și decalcifiere pentru orice tip de espressor — de la aparate clasice până la modele automate cu râșniță integrată. Diagnostic gratuit înainte de orice lucrare, piese de schimb originale sau compatibile și opțiune de preluare și livrare (pickup & return), dacă nu poți trece personal prin atelier. Lucrăm cu toate mărcile populare: De'Longhi, Saeco, Philips, Jura și altele.</p>
+      <ul class="card-includes">
+        <li>Decalcifiere și întreținere</li>
+        <li>Reparații și piese de schimb</li>
+        <li>Preluare și livrare (pickup &amp; return)</li>
+        <li>Verificare presiune și boiler</li>
+      </ul>
+      <p class="card-desc">Fie că e un espressor manual folosit zilnic acasă, fie un aparat automat cu râșniță pentru un birou sau o cafenea mică, verificăm presiunea, boilerul, garniturile și sistemul de încălzire înainte să stabilim ce lucrare e necesară — și îți spunem clar dacă merită reparat sau nu.</p>
+      <div class="card-price">Diagnostic gratuit</div>
+      <a href="service-espressoare-bucuresti.html" class="card-cta">Vezi tot despre espressoare →</a>
+    </div>
+  </div>
+</section>
+
+<!-- DE CE XPERTPOINT -->
+<section class="content-strip" id="de-ce-noi">
+  <div class="services-header">
+    <h2 class="section-title"><small>Diferența noastră</small>DE CE<br>XPERTPOINT</h2>
+    <p class="section-intro">Diagnosticul, transparența și garanția nu sunt bonusuri ocazionale la XpertPoint — sunt regula, pentru orice bicicletă sau espressor care trece pragul atelierului. Iată ce găsești la fiecare vizită, indiferent de serviciul pentru care vii, și de ce clienții revin la noi în loc să caute alt service prin oraș.</p>
+  </div>
+  <div class="signs-grid">
+    <div class="sign-card">
+      <h3>Diagnostic gratuit</h3>
+      <p>Verificăm bicicleta sau aparatul de cafea înainte de orice lucrare și îți spunem exact ce e de făcut și cât costă, fără costuri ascunse și fără să pornim nimic fără acordul tău explicit.</p>
+    </div>
+    <div class="sign-card">
+      <h3>Transparență totală</h3>
+      <p>Primești un deviz clar înainte să începem lucrarea, cu prețul fiecărei piese și manopere în parte — nu factura finală te informează despre costuri, ci discuția de dinainte.</p>
+    </div>
+    <div class="sign-card">
+      <h3>Garanție inclusă</h3>
+      <p>Orice reparație sau revizie efectuată la noi vine cu garanție — 30 de zile pentru serviciile de bicicletă, până la 6 luni pentru anumite lucrări la espressoare, în funcție de tipul intervenției.</p>
+    </div>
+    <div class="sign-card">
+      <h3>Preluare & livrare</h3>
+      <p>Pentru aparatele de cafea, oferim opțiunea de pickup &amp; return — venim după aparat și ți-l aducem înapoi reparat, util dacă nu poți trece personal prin atelierul din Sector 6.</p>
+    </div>
+  </div>
+  <p class="section-intro" style="margin-top:3rem">Toate cele patru principii se aplică indiferent dacă vii pentru o revizie de 10 minute la frâne sau pentru o decalcifiere completă la un espressor automat — nu facem diferență între o lucrare „mică" și una „mare" când vine vorba de atenția acordată.</p>
+</section>
+
+<!-- CUM FUNCȚIONEAZĂ PROGRAMAREA -->
+<section class="process" id="cum-functioneaza">
+  <div class="process-header">
+    <h2 class="section-title"><small>Simplu și rapid</small>CUM FUNCȚIONEAZĂ</h2>
+    <p class="section-intro" style="color:rgba(10,10,8,0.6)">Patru pași, aceiași indiferent dacă programezi o revizie de bicicletă sau o reparație de espressor — gândiți ca să nu pierzi timp cu telefoane, drumuri în gol sau facturi neclare.</p>
+  </div>
+  <div class="process-steps">
+    <div class="process-step">
+      <h3 class="step-title">Programare online</h3>
+      <p class="step-desc">Alegi serviciul — bicicletă sau espressor — apoi data și ora care ți se potrivesc, direct din pagina de programare. Durează sub un minut și primești confirmare imediată, fără telefoane sau drumuri inutile la atelier.</p>
+      <div class="step-connector"></div>
+    </div>
+    <div class="process-step">
+      <h3 class="step-title">Diagnostic gratuit</h3>
+      <p class="step-desc">La sosire, verificăm bicicleta sau aparatul de cafea și îți explicăm exact ce e de făcut și cât costă, înainte să pornim orice lucrare — fără surprize în factura finală.</p>
+      <div class="step-connector"></div>
+    </div>
+    <div class="process-step">
+      <h3 class="step-title">Lucrarea & actualizări</h3>
+      <p class="step-desc">Mecanicii noștri lucrează cu piese potrivite pentru marca și modelul tău, iar dacă apare ceva neprevăzut pe parcurs, te anunțăm și așteptăm acordul tău înainte de a continua.</p>
+      <div class="step-connector"></div>
+    </div>
+    <div class="process-step">
+      <h3 class="step-title">Ridici, gata</h3>
+      <p class="step-desc">Ridici bicicleta sau espressorul reparat, testat și gata de treabă, cu garanție inclusă pentru lucrarea efectuată — sau, pentru espressoare, îl aducem noi înapoi prin pickup &amp; return.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALE -->
+<section class="testimonials" id="testimoniale">
+  <div class="testimonials-header">
+    <h2 class="section-title"><small>Recenzii clienți</small>CE SPUN<br>CLIENȚII NOȘTRI</h2>
+    <p class="section-intro">Clienți din toată zona de vest a Bucureștiului, veniți fie pentru o bicicletă, fie pentru un espressor — dar cu aceleași observații despre transparență și diagnostic corect.</p>
+  </div>
+  <div class="testimonials-track">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„Am adus bicicleta complet blocată și am ridicat-o parcă nouă. Oameni serioși, prețuri corecte, nicio surpriză."</p>
+      <div class="testimonial-author"><div class="author-avatar">AM</div><div><div class="author-name">Alexandru M.</div><div class="author-city">București, Sector 3</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„De'Longhi-ul nu mai făcea presiune deloc. L-am dus, mi-au dat deviz pe loc și a doua zi era ca nou. Cafea cu cremă din nou!"</p>
+      <div class="testimonial-author"><div class="author-avatar">RP</div><div><div class="author-name">Raluca P.</div><div class="author-city">București, Sector 1</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„Cel mai bun service de biciclete la care am fost. MTB-ul meu arată și se comportă mai bine ca nou. Mulțumesc!"</p>
+      <div class="testimonial-author"><div class="author-avatar">CI</div><div><div class="author-name">Cristian I.</div><div class="author-city">Ilfov, Voluntari</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★☆</div>
+      <p class="testimonial-text">„Au venit să ridice aparatul cu curierul și mi l-au adus reparat. Mai simplu de atât nu se poate. Recomand!"</p>
+      <div class="testimonial-author"><div class="author-avatar">LB</div><div><div class="author-name">Laura B.</div><div class="author-city">București, Sector 6</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„Am adus bicicleta complet blocată și am ridicat-o parcă nouă. Oameni serioși, prețuri corecte, nicio surpriză."</p>
+      <div class="testimonial-author"><div class="author-avatar">AM</div><div><div class="author-name">Alexandru M.</div><div class="author-city">București, Sector 3</div></div></div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">„De'Longhi-ul nu mai făcea presiune deloc. L-am dus, mi-au dat deviz pe loc și a doua zi era ca nou. Cafea cu cremă din nou!"</p>
+      <div class="testimonial-author"><div class="author-avatar">RP</div><div><div class="author-name">Raluca P.</div><div class="author-city">București, Sector 1</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="faq-header">
+    <h2 class="section-title"><small>Întrebări frecvente</small>ÎNTREBĂRI<br>FRECVENTE</h2>
+  </div>
+  <div class="faq-grid">
+    <div class="faq-item">
+      <button class="faq-q" type="button">Cine este XpertPoint?</button>
+      <div class="faq-a"><p>XpertPoint este un atelier de service din București, Sector 6, specializat în două domenii: mecanică de bicicletă și reparații pentru aparate de cafea. Combinăm aceeași echipă, cu peste 11 ani de experiență în domeniu, și aceleași principii de lucru — diagnostic gratuit, deviz transparent și garanție — indiferent dacă aduci o bicicletă sau un espressor. Suntem o firmă înregistrată (XpertPoint SRL), nu un service ambulant sau o platformă de intermediere, iar orice programare sau întrebare trece direct prin echipa care face și reparațiile, nu printr-un dispecerat separat.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Reparați doar biciclete, doar espressoare, sau ambele?</button>
+      <div class="faq-a"><p>Ambele, în același atelier. Multe service-uri se specializează strict pe un singur domeniu, dar la noi găsești și mecanică de bicicletă (revizii, frâne, schimbătoare, roți) și service pentru espressoare (decalcifiere, reparații, piese de schimb), cu diagnostic gratuit pentru fiecare. Poți programa oricare dintre cele două servicii direct din meniul de sus al paginii sau din pagina de programare.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Trebuie să vin cu programare sau pot suna direct?</button>
+      <div class="faq-a"><p>Recomandăm programarea online — durează un minut, alegi serviciul (bicicletă sau espressor), data și ora, și primești confirmare imediată. Programarea ne ajută să pregătim atelierul dinainte și să te preluăm fără timp de așteptare. Dacă preferi, poți suna și la 0773 565 576 și stabilim programarea telefonic, la fel de rapid.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Ce înseamnă „diagnostic gratuit"?</button>
+      <div class="faq-a"><p>Înainte de orice reparație, verificăm bicicleta sau aparatul de cafea și îți spunem exact ce este de făcut și cât costă — fără să plătești nimic pentru această evaluare și fără să pornim vreo lucrare fără acordul tău. Diagnosticul gratuit e valabil atât pentru biciclete, cât și pentru espressoare, indiferent de marcă sau model.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Oferiți garanție la lucrări?</button>
+      <div class="faq-a"><p>Da. Lucrările efectuate la XpertPoint beneficiază de garanție — 30 de zile pentru serviciile de bicicletă și până la 6 luni pentru anumite reparații la espressoare, în funcție de tipul intervenției. Dacă în această perioadă apare o problemă legată de lucrarea făcută, revii la atelier și o rezolvăm fără costuri suplimentare. Detaliile exacte de garanție pentru fiecare serviciu sunt afișate pe paginile dedicate de biciclete și espressoare.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Deserviți și alte zone din București, nu doar Sector 6?</button>
+      <div class="faq-a"><p>Atelierul nostru fizic este în Sector 6, dar primim clienți din toată zona de vest a Bucureștiului — Drumul Taberei, Militari, Crângași, Giulești — și din Ilfov. Pentru espressoare oferim și opțiunea de preluare și livrare (pickup &amp; return), utilă dacă nu poți trece personal prin atelier.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Cum plătesc pentru reparație?</button>
+      <div class="faq-a"><p>Programarea online nu presupune nicio plată în avans. Achiți la atelier, după diagnostic și după ce ești de acord cu devizul — cash sau card, la alegere. Pentru espressoarele preluate prin pickup & return, plata se face la livrare, tot după ce confirmi devizul.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Ce se întâmplă dacă nu sunt de acord cu diagnosticul?</button>
+      <div class="faq-a"><p>Nimic — diagnosticul e gratuit și nu te obligă la nimic. Dacă decizi să nu continui cu reparația, îți iei bicicleta sau aparatul înapoi fără niciun cost. Pornim o lucrare doar după ce confirmi explicit devizul pe care ți l-am prezentat.</p></div>
+    </div>
+  </div>
+  <div class="faq-cta">
+    <h3 class="faq-cta-title">Încă nelămurit?</h3>
+    <p class="faq-cta-text">Sună-ne la <a href="tel:+40773565576">0773 565 576</a> pentru un răspuns rapid, sau sari direct la treabă — programarea durează mai puțin de un minut.</p>
+    <a href="programeaza-te.html" class="faq-cta-btn">Programează-te</a>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div>
+    <h2 class="cta-headline">HAI SĂ REPARĂM<br>CEVA ASTĂZI.</h2>
+    <p class="cta-sub">Programează-te acum pentru bicicletă sau espressor — diagnosticul e mereu gratuit, indiferent ce alegi, iar confirmarea vine în câteva minute.</p>
+  </div>
+  <div class="cta-actions">
+    <a href="tel:+40773565576" class="btn-white">📞 Sună acum</a>
+    <a href="https://wa.me/40773565576" target="_blank" class="btn-white alt">WhatsApp</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">XPERT<span>POINT</span></a>
+      <p>Atelier de service pentru biciclete și aparate de cafea în București, Sector 6. Calitate, transparență și diagnostic gratuit pentru orice serviciu.</p>
+      <div class="social-links" style="margin-top:1.5rem">
+        <a href="https://www.facebook.com/profile.php?id=61591523255375" class="social-link" aria-label="Facebook" target="_blank" rel="noopener">f</a>
+        <a href="https://www.instagram.com/xpertpoint.ro/" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">ig</a>
+        <a href="https://www.tiktok.com/@xpertpoint.ro" class="social-link" aria-label="TikTok" target="_blank" rel="noopener">tt</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Servicii</h4>
+      <ul>
+        <li><a href="service-biciclete-bucuresti.html">Service biciclete</a></li>
+        <li><a href="service-espressoare-bucuresti.html">Service espressoare</a></li>
+        <li><a href="service-biciclete-bucuresti.html#servicii">Revizii biciclete</a></li>
+        <li><a href="service-espressoare-bucuresti.html#servicii">Decalcifiere espressoare</a></li>
+        <li><a href="programeaza-te.html">Programează-te</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Informații</h4>
+      <ul>
+        <li><a href="#despre">Cine suntem</a></li>
+        <li><a href="#cum-functioneaza">Cum funcționăm</a></li>
+        <li><a href="#testimoniale">Recenzii</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="https://maps.google.com/?q=Strada+General+Petre+Popov%C4%83%C8%9B+9,+060314+Bucure%C8%99ti" target="_blank" rel="noopener">📍 Strada General Petre Popovăț 9, 060314 București</a></li>
+        <li><a href="tel:+40773565576">📞 0773 565 576</a></li>
+        <li><a href="mailto:hello@xpertpoint.ro">✉️ hello@xpertpoint.ro</a></li>
+        <li>🕐 Luni–Vineri: 10:00–19:00</li>
+        <li>🕐 Sâmbătă: 10:00–14:00</li>
+        <li>🕐 Duminică: închis</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 XpertPoint SRL — Toate drepturile rezervate</span>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
+      <a href="privacy-policy.html">Politică confidențialitate</a>
+      <a href="terms.html">Termeni și condiții</a>
+      <a href="https://anpc.ro" target="_blank" rel="noopener">ANPC</a>
+      <a href="#" id="cookieSettingsLink">Setări cookie-uri</a>
+    </div>
+  </div>
 </footer>
 
 <!-- COOKIE-CONSENT:START -->
@@ -319,17 +804,77 @@
   }
   document.getElementById('cookieAcceptBtn').addEventListener('click', () => setCookieConsent('accepted'));
   document.getElementById('cookieRejectBtn').addEventListener('click', () => setCookieConsent('rejected'));
+  const cookieSettingsLink = document.getElementById('cookieSettingsLink');
+  if (cookieSettingsLink) cookieSettingsLink.addEventListener('click', e => { e.preventDefault(); showCookieBanner(); });
   // COOKIE-CONSENT:END
 
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = cursor.querySelector('.cursor-ring');
+  const dot = cursor.querySelector('.cursor-dot');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+  function animCursor() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px'; ring.style.borderColor = 'rgba(255,255,255,0.6)'; });
+    el.addEventListener('mouseleave', () => { ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderColor = 'rgba(245,243,238,0.5)'; });
+  });
+
+  // NAV SCROLL
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // SCROLL REVEAL
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = 1;
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.service-card, .process-step, .sign-card').forEach(el => {
+    el.style.opacity = 0;
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+
+  // HAMBURGER (mobile)
+  document.getElementById('hamburger').addEventListener('click', () => {
+    const links = document.querySelector('.nav-links');
+    if (links.style.display === 'flex') {
+      links.style.display = 'none';
+    } else {
+      links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:70px;left:0;right:0;background:rgba(10,10,8,0.98);padding:2rem 1.5rem;gap:1.5rem;z-index:99';
+    }
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => { q.parentElement.classList.toggle('open'); });
+  });
+
+  // HERO CHOOSER hover crossfade
   const bgBiciclete = document.getElementById('bgBiciclete');
   const bgCafea = document.getElementById('bgCafea');
+  const heroChooser = document.getElementById('heroChooser');
   const itemBiciclete = document.getElementById('itemBiciclete');
   const itemCafea = document.getElementById('itemCafea');
 
-  itemBiciclete.addEventListener('mouseenter', () => { bgBiciclete.classList.add('active'); document.body.classList.add('hovering'); });
-  itemBiciclete.addEventListener('mouseleave', () => { bgBiciclete.classList.remove('active'); document.body.classList.remove('hovering'); });
-  itemCafea.addEventListener('mouseenter', () => { bgCafea.classList.add('active'); document.body.classList.add('hovering'); });
-  itemCafea.addEventListener('mouseleave', () => { bgCafea.classList.remove('active'); document.body.classList.remove('hovering'); });
+  itemBiciclete.addEventListener('mouseenter', () => { bgBiciclete.classList.add('active'); heroChooser.classList.add('hovering'); });
+  itemBiciclete.addEventListener('mouseleave', () => { bgBiciclete.classList.remove('active'); heroChooser.classList.remove('hovering'); });
+  itemCafea.addEventListener('mouseenter', () => { bgCafea.classList.add('active'); heroChooser.classList.add('hovering'); });
+  itemCafea.addEventListener('mouseleave', () => { bgCafea.classList.remove('active'); heroChooser.classList.remove('hovering'); });
 </script>
 </body>
 </html>

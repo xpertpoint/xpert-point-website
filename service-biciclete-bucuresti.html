@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>Service Biciclete București — Revizii și Reparații | XpertPoint</title>
 <meta name="description" content="Service biciclete în București, Sector 6: revizie completă, reparații frâne și schimbătoare de viteze. Programare rapidă, diagnostic transparent.">
 <link rel="canonical" href="https://www.xpertpoint.ro/service-biciclete-bucuresti.html">
@@ -269,12 +273,16 @@
     letter-spacing: 0.08em;
     text-decoration: none; white-space: nowrap; flex-shrink: 0;
   }
-  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; flex-shrink: 0; }
+  .hamburger { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; background: none; border: none; flex-shrink: 0; width: 44px; height: 44px; padding: 0; }
   .hamburger span { width: 24px; height: 1px; background: var(--white); transition: all .3s; display: block; }
+  .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
   /* ── HERO ── */
   .hero {
     height: 100vh;
+    height: 100dvh;
     position: relative;
     display: flex; align-items: flex-end;
     overflow: hidden;
@@ -883,7 +891,21 @@
   /* ── MOBILE ── */
   @media (max-width: 900px) {
     nav { padding: 1.2rem 1.5rem; }
-    .nav-links { display: none; }
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      position: fixed;
+      top: 70px; left: 0; right: 0; bottom: 0;
+      justify-self: auto;
+      background: rgba(10,10,8,0.98);
+      padding: 2rem 1.5rem;
+      gap: 1.5rem;
+      z-index: 99;
+      overflow-y: auto;
+      width: auto;
+    }
+    .nav-links.open { display: flex; }
+    body.mobile-menu-open { overflow: hidden; }
     .nav-switch-in-menu { display: flex; }
     .nav-buttons { display: none; }
     .nav-mobile-actions { display: flex; }
@@ -912,10 +934,15 @@
     .cta-band { grid-template-columns: 1fr; }
     .newsletter { flex-direction: column; padding: 3rem 1.5rem; }
     .newsletter-form { flex-direction: column; width: 100%; }
-    .newsletter-input { width: 100%; }
+    .newsletter-input { width: 100%; font-size: 16px; }
     .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
     footer { padding: 3rem 1.5rem 1.5rem; }
     .testimonials { padding: 4rem 1.5rem; }
+  }
+
+  /* Custom cursor is mouse-only: hide it on touch devices so it doesn't render as a static phantom circle */
+  @media (hover: none), (pointer: coarse) {
+    .cursor { display: none; }
   }
 
   @media (max-width: 500px) {
@@ -1006,7 +1033,7 @@
 <!-- NAV -->
 <nav id="navbar">
   <a href="#" class="nav-logo">XPERT<span>POINT</span></a>
-  <ul class="nav-links">
+  <ul class="nav-links" id="navLinks">
     <li><a href="#servicii">Servicii</a></li>
     <li><a href="#proces">Cum funcționăm</a></li>
     <li><a href="#testimoniale">Recenzii</a></li>
@@ -1019,7 +1046,7 @@
   </div>
   <div class="nav-mobile-actions">
     <a href="programeaza-te.html" class="nav-cta-mobile">Programează-te</a>
-    <button class="hamburger" id="hamburger" aria-label="Meniu">
+    <button class="hamburger" id="hamburger" aria-label="Meniu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -1634,24 +1661,26 @@
   if (cookieSettingsLink) cookieSettingsLink.addEventListener('click', e => { e.preventDefault(); showCookieBanner(); });
   // COOKIE-CONSENT:END
 
-  // CURSOR
-  const cursor = document.getElementById('cursor');
-  const ring = cursor.querySelector('.cursor-ring');
-  const dot = cursor.querySelector('.cursor-dot');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
-  function animCursor() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animCursor);
+  // CURSOR (mouse-only — skip entirely on touch devices, matches the CSS that hides .cursor there)
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const cursor = document.getElementById('cursor');
+    const ring = cursor.querySelector('.cursor-ring');
+    const dot = cursor.querySelector('.cursor-dot');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+    function animCursor() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animCursor);
+    }
+    animCursor();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px'; ring.style.borderColor = 'rgba(255,255,255,0.6)'; });
+      el.addEventListener('mouseleave', () => { ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderColor = 'rgba(245,243,238,0.5)'; });
+    });
   }
-  animCursor();
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px'; ring.style.borderColor = 'rgba(255,255,255,0.6)'; });
-    el.addEventListener('mouseleave', () => { ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderColor = 'rgba(245,243,238,0.5)'; });
-  });
 
   // NAV SCROLL
   const navbar = document.getElementById('navbar');
@@ -1727,14 +1756,25 @@
   });
 
   // HAMBURGER (mobile)
-  document.getElementById('hamburger').addEventListener('click', () => {
-    const links = document.querySelector('.nav-links');
-    if (links.style.display === 'flex') {
-      links.style.display = 'none';
-    } else {
-      links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:70px;left:0;right:0;background:rgba(10,10,8,0.98);padding:2rem 1.5rem;gap:1.5rem;z-index:99';
-    }
+  const hamburgerBtn = document.getElementById('hamburger');
+  const navLinksEl = document.getElementById('navLinks');
+  function openMobileMenu() {
+    navLinksEl.classList.add('open');
+    hamburgerBtn.classList.add('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('mobile-menu-open');
+  }
+  function closeMobileMenu() {
+    navLinksEl.classList.remove('open');
+    hamburgerBtn.classList.remove('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('mobile-menu-open');
+  }
+  hamburgerBtn.addEventListener('click', () => {
+    navLinksEl.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
   });
+  navLinksEl.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileMenu));
+  window.addEventListener('resize', () => { if (window.innerWidth > 900) closeMobileMenu(); });
 
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(q => {
