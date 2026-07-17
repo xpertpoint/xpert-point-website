@@ -133,6 +133,8 @@
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=1600&q=80&auto=format&fit=crop" imagesrcset="https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=900&q=75&auto=format&fit=crop 900w, https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=1600&q=80&auto=format&fit=crop 1600w" imagesizes="100vw">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -263,7 +265,7 @@
     transition: background .2s;
   }
   .nav-cta:hover { background: var(--accent-dim); }
-  .nav-mobile-actions { justify-self: end; display: none; align-items: center; gap: 1rem; }
+  .nav-mobile-actions { grid-column: 4; justify-self: end; display: none; align-items: center; gap: 1rem; }
   .nav-cta-mobile {
     display: none;
     background: var(--accent); color: var(--white);
@@ -307,12 +309,12 @@
       rgba(255,255,255,0.15) 100%
     );
   }
-  /* Slide 1: sport bicycle - Murillo de Paula (road bike) */
-  .slide-1 { background-image: url('https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=1920&q=85'); }
-  /* Slide 2: bicycle maintenance/mechanic hands on drivetrain */
-  .slide-2 { background-image: url('https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=1920&q=85'); }
-  /* Slide 3: electric bicycle modern urban - cycle on street */
-  .slide-3 { background-image: url('https://images.unsplash.com/photo-1576435728678-68d0fbf94946?w=1920&q=85'); }
+  /* Slide 1: sport bicycle - Murillo de Paula (road bike) — LCP image, loads eagerly */
+  .slide-1 { background-image: url('https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=1600&q=80&auto=format&fit=crop'); }
+  /* Slide 2: bicycle maintenance/mechanic hands on drivetrain — background-image set via JS after load, see script at bottom */
+  @media (max-width: 768px) {
+    .slide-1 { background-image: url('https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=900&q=75&auto=format&fit=crop'); }
+  }
 
   .hero-content {
     position: relative; z-index: 2;
@@ -1056,8 +1058,7 @@
 <section class="hero">
   <div class="hero-slides">
     <div class="hero-slide slide-1 active"></div>
-    <div class="hero-slide slide-2"></div>
-    <div class="hero-slide slide-3"></div>
+    <div class="hero-slide slide-2" id="slide2"></div>
   </div>
   <div class="hero-content">
     <div class="hero-eyebrow">Service Biciclete București</div>
@@ -1071,7 +1072,6 @@
   <div class="hero-indicators" id="indicators">
     <div class="indicator active" data-idx="0"></div>
     <div class="indicator" data-idx="1"></div>
-    <div class="indicator" data-idx="2"></div>
   </div>
   <div class="hero-scroll">Scroll</div>
 </section>
@@ -1119,7 +1119,7 @@
 <!-- ABOUT -->
 <section class="about-strip" id="despre">
   <div class="about-image">
-    <img src="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=900&q=85&fit=crop" alt="Mecanic XpertPoint reparând o bicicletă în atelierul din București" loading="lazy" width="900" height="600">
+    <img src="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=900&q=80&auto=format&fit=crop" alt="Mecanic XpertPoint reparând o bicicletă în atelierul din București" loading="lazy" width="900" height="600">
   </div>
   <div class="about-text">
     <div class="section-label">Cine suntem</div>
@@ -1703,6 +1703,17 @@
     ind.addEventListener('click', () => goToSlide(+ind.dataset.idx));
   });
   setInterval(() => goToSlide((currentSlide + 1) % slides.length), 5000);
+
+  // Slide 2's background is not needed until the first rotation (~5s in), so it's fetched
+  // only after the page has settled instead of competing with the LCP image (slide 1) for bandwidth.
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const slide2 = document.getElementById('slide2');
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      const w = isMobile ? 900 : 1600, q = isMobile ? 75 : 80;
+      slide2.style.backgroundImage = `url('https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=${w}&q=${q}&auto=format&fit=crop')`;
+    }, 1000);
+  });
 
   // FORM SUBMISSION (send-form.php, hosted alongside this site on cPanel)
   async function submitForm(form) {

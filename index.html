@@ -62,6 +62,7 @@
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
   .sr-only {
@@ -132,13 +133,16 @@
   .nav-links a:hover::after { width: 100%; }
   .nav-cta { background: var(--accent); color: var(--white); padding: 0.6rem 1.5rem; clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%); font-family: var(--font-display); font-size: 0.95rem; font-weight: 400; letter-spacing: 0.08em; text-decoration: none; white-space: nowrap; transition: background .2s; }
   .nav-cta:hover { background: var(--accent-dim); }
-  .nav-mobile-actions { justify-self: end; display: none; align-items: center; gap: 1rem; }
+  .nav-mobile-actions { grid-column: 4; justify-self: end; display: none; align-items: center; gap: 1rem; }
   .nav-cta-mobile { display: none; background: var(--accent); color: var(--white); padding: 0.55rem 1.1rem; clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 0 100%); font-family: var(--font-display); font-size: 0.85rem; font-weight: 400; letter-spacing: 0.08em; text-decoration: none; white-space: nowrap; flex-shrink: 0; }
-  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; flex-shrink: 0; }
+  .hamburger { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; background: none; border: none; flex-shrink: 0; width: 44px; height: 44px; padding: 0; }
   .hamburger span { width: 24px; height: 1px; background: var(--white); transition: all .3s; display: block; }
+  .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
   /* HERO CHOOSER (full-bleed hover) */
-  .hero-chooser { position: relative; height: 100vh; overflow: hidden; }
+  .hero-chooser { position: relative; height: 100vh; height: 100dvh; overflow: hidden; }
   .bg-layer {
     position: absolute; inset: 0;
     background-size: cover; background-position: center;
@@ -148,8 +152,11 @@
     z-index: 0;
   }
   .bg-layer.active { opacity: 1; transform: scale(1); }
-  .bg-biciclete { background-image: url('https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=1920&q=85'); }
-  .bg-cafea { background-image: url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1920&q=85'); }
+  /* Only shown via hover crossfade (desktop-only interaction — mobile has no hover), so not loaded on mobile at all */
+  @media (min-width: 901px) {
+    .bg-biciclete { background-image: url('https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=1600&q=80&auto=format&fit=crop'); }
+    .bg-cafea { background-image: url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1600&q=80&auto=format&fit=crop'); }
+  }
   .bg-scrim { position: absolute; inset: 0; background: rgba(10,10,8,0.72); z-index: 1; transition: background 0.6s ease; }
   .hero-chooser.hovering .bg-scrim { background: rgba(10,10,8,0.55); }
 
@@ -341,7 +348,21 @@
   /* ── MOBILE ── */
   @media (max-width: 900px) {
     nav { padding: 1.2rem 1.5rem; }
-    .nav-links { display: none; }
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      position: fixed;
+      top: 70px; left: 0; right: 0; bottom: 0;
+      justify-self: auto;
+      background: rgba(10,10,8,0.98);
+      padding: 2rem 1.5rem;
+      gap: 1.5rem;
+      z-index: 99;
+      overflow-y: auto;
+      width: auto;
+    }
+    .nav-links.open { display: flex; }
+    body.mobile-menu-open { overflow: hidden; }
     .nav-buttons { display: none; }
     .nav-mobile-actions { display: flex; }
     .nav-cta-mobile { display: inline-block; }
@@ -368,6 +389,11 @@
     .process-steps { grid-template-columns: 1fr; }
     .footer-top { grid-template-columns: 1fr; }
     .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+
+  /* Custom cursor is mouse-only: hide it on touch devices so it doesn't render as a static phantom circle */
+  @media (hover: none), (pointer: coarse) {
+    .cursor { display: none; }
   }
 
   /* COOKIE-CONSENT:START */
@@ -418,7 +444,7 @@
 <!-- NAV -->
 <nav id="navbar">
   <a href="#" class="nav-logo">XPERT<span>POINT</span></a>
-  <ul class="nav-links">
+  <ul class="nav-links" id="navLinks">
     <li><a href="#despre">Despre</a></li>
     <li><a href="#servicii">Servicii</a></li>
     <li><a href="#faq">FAQ</a></li>
@@ -429,7 +455,7 @@
   </div>
   <div class="nav-mobile-actions">
     <a href="programeaza-te.html" class="nav-cta-mobile">Programează-te</a>
-    <button class="hamburger" id="hamburger" aria-label="Meniu">
+    <button class="hamburger" id="hamburger" aria-label="Meniu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -459,7 +485,7 @@
 <!-- DESPRE + UNDE NE AFLĂM -->
 <section class="about-strip" id="despre">
   <div class="about-image">
-    <img src="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=900&q=85&fit=crop" alt="Atelierul XpertPoint din Sector 6, București" loading="lazy" width="900" height="600">
+    <img src="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=900&q=80&auto=format&fit=crop" alt="Atelierul XpertPoint din Sector 6, București" loading="lazy" width="900" height="600">
   </div>
   <div class="about-text">
     <div class="section-label">Cine suntem</div>
@@ -808,24 +834,26 @@
   if (cookieSettingsLink) cookieSettingsLink.addEventListener('click', e => { e.preventDefault(); showCookieBanner(); });
   // COOKIE-CONSENT:END
 
-  // CURSOR
-  const cursor = document.getElementById('cursor');
-  const ring = cursor.querySelector('.cursor-ring');
-  const dot = cursor.querySelector('.cursor-dot');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
-  function animCursor() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animCursor);
+  // CURSOR (mouse-only — skip entirely on touch devices, matches the CSS that hides .cursor there)
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const cursor = document.getElementById('cursor');
+    const ring = cursor.querySelector('.cursor-ring');
+    const dot = cursor.querySelector('.cursor-dot');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx + 'px'; dot.style.top = my + 'px'; });
+    function animCursor() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animCursor);
+    }
+    animCursor();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px'; ring.style.borderColor = 'rgba(255,255,255,0.6)'; });
+      el.addEventListener('mouseleave', () => { ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderColor = 'rgba(245,243,238,0.5)'; });
+    });
   }
-  animCursor();
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px'; ring.style.borderColor = 'rgba(255,255,255,0.6)'; });
-    el.addEventListener('mouseleave', () => { ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderColor = 'rgba(245,243,238,0.5)'; });
-  });
 
   // NAV SCROLL
   const navbar = document.getElementById('navbar');
@@ -850,14 +878,25 @@
   });
 
   // HAMBURGER (mobile)
-  document.getElementById('hamburger').addEventListener('click', () => {
-    const links = document.querySelector('.nav-links');
-    if (links.style.display === 'flex') {
-      links.style.display = 'none';
-    } else {
-      links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:70px;left:0;right:0;background:rgba(10,10,8,0.98);padding:2rem 1.5rem;gap:1.5rem;z-index:99';
-    }
+  const hamburgerBtn = document.getElementById('hamburger');
+  const navLinksEl = document.getElementById('navLinks');
+  function openMobileMenu() {
+    navLinksEl.classList.add('open');
+    hamburgerBtn.classList.add('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('mobile-menu-open');
+  }
+  function closeMobileMenu() {
+    navLinksEl.classList.remove('open');
+    hamburgerBtn.classList.remove('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('mobile-menu-open');
+  }
+  hamburgerBtn.addEventListener('click', () => {
+    navLinksEl.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
   });
+  navLinksEl.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileMenu));
+  window.addEventListener('resize', () => { if (window.innerWidth > 900) closeMobileMenu(); });
 
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(q => {
