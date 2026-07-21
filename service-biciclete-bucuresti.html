@@ -7,12 +7,12 @@
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<title>Service Biciclete București — Revizii și Reparații | XpertPoint</title>
-<meta name="description" content="Service biciclete în București, Sector 6: revizie completă, reparații frâne și schimbătoare de viteze. Programare rapidă, diagnostic transparent.">
+<title>Reparații Biciclete București — Revizii | XpertPoint</title>
+<meta name="description" content="Reparații biciclete în București, Sector 6 — diagnostic gratuit, prețuri transparente. Programare online rapidă.">
 <link rel="canonical" href="https://www.xpertpoint.ro/service-biciclete-bucuresti.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Service Biciclete București — Revizii și Reparații | XpertPoint">
-<meta property="og:description" content="Service biciclete în București, Sector 6: revizie completă, reparații frâne și schimbătoare de viteze. Programare rapidă, diagnostic transparent.">
+<meta property="og:title" content="Reparații Biciclete București — Revizii | XpertPoint">
+<meta property="og:description" content="Reparații biciclete în București, Sector 6 — diagnostic gratuit, prețuri transparente. Programare online rapidă.">
 <meta property="og:url" content="https://www.xpertpoint.ro/service-biciclete-bucuresti.html">
 <meta property="og:image" content="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=900&q=85&fit=crop">
 <meta property="og:locale" content="ro_RO">
@@ -26,6 +26,7 @@
   "telephone": "+40773565576",
   "email": "hello@xpertpoint.ro",
   "priceRange": "$$",
+  "areaServed": ["Sector 6, București", "Regie", "Crângași", "Belvedere", "Drumul Taberei", "Militari", "Giulești"],
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Strada General Petre Popovăț 9",
@@ -79,6 +80,14 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Lucrăm cu orice tip de bicicletă, indiferent de marcă: biciclete de oraș și trekking, de șosea, MTB, biciclete pentru copii și biciclete electrice. La programarea online poți selecta categoria (simplă sau electrică) și modelul, ca mecanicul să fie pregătit pentru specificul bicicletei tale."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Faceți reparații și la biciclete electrice (e-bike)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Da. Pe lângă bicicletele clasice, facem revizii și reparații și la biciclete electrice — verificăm transmisia, frânele și partea mecanică la fel ca la o bicicletă obișnuită. La programarea online selectezi categoria electrică, ca mecanicul să vină pregătit pentru specificul bicicletei tale."
       }
     },
     {
@@ -151,6 +160,7 @@
     --font-display: 'Bebas Neue', sans-serif;
     --font-serif: 'DM Serif Display', serif;
     --font-body: 'DM Sans', sans-serif;
+    --bar-h: 40px;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -199,9 +209,32 @@
     opacity: 0.4;
   }
 
+  /* ── TOP CONTACT BAR ── */
+  .top-contact-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    height: var(--bar-h);
+    background: var(--rust);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
+    display: flex; align-items: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .top-contact-bar::-webkit-scrollbar { display: none; }
+  .top-contact-bar-inner {
+    display: flex; align-items: center; gap: 1.75rem;
+    margin: 0 auto; padding: 0 1.5rem;
+    white-space: nowrap;
+  }
+  .top-contact-bar a { color: var(--white); text-decoration: none; opacity: 0.92; transition: opacity .2s; }
+  .top-contact-bar a:hover { opacity: 1; text-decoration: underline; }
+  .top-contact-bar .bar-sep { opacity: 0.4; }
+
   /* ── NAV ── */
   nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    position: fixed; top: var(--bar-h); left: 0; right: 0; z-index: 100;
     display: grid; grid-template-columns: 1fr auto 1fr auto; align-items: center;
     padding: 1.5rem 3rem;
     background: linear-gradient(to bottom, rgba(10,10,8,0.95), transparent);
@@ -892,12 +925,16 @@
 
   /* ── MOBILE ── */
   @media (max-width: 900px) {
+    :root { --bar-h: 34px; }
+    .top-contact-bar { font-size: 0.7rem; }
+    .top-contact-bar-inner { gap: 1.1rem; padding: 0 1rem; }
+    .top-contact-bar .bar-optional { display: none; }
     nav { padding: 1.2rem 1.5rem; }
     .nav-links {
       display: none;
       flex-direction: column;
       position: fixed;
-      top: 70px; left: 0; right: 0; bottom: 0;
+      top: calc(70px + var(--bar-h)); left: 0; right: 0; bottom: 0;
       justify-self: auto;
       background: rgba(10,10,8,0.98);
       padding: 2rem 1.5rem;
@@ -1026,6 +1063,19 @@
 </head>
 <body>
 
+<!-- TOP CONTACT BAR -->
+<div class="top-contact-bar" aria-label="Informații de contact">
+  <div class="top-contact-bar-inner">
+    <a href="tel:+40773565576">📞 0773 565 576</a>
+    <span class="bar-sep bar-optional">|</span>
+    <a href="mailto:hello@xpertpoint.ro" class="bar-optional">✉️ hello@xpertpoint.ro</a>
+    <span class="bar-sep">|</span>
+    <a href="https://maps.google.com/?q=Strada+General+Petre+Popov%C4%83%C8%9B+9,+060314+Bucure%C8%99ti" target="_blank" rel="noopener">📍 Strada General Petre Popovăț 9, București</a>
+    <span class="bar-sep bar-optional">|</span>
+    <span class="bar-optional">🕐 L-V 10:00–19:00 · Sb 10:00–14:00</span>
+  </div>
+</div>
+
 <!-- CURSOR -->
 <div class="cursor" id="cursor">
   <div class="cursor-ring"></div>
@@ -1063,7 +1113,7 @@
   <div class="hero-content">
     <div class="hero-eyebrow">Service Biciclete București</div>
     <h1 class="hero-title">BICICLETA TA.<br><em>PERFECTĂ.</em></h1>
-    <p class="hero-sub">Peste 11 ani de experiență în service și revizie biciclete. Lucrăm cu precizie, rapid și transparent — indiferent de marcă sau tip.</p>
+    <p class="hero-sub">Peste 11 ani de experiență în service, reparații biciclete și revizie. Lucrăm cu precizie, rapid și transparent — indiferent de marcă sau tip.</p>
     <div class="hero-actions">
       <a href="programeaza-te.html" class="btn-primary">Programează-te</a>
       <a href="#servicii" class="btn-secondary">Alege pachetul</a>
@@ -1084,14 +1134,14 @@
     <div class="marquee-item">Revizie Custom</div>
     <div class="marquee-item">Reglaj Schimbător</div>
     <div class="marquee-item">Centrare Roți</div>
-    <div class="marquee-item">Schimb Anvelope</div>
+    <div class="marquee-item">Schimb Anvelope 26/28/29″</div>
     <div class="marquee-item">Service Frâne Hidraulice</div>
     <div class="marquee-item">Revizie Standard</div>
     <div class="marquee-item">Revizie Completă</div>
     <div class="marquee-item">Revizie Custom</div>
     <div class="marquee-item">Reglaj Schimbător</div>
     <div class="marquee-item">Centrare Roți</div>
-    <div class="marquee-item">Schimb Anvelope</div>
+    <div class="marquee-item">Schimb Anvelope 26/28/29″</div>
     <div class="marquee-item">Service Frâne Hidraulice</div>
   </div>
 </div>
@@ -1124,7 +1174,7 @@
   <div class="about-text">
     <div class="section-label">Cine suntem</div>
     <h2 class="about-heading">Nu reparăm biciclete.<br>Le <em>resuscităm.</em></h2>
-    <p class="about-body">Suntem un service specializat cu o echipă pasionată de ciclism. Fiecare bicicletă care intră pe ușa noastră iese optimizată, sigură și gata pentru orice drum — fie că ești ciclist urban sau mountain biker.</p>
+    <p class="about-body">Suntem un atelier specializat în reparații biciclete și revizii, cu o echipă pasionată de ciclism. Fiecare bicicletă care intră pe ușa noastră iese optimizată, sigură și gata pentru orice drum — fie că ești ciclist urban sau mountain biker.</p>
     <ul class="feature-list">
       <li>Mecanici certificați și pasionați de ciclism</li>
       <li>Piese de schimb originale sau premium</li>
@@ -1383,7 +1433,7 @@
     </div>
     <div class="sign-card">
       <h3>3. Deviz transparent</h3>
-      <p>Îți prezentăm exact ce trebuie făcut și cât costă, înainte să începem. Nu atingem nimic peste pachetul ales fără să discutăm mai întâi cu tine. Fără costuri ascunse și fără „surprize" la ridicare.</p>
+      <p>Îți prezentăm exact ce trebuie făcut și cât costă, înainte să începem — prețuri transparente, fără costuri ascunse și fără „surprize" la ridicare. Nu atingem nimic peste pachetul ales fără să discutăm mai întâi cu tine.</p>
     </div>
     <div class="sign-card">
       <h3>4. Lucrarea propriu-zisă</h3>
@@ -1416,7 +1466,7 @@
     </div>
     <div class="sign-card">
       <h3>Schimbătoare</h3>
-      <p>Lanțul sare peste pinioane, schimbă viteza cu întârziere sau face zgomot când pedalezi. De obicei e nevoie de un reglaj al schimbătoarelor și, uneori, de cabluri noi. Un reglaj corect îți readuce schimbările de viteză precise și silențioase.</p>
+      <p>Lanțul sare peste pinioane, schimbă viteza cu întârziere sau face zgomot când pedalezi. De obicei e nevoie de un reglaj al schimbătorului (Shimano, SRAM sau alt brand) și, uneori, de o manetă de schimbător sau cabluri noi. Un reglaj corect îți readuce schimbările de viteză precise și silențioase.</p>
     </div>
     <div class="sign-card">
       <h3>Lanț și transmisie</h3>
@@ -1424,11 +1474,11 @@
     </div>
     <div class="sign-card">
       <h3>Anvelope</h3>
-      <p>Pierzi presiune des, vezi crăpături în cauciuc sau profilul e tocit. Anvelopele uzate se pot desface sau aluneca pe umed. Verificarea presiunii și starea cauciucului fac parte din orice revizie de bază.</p>
+      <p>Pierzi presiune des, vezi crăpături în cauciuc sau profilul e tocit. Anvelopele uzate se pot desface sau aluneca pe umed. Verificarea presiunii și starea cauciucului fac parte din orice revizie de bază. Montăm și înlocuim anvelope pe toate diametrele uzuale (26″, 28″, 29″), indiferent de marcă.</p>
     </div>
     <div class="sign-card">
       <h3>Direcție și rulmenți</h3>
-      <p>Ghidonul „joacă", simți un clic în furcă la frânare sau roțile nu se învârt lin. Sunt semne de rulmenți uzați sau nereglați la ghidon, butuci sau pedalier. Lăsați prea mult, uzează piesele din jur.</p>
+      <p>Ghidonul „joacă", simți un clic în furcă (Fox, RockShox sau altă marcă) la frânare sau roțile nu se învârt lin. Sunt semne de rulmenți uzați sau nereglați la ghidon, butuci sau pedalier. Lăsați prea mult, uzează piesele din jur.</p>
     </div>
     <div class="sign-card">
       <h3>Roți și spițe</h3>
@@ -1453,6 +1503,10 @@
     <div class="faq-item">
       <button class="faq-q" type="button">Ce tipuri de biciclete reparați?</button>
       <div class="faq-a"><p>Lucrăm cu orice tip de bicicletă, indiferent de marcă: biciclete de oraș și trekking, de șosea, MTB, biciclete pentru copii și biciclete electrice. La programarea online poți selecta categoria (simplă sau electrică) și modelul, ca mecanicul să fie pregătit pentru specificul bicicletei tale.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button">Faceți reparații și la biciclete electrice (e-bike)?</button>
+      <div class="faq-a"><p>Da. Pe lângă bicicletele clasice, facem revizii și reparații și la biciclete electrice — verificăm transmisia, frânele și partea mecanică la fel ca la o bicicletă obișnuită. La programarea online selectezi categoria electrică, ca mecanicul să vină pregătit pentru specificul bicicletei tale.</p></div>
     </div>
     <div class="faq-item">
       <button class="faq-q" type="button">E nevoie de programare sau pot veni direct?</button>

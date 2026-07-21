@@ -88,6 +88,7 @@
     --font-display: 'Bebas Neue', sans-serif;
     --font-serif: 'DM Serif Display', serif;
     --font-body: 'DM Sans', sans-serif;
+    --bar-h: 40px;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
@@ -114,9 +115,32 @@
   .cursor-dot { width: 8px; height: 8px; background: var(--white); border-radius: 50%; transform: translate(-50%, -50%); transition: width .2s, height .2s; }
   .cursor-ring { width: 40px; height: 40px; border: 1px solid rgba(245,243,238,0.5); border-radius: 50%; transform: translate(-50%, -50%); transition: all .15s ease-out; position: absolute; top: 0; left: 0; }
 
+  /* ── TOP CONTACT BAR ── */
+  .top-contact-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    height: var(--bar-h);
+    background: var(--rust);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
+    display: flex; align-items: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .top-contact-bar::-webkit-scrollbar { display: none; }
+  .top-contact-bar-inner {
+    display: flex; align-items: center; gap: 1.75rem;
+    margin: 0 auto; padding: 0 1.5rem;
+    white-space: nowrap;
+  }
+  .top-contact-bar a { color: var(--white); text-decoration: none; opacity: 0.92; transition: opacity .2s; }
+  .top-contact-bar a:hover { opacity: 1; text-decoration: underline; }
+  .top-contact-bar .bar-sep { opacity: 0.4; }
+
   /* ── NAV ── */
   nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    position: fixed; top: var(--bar-h); left: 0; right: 0; z-index: 100;
     display: grid; grid-template-columns: 1fr auto 1fr auto; align-items: center;
     padding: 1.5rem 3rem;
     background: linear-gradient(to bottom, rgba(10,10,8,0.95), transparent);
@@ -347,12 +371,16 @@
 
   /* ── MOBILE ── */
   @media (max-width: 900px) {
+    :root { --bar-h: 34px; }
+    .top-contact-bar { font-size: 0.7rem; }
+    .top-contact-bar-inner { gap: 1.1rem; padding: 0 1rem; }
+    .top-contact-bar .bar-optional { display: none; }
     nav { padding: 1.2rem 1.5rem; }
     .nav-links {
       display: none;
       flex-direction: column;
       position: fixed;
-      top: 70px; left: 0; right: 0; bottom: 0;
+      top: calc(70px + var(--bar-h)); left: 0; right: 0; bottom: 0;
       justify-self: auto;
       background: rgba(10,10,8,0.98);
       padding: 2rem 1.5rem;
@@ -432,6 +460,19 @@
 </style>
 </head>
 <body>
+
+<!-- TOP CONTACT BAR -->
+<div class="top-contact-bar" aria-label="Informații de contact">
+  <div class="top-contact-bar-inner">
+    <a href="tel:+40773565576">📞 0773 565 576</a>
+    <span class="bar-sep bar-optional">|</span>
+    <a href="mailto:hello@xpertpoint.ro" class="bar-optional">✉️ hello@xpertpoint.ro</a>
+    <span class="bar-sep">|</span>
+    <a href="https://maps.google.com/?q=Strada+General+Petre+Popov%C4%83%C8%9B+9,+060314+Bucure%C8%99ti" target="_blank" rel="noopener">📍 Strada General Petre Popovăț 9, București</a>
+    <span class="bar-sep bar-optional">|</span>
+    <span class="bar-optional">🕐 L-V 10:00–19:00 · Sb 10:00–14:00</span>
+  </div>
+</div>
 
 <h1 class="sr-only">Service biciclete și espressoare în București</h1>
 
