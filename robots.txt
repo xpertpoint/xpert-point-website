@@ -1,5 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /partials/
+Disallow: /tools/
 
 Sitemap: https://www.xpertpoint.ro/sitemap.xml
-Sitemap: https://www.xpertpoint.ro/blog/wp-sitemap.xml
+# Sitemap-ul blogului se adaugă aici după ce e activat modulul Sitemap din Rank Math
+# și https://xpertpoint.ro/blog/sitemap_index.xml răspunde cu 200:
+# Sitemap: https://xpertpoint.ro/blog/sitemap_index.xml

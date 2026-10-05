@@ -1,0 +1,82 @@
+<!-- COOKIE-CONSENT:START -->
+<div class="cookie-overlay" id="cookieOverlay" hidden></div>
+<div class="cookie-banner" id="cookieBanner" hidden>
+  <div class="cookie-banner-inner">
+    <p class="cookie-banner-text">Folosim cookie-uri pentru a îmbunătăți experiența ta pe site și pentru statistici și marketing (Google, Meta). Poți accepta sau refuza cookie-urile non-esențiale.</p>
+    <div class="cookie-banner-actions">
+      <button type="button" class="cookie-btn-reject" id="cookieRejectBtn">Refuz</button>
+      <button type="button" class="cookie-btn-accept" id="cookieAcceptBtn">Accept</button>
+    </div>
+  </div>
+</div>
+<!-- COOKIE-CONSENT:END -->
+<script>
+  // LEAD-SOURCE:START
+  function detectLeadSource() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('gclid')) return 'google_ads';
+    if (params.get('fbclid') || ['facebook', 'instagram'].includes(params.get('utm_source'))) return 'meta_ads';
+    if (params.get('utm_source')) return `${params.get('utm_source')}/${params.get('utm_medium') || 'n/a'}`;
+    return 'organic_direct';
+  }
+  if (!sessionStorage.getItem('xp_lead_source')) {
+    sessionStorage.setItem('xp_lead_source', detectLeadSource());
+  }
+  // LEAD-SOURCE:END
+
+  // TRACKING:START
+  const GA4_MEASUREMENT_ID = 'G-Z9RFBZPG4C';
+  const META_PIXEL_ID = 'XXXXXXXXXXXXXXX'; // TODO: paste real Meta Pixel ID
+
+  function loadTrackingScripts() {
+    if (window.__xpTrackingLoaded) return;
+    window.__xpTrackingLoaded = true;
+
+    const gaScript = document.createElement('script');
+    gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`;
+    gaScript.async = true;
+    document.head.appendChild(gaScript);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('config', GA4_MEASUREMENT_ID);
+
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = true; n.version = '2.0'; n.queue = [];
+      t = b.createElement(e); t.async = true; t.src = v;
+      s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', META_PIXEL_ID);
+    fbq('track', 'PageView');
+  }
+  // TRACKING:END
+
+  // COOKIE-CONSENT:START
+  const COOKIE_CONSENT_KEY = 'xp_cookie_consent';
+  const cookieBanner = document.getElementById('cookieBanner');
+  const cookieOverlay = document.getElementById('cookieOverlay');
+  function setCookieConsent(value) {
+    localStorage.setItem(COOKIE_CONSENT_KEY, value);
+    cookieBanner.hidden = true;
+    cookieOverlay.hidden = true;
+    document.body.style.overflow = '';
+    if (value === 'accepted' && typeof loadTrackingScripts === 'function') loadTrackingScripts();
+  }
+  function showCookieBanner() {
+    cookieBanner.hidden = false;
+    cookieOverlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  const existingCookieConsent = localStorage.getItem(COOKIE_CONSENT_KEY);
+  if (!existingCookieConsent) {
+    showCookieBanner();
+  } else if (existingCookieConsent === 'accepted' && typeof loadTrackingScripts === 'function') {
+    loadTrackingScripts();
+  }
+  document.getElementById('cookieAcceptBtn').addEventListener('click', () => setCookieConsent('accepted'));
+  document.getElementById('cookieRejectBtn').addEventListener('click', () => setCookieConsent('rejected'));
+  const cookieSettingsLink = document.getElementById('cookieSettingsLink');
+  if (cookieSettingsLink) cookieSettingsLink.addEventListener('click', e => { e.preventDefault(); showCookieBanner(); });
+  // COOKIE-CONSENT:END
+</script>

@@ -5,8 +5,21 @@ deployment:
     - /bin/cp -f index.html $DEPLOYPATH
     - /bin/cp -f service-biciclete-bucuresti.html $DEPLOYPATH
     - /bin/cp -f service-espressoare-bucuresti.html $DEPLOYPATH
+    - /bin/cp -f revizie-bicicleta-electrica-bucuresti.html $DEPLOYPATH
+    - /bin/cp -f reparatii-frane-bicicleta-bucuresti.html $DEPLOYPATH
+    - /bin/cp -f preturi.html $DEPLOYPATH
+    - /bin/cp -f despre-noi.html $DEPLOYPATH
+    - /bin/cp -f contact.html $DEPLOYPATH
     - /bin/cp -f programeaza-te.html $DEPLOYPATH
+    - /bin/cp -f privacy-policy.html $DEPLOYPATH
+    - /bin/cp -f terms.html $DEPLOYPATH
+    - /bin/cp -f 404.html $DEPLOYPATH
     - /bin/cp -f send-form.php $DEPLOYPATH
     - /bin/cp -f sitemap.xml $DEPLOYPATH
     - /bin/cp -f robots.txt $DEPLOYPATH
+    - /bin/cp -f llms.txt $DEPLOYPATH
     - /bin/cp -f .htaccess $DEPLOYPATH
+    - /bin/mkdir -p ${DEPLOYPATH}assets/pages ${DEPLOYPATH}assets/fonts
+    - /bin/cp -f assets/site.min.css assets/site.min.js ${DEPLOYPATH}assets/
+    - /bin/cp -f assets/pages/*.min.css ${DEPLOYPATH}assets/pages/
+    - /bin/cp -f assets/fonts/*.woff2 ${DEPLOYPATH}assets/fonts/

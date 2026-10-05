@@ -1,0 +1,480 @@
+{
+  "_info": "Sursa unică a prețurilor de pe /preturi.html (tabele + schema). Modifici aici, apoi rulezi: python3 tools/build.py. Prețurile de biciclete sunt din 'Preturi aparat de marcat - Sheet1.pdf' (sept. 2026); cele de espressoare NU sunt încă validate: price = null se afișează „În pregătire” și nu intră în schema Offer. price = număr în lei; 0 = gratuit; unit = sufix opțional (ex. '/ roată'); from = true afișează 'de la'.",
+  "biciclete": [
+    {
+      "id": "bici-rapide",
+      "title": "Diagnoză și intervenții rapide",
+      "intro": "Constatarea e gratuită: verificăm bicicleta înainte de preluare și îți spunem ce e de făcut și cât costă, fără obligații.",
+      "items": [
+        {
+          "name": "Constatare / diagnoză",
+          "price": 0,
+          "note": "Evaluare gratuită înainte de preluare"
+        },
+        {
+          "name": "Verificare de siguranță (10 puncte)",
+          "price": 0
+        },
+        {
+          "name": "Umflat și verificat presiunea în roți",
+          "price": 0
+        },
+        {
+          "name": "Pană / schimbat cameră",
+          "price": 30,
+          "note": "Manoperă redusă dacă și camera e cumpărată de la noi"
+        },
+        {
+          "name": "Schimbat anvelopă",
+          "price": 30,
+          "note": "Manoperă redusă dacă și anvelopa e cumpărată de la noi"
+        },
+        {
+          "name": "Uns lanț",
+          "price": 5
+        }
+      ]
+    },
+    {
+      "id": "bici-revizii",
+      "title": "Pachete de revizie",
+      "intro": "Trei niveluri, fiecare îl include pe cel anterior. Recomandarea noastră pentru majoritatea bicicletelor este Revizia Standard.",
+      "items": [
+        {
+          "name": "Revizie Express",
+          "price": 99,
+          "note": "Verificare de siguranță + reglaj frâne + reglaj schimbător + uns lanț",
+          "slug": "bici-express"
+        },
+        {
+          "name": "Revizie Standard (recomandată)",
+          "price": 200,
+          "note": "Tot ce include Express + centrat roți + gresare + verificări complete",
+          "slug": "bici-standard"
+        },
+        {
+          "name": "Revizie Completă",
+          "price": 270,
+          "note": "Tot ce include Standard + curățare și gresare piese interne + cabluri noi + aerisire frâne",
+          "slug": "bici-completa"
+        }
+      ]
+    },
+    {
+      "id": "bici-roti",
+      "title": "Roți",
+      "items": [
+        {
+          "name": "Centrare roată",
+          "price": 40
+        },
+        {
+          "name": "Spițat și centrat roată",
+          "price": 120
+        },
+        {
+          "name": "Echilibrare roată",
+          "price": 40
+        },
+        {
+          "name": "Schimbat rulmenți roată",
+          "price": 60,
+          "unit": "/ roată"
+        },
+        {
+          "name": "Montaj tubeless (fără soluție)",
+          "price": 60
+        },
+        {
+          "name": "Schimbat jantă / butuc / spițe",
+          "price": 140,
+          "note": "Include demontat anvelopă, despițat, spițat și centrat"
+        },
+        {
+          "name": "Schimbat ax butuc roată",
+          "price": 60
+        },
+        {
+          "name": "Service butuc (clicheți / casetă)",
+          "price": 60
+        }
+      ]
+    },
+    {
+      "id": "bici-transmisie",
+      "title": "Transmisie",
+      "items": [
+        {
+          "name": "Schimbat lanț",
+          "price": 30
+        },
+        {
+          "name": "Schimbat pinioane / casetă",
+          "price": 35
+        },
+        {
+          "name": "Schimbat angrenaj / foaie",
+          "price": 50
+        },
+        {
+          "name": "Schimbat butuc pedalier (monobloc)",
+          "price": 50
+        },
+        {
+          "name": "Curățare și gresare transmisie",
+          "price": 60
+        }
+      ]
+    },
+    {
+      "id": "bici-schimbator",
+      "title": "Schimbător și manete",
+      "items": [
+        {
+          "name": "Reglaj schimbător",
+          "price": 35,
+          "unit": "/ schimbător"
+        },
+        {
+          "name": "Schimbat cablu și cămașă schimbător",
+          "price": 50,
+          "note": "Include reglaj"
+        },
+        {
+          "name": "Îndreptare ureche schimbător",
+          "price": 60,
+          "note": "Include reglaj"
+        },
+        {
+          "name": "Înlocuire ureche schimbător",
+          "price": 60,
+          "note": "Piesa se plătește separat"
+        },
+        {
+          "name": "Înlocuire schimbător",
+          "price": 95,
+          "note": "Include reglaj"
+        },
+        {
+          "name": "Diagnoză / reglaj schimbător electronic (Di2 / AXS)",
+          "price": 70
+        },
+        {
+          "name": "Montaj schimbător electronic (AXS / Di2)",
+          "price": 60
+        },
+        {
+          "name": "Reglaj AXS",
+          "price": 40
+        },
+        {
+          "name": "Schimbat rotițe schimbător (role)",
+          "price": 30
+        },
+        {
+          "name": "Montaj manete integrate de șosea (mecanice)",
+          "price": 80,
+          "unit": "/ bucată"
+        },
+        {
+          "name": "Montaj manete hidraulice de șosea",
+          "price": 130,
+          "unit": "/ bucată"
+        }
+      ]
+    },
+    {
+      "id": "bici-frane",
+      "title": "Frâne",
+      "items": [
+        {
+          "name": "Reglaj frână",
+          "price": 35
+        },
+        {
+          "name": "Schimbat plăcuțe / saboți",
+          "price": 35,
+          "note": "Include reglaj"
+        },
+        {
+          "name": "Schimbat cablu și cămașă frână",
+          "price": 35,
+          "note": "Include reglaj"
+        },
+        {
+          "name": "Aerisire frână hidraulică",
+          "price": 60,
+          "note": "Include lichidul"
+        },
+        {
+          "name": "Schimbat disc frână",
+          "price": 25
+        },
+        {
+          "name": "Înlocuire etrier / manetă frână mecanică",
+          "price": 50
+        },
+        {
+          "name": "Service etrier hidraulic",
+          "price": 80
+        },
+        {
+          "name": "Service manetă frână hidraulică",
+          "price": 100
+        },
+        {
+          "name": "Înlocuit / scurtat conductă hidraulică",
+          "price": 80
+        }
+      ]
+    },
+    {
+      "id": "bici-cadru",
+      "title": "Cadru și direcție",
+      "items": [
+        {
+          "name": "Înlocuire furcă",
+          "price": 90
+        },
+        {
+          "name": "Înlocuire cuvete direcție",
+          "price": 95
+        },
+        {
+          "name": "Înlocuire pipă",
+          "price": 25
+        },
+        {
+          "name": "Înlocuire ghidon",
+          "price": 30
+        },
+        {
+          "name": "Gresat cuvete direcție",
+          "price": 55
+        },
+        {
+          "name": "Schimbat rulmenți cadru (pivot suspensie)",
+          "price": 20,
+          "unit": "/ bucată"
+        },
+        {
+          "name": "Montat floare furcă",
+          "price": 20
+        }
+      ]
+    },
+    {
+      "id": "bici-suspensii",
+      "title": "Suspensii: furcă, amortizor, tijă telescopică",
+      "items": [
+        {
+          "name": "Service furcă pe arc / elastomer",
+          "price": 100
+        },
+        {
+          "name": "Service furcă sau amortizor — intervalul de 50 de ore",
+          "price": 250,
+          "note": "Plus kitul de etanșări, separat"
+        },
+        {
+          "name": "Service furcă sau amortizor — intervalul de 100 de ore",
+          "price": 450,
+          "note": "Plus kitul de etanșări, separat"
+        },
+        {
+          "name": "Revizie tijă de șa telescopică (dropper)",
+          "price": 250
+        },
+        {
+          "name": "Reglat presiune furcă / amortizor",
+          "price": 20
+        }
+      ]
+    },
+    {
+      "id": "bici-ebike",
+      "title": "Biciclete electrice (e-bike)",
+      "items": [
+        {
+          "name": "Diagnoză / update software",
+          "price": 65
+        },
+        {
+          "name": "Diagnoză baterie",
+          "price": 65
+        },
+        {
+          "name": "Schimbat motor",
+          "price": 200
+        },
+        {
+          "name": "Schimbat display",
+          "price": 120,
+          "note": "Include diagnoza"
+        },
+        {
+          "name": "Schimbat baterie",
+          "price": 140,
+          "note": "Include diagnoza și reglarea suporților"
+        },
+        {
+          "name": "Schimbat cablu e-bike",
+          "price": 50,
+          "note": "Dacă nu implică demontarea motorului"
+        }
+      ]
+    },
+    {
+      "id": "bici-diverse",
+      "title": "Montaj, transport și alte servicii",
+      "items": [
+        {
+          "name": "Montaj / asamblare bicicletă nouă",
+          "price": 100
+        },
+        {
+          "name": "Spălat bicicletă",
+          "price": 100
+        },
+        {
+          "name": "Ambalat bicicleta pentru transport",
+          "price": 200
+        },
+        {
+          "name": "Preluare și livrare bicicletă în oraș",
+          "price": 39,
+          "note": "Gratuit pentru comenzi de peste 200 lei"
+        },
+        {
+          "name": "Taxă de urgență (lucrare prioritară)",
+          "price": 100
+        },
+        {
+          "name": "Dezasamblare bicicletă (pregătire pentru vopsire)",
+          "price": 175
+        }
+      ]
+    },
+    {
+      "id": "bici-accesorii",
+      "title": "Accesorii și montaje",
+      "items": [
+        {
+          "name": "Montat sonerie / stop / far / cric",
+          "price": 20
+        },
+        {
+          "name": "Montat pedale",
+          "price": 20
+        },
+        {
+          "name": "Montat șa",
+          "price": 20
+        },
+        {
+          "name": "Schimbat mansoane",
+          "price": 20
+        },
+        {
+          "name": "Montat apărători (față / spate), coș sau portbagaj",
+          "price": 50
+        },
+        {
+          "name": "Montat roți ajutătoare",
+          "price": 20
+        },
+        {
+          "name": "Scurtat / tăiat piese",
+          "price": 20,
+          "unit": "/ tăiere"
+        },
+        {
+          "name": "Montat scaun de copil",
+          "price": 50
+        },
+        {
+          "name": "Montat și setat vitezometru",
+          "price": 40
+        },
+        {
+          "name": "Montaj ghidolină",
+          "price": 50
+        },
+        {
+          "name": "Montat protecție jantă",
+          "price": 20
+        },
+        {
+          "name": "Montat baieu",
+          "price": 50
+        }
+      ]
+    },
+    {
+      "id": "bici-abonament",
+      "title": "Abonament Bike Care",
+      "items": [
+        {
+          "name": "Bike Care — abonament anual",
+          "price": 350,
+          "unit": "/ an",
+          "note": "2 revizii Standard + pene nelimitate + prioritate la programare",
+          "slug": "bici-abonament"
+        }
+      ]
+    }
+  ],
+  "espressoare": [
+    {
+      "id": "cafea-pachete",
+      "title": "Pachete de service pentru espressoare",
+      "intro": "Tarifele pentru espressoare sunt în curs de validare și le publicăm în curând. Până atunci, diagnosticul e gratuit și afli prețul exact înainte de orice lucrare.",
+      "items": [
+        {
+          "name": "Întreținere Esențială",
+          "price": null,
+          "note": "Decalcifiere, igienizare, curățare și ungere grup de cafea, verificare presiune și temperatură, testare funcțională",
+          "slug": "cafea-esentiala"
+        },
+        {
+          "name": "Revizie Completă",
+          "price": null,
+          "note": "Tot ce include Esențiala + revizie generală superautomat, recalibrare râșniță, înlocuire garnituri uzate, curățare circuit apă, test final cu cafea",
+          "slug": "cafea-completa"
+        },
+        {
+          "name": "Reparație",
+          "price": null,
+          "note": "Diagnostic gratuit și deviz înainte de lucru; piesele se plătesc separat, conform devizului",
+          "slug": "cafea-reparatie"
+        }
+      ]
+    },
+    {
+      "id": "cafea-servicii",
+      "title": "Diagnostic, curier și abonament",
+      "items": [
+        {
+          "name": "Diagnostic espressor",
+          "price": 0,
+          "note": "Plătești doar reparația pe care o accepți"
+        },
+        {
+          "name": "Decalcifiere la orice reparație",
+          "price": 0,
+          "note": "Inclusă gratuit"
+        },
+        {
+          "name": "Ridicare și livrare prin curier (București și Ilfov)",
+          "price": null,
+          "note": "Tur-retur, la ușa ta"
+        },
+        {
+          "name": "Abonament de mentenanță",
+          "price": null,
+          "note": "Decalcifiere și igienizare periodică, verificări, prioritate, curier inclus (București + Ilfov)"
+        }
+      ]
+    }
+  ]
+}

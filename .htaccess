@@ -21,3 +21,39 @@ RewriteCond %{REQUEST_URI} !^/blog/
 RewriteCond %{HTTP_HOST} ^xpertpoint\.ro$ [NC,OR]
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://www.xpertpoint.ro/$1 [R=301,L]
+
+# Pagină 404 personalizată
+ErrorDocument 404 /404.html
+
+# Fișierele de lucru nu se servesc public (oricum nu sunt copiate la deploy)
+RedirectMatch 404 ^/(partials|tools)/
+
+# Cache pentru fișiere statice (se aplică și în /blog/, deci și fișierelor WordPress).
+# CSS/JS/fonturile site-ului au ?v=<hash> în URL (generat de tools/build.py), iar cele din WordPress ?ver=,
+# deci pot sta în cache mult timp; HTML-ul se revalidează la fiecare vizită.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType application/x-javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/webp "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 month"
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|woff2)$">
+    Header set Cache-Control "public, max-age=31536000"
+  </FilesMatch>
+  # Blogul (xpertpoint.ro/blog) folosește fonturile găzduite pe www.xpertpoint.ro.
+  <FilesMatch "\.woff2$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+</IfModule>
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+</IfModule>
