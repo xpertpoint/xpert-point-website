@@ -442,3 +442,13 @@
 .brands-partner{max-width:720px;margin-top:2rem}
 .brands-partner strong{color:var(--white);font-weight:500}
 @media(max-width:900px){.brands-grid.brands-main{grid-template-columns:1fr 1fr}}
+a.brand-tile{text-decoration:none}
+.brands-links{max-width:720px}
+.brands-links a{color:var(--rust-light);text-decoration:none;border-bottom:1px solid rgba(192,65,11,0.4)}
+.brands-links a:hover{border-bottom-color:var(--rust)}
+/* PREȚURI (tabel generat din tools/preturi.json) */
+.prices-strip .xp-price-group{max-width:860px}
+.prices-strip .xp-price-group h3{margin:0}
+.prices-strip .xp-table th,.prices-strip .xp-table td{padding:.85rem .5rem}
+.prices-strip .content-intro{max-width:860px}
+.faq-a a{color:inherit;border-bottom:1px solid var(--rust)}

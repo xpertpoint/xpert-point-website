@@ -5,6 +5,8 @@ deployment:
     - /bin/cp -f index.html $DEPLOYPATH
     - /bin/cp -f service-biciclete-bucuresti.html $DEPLOYPATH
     - /bin/cp -f service-espressoare-bucuresti.html $DEPLOYPATH
+    - /bin/cp -f service-delonghi-bucuresti.html $DEPLOYPATH
+    - /bin/cp -f service-philips-bucuresti.html $DEPLOYPATH
     - /bin/cp -f revizie-bicicleta-electrica-bucuresti.html $DEPLOYPATH
     - /bin/cp -f reparatii-frane-bicicleta-bucuresti.html $DEPLOYPATH
     - /bin/cp -f preturi.html $DEPLOYPATH

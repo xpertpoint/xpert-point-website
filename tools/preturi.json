@@ -1,5 +1,5 @@
 {
-  "_info": "Sursa unică a prețurilor de pe /preturi.html (tabele + schema). Modifici aici, apoi rulezi: python3 tools/build.py. Prețurile de biciclete sunt din 'Preturi aparat de marcat - Sheet1.pdf' (sept. 2026); cele de espressoare NU sunt încă validate: price = null se afișează „În pregătire” și nu intră în schema Offer. price = număr în lei; 0 = gratuit; unit = sufix opțional (ex. '/ roată'); from = true afișează 'de la'.",
+  "_info": "Sursa unică a prețurilor de pe /preturi.html (tabele + schema). Modifici aici, apoi rulezi: python3 tools/build.py. Prețurile de biciclete sunt din 'Preturi aparat de marcat - Sheet1.pdf' (sept. 2026); cele de espressoare NU sunt încă validate: price = null se afișează „În pregătire” (sau „[DE COMPLETAT: <todo>]” dacă are câmpul todo) și nu intră în schema Offer. price = număr în lei; 0 = gratuit; unit = sufix opțional (ex. '/ roată'); from = true afișează 'de la'.",
   "biciclete": [
     {
       "id": "bici-rapide",
@@ -428,25 +428,29 @@
     {
       "id": "cafea-pachete",
       "title": "Pachete de service pentru espressoare",
-      "intro": "Tarifele pentru espressoare sunt în curs de validare și le publicăm în curând. Până atunci, diagnosticul e gratuit și afli prețul exact înainte de orice lucrare.",
+      "intro": "Afli prețul exact înainte de orice lucrare. La reparații, devizul cuprinde separat manopera și piesele.",
       "items": [
         {
           "name": "Întreținere Esențială",
           "price": null,
           "note": "Decalcifiere, igienizare, curățare și ungere grup de cafea, verificare presiune și temperatură, testare funcțională",
-          "slug": "cafea-esentiala"
+          "slug": "cafea-esentiala",
+          "todo": "preț Întreținere Esențială"
         },
         {
           "name": "Revizie Completă",
           "price": null,
           "note": "Tot ce include Esențiala + revizie generală superautomat, recalibrare râșniță, înlocuire garnituri uzate, curățare circuit apă, test final cu cafea",
-          "slug": "cafea-completa"
+          "slug": "cafea-completa",
+          "todo": "preț Revizie Completă"
         },
         {
-          "name": "Reparație",
+          "name": "Reparații frecvente",
           "price": null,
           "note": "Diagnostic gratuit și deviz înainte de lucru; piesele se plătesc separat, conform devizului",
-          "slug": "cafea-reparatie"
+          "slug": "cafea-reparatie",
+          "from": true,
+          "todo": "preț „de la” pentru reparațiile frecvente"
         }
       ]
     },
@@ -465,9 +469,16 @@
           "note": "Inclusă gratuit"
         },
         {
+          "name": "Decalcifiere separată (fără reparație)",
+          "price": null,
+          "todo": "preț decalcifiere",
+          "slug": "cafea-decalcifiere"
+        },
+        {
           "name": "Ridicare și livrare prin curier (București și Ilfov)",
           "price": null,
-          "note": "Tur-retur, la ușa ta"
+          "note": "Tur-retur, la ușa ta",
+          "todo": "tarif curier pentru espressoare"
         },
         {
           "name": "Abonament de mentenanță",

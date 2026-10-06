@@ -391,3 +391,4 @@
     .cookie-banner-actions { justify-content: center; }
   }
   /* COOKIE-CONSENT:END */
+.card-desc a{color:inherit;text-decoration:none;border-bottom:1px solid currentColor}

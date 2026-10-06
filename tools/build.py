@@ -16,6 +16,8 @@ Ce face, pe toate paginile din PAGES:
     + Service/Offer) între <!-- SCHEMA:START/END -->;
   * generează tabelele de prețuri din tools/preturi.json în preturi.html și în paginile
     care au <!-- PRICE-GROUP:<id>:START/END --> (id = o categorie din preturi.json);
+  * pune un singur preț între <!-- PRICE-VALUE:<slug>:START/END --> (slug = un serviciu din preturi.json);
+  * la final listează paginile care mai au câmpuri [DE COMPLETAT: …] (prețuri cu „todo” în preturi.json);
   * generează FAQPage din întrebările vizibile între <!-- FAQ-SCHEMA:START/END -->;
   * rescrie sitemap.xml.
 
@@ -34,12 +36,15 @@ BLOG = 'https://xpertpoint.ro/blog/'
 OG_IMAGE = 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=1200&q=80&auto=format&fit=crop'
 
 BIKE_HUB = ('Service biciclete', '/service-biciclete-bucuresti.html')
+COFFEE_HUB = ('Service espressoare', '/service-espressoare-bucuresti.html')
 
 # crumbs: lista (nume, url) fără „Acasă" (se adaugă automat); ultimul element e pagina curentă.
 PAGES = {
     'index.html': dict(url='/', name='Service biciclete și espressoare București', type='WebPage', priority='1.0'),
     'service-biciclete-bucuresti.html': dict(name='Service biciclete', crumbs=[BIKE_HUB], service='bike', priority='0.9'),
-    'service-espressoare-bucuresti.html': dict(name='Service espressoare', crumbs=[('Service espressoare', '/service-espressoare-bucuresti.html')], service='coffee', priority='0.9'),
+    'service-espressoare-bucuresti.html': dict(name='Service espressoare', crumbs=[COFFEE_HUB], service='coffee', priority='0.9'),
+    'service-delonghi-bucuresti.html': dict(name='Service DeLonghi', crumbs=[COFFEE_HUB, ('Service DeLonghi', None)], service='delonghi', priority='0.8', consent=True),
+    'service-philips-bucuresti.html': dict(name='Service Philips', crumbs=[COFFEE_HUB, ('Service Philips', None)], service='philips', priority='0.8', consent=True),
     'revizie-bicicleta-electrica-bucuresti.html': dict(name='Revizie bicicletă electrică', crumbs=[BIKE_HUB, ('Revizie bicicletă electrică', None)], service='ebike', priority='0.8'),
     'reparatii-frane-bicicleta-bucuresti.html': dict(name='Reparații frâne bicicletă', crumbs=[BIKE_HUB, ('Reparații frâne', None)], service='frane', priority='0.8'),
     'preturi.html': dict(name='Prețuri', crumbs=[('Prețuri', None)], service='catalog', priority='0.9', consent=True),
@@ -58,6 +63,8 @@ SERVICES = {
     'ebike': dict(name='Revizie bicicletă electrică', type='Revizie bicicletă electrică', groups=['bici-revizii', 'bici-ebike']),
     'frane': dict(name='Reparații și service frâne bicicletă', type='Reparații frâne bicicletă', groups=['bici-frane']),
     'coffee': dict(name='Service și reparații espressoare', type='Service espressoare', groups=['cafea-pachete', 'cafea-servicii']),
+    'delonghi': dict(name='Service și reparații espressoare DeLonghi', type='Service espressoare DeLonghi', groups=['cafea-pachete', 'cafea-servicii']),
+    'philips': dict(name='Service și reparații espressoare Philips', type='Service espressoare Philips', groups=['cafea-pachete', 'cafea-servicii']),
 }
 
 AREA_SERVED = ['București', 'Sector 6', 'Regie', 'Crângași', 'Belvedere', 'Drumul Taberei', 'Militari', 'Giulești', 'Ilfov']
@@ -77,7 +84,8 @@ def all_groups(prices):
 
 def fmt_price(item):
     if item['price'] is None:
-        return 'În pregătire'
+        # todo = preț cerut proprietarului și încă necompletat; apare vizibil ca să nu se publice din greșeală
+        return f"[DE COMPLETAT: {item['todo']}]" if item.get('todo') else 'În pregătire'
     if item['price'] == 0:
         return 'Gratuit'
     txt = ('de la ' if item.get('from') else '') + f"{item['price']} lei"
@@ -402,6 +410,10 @@ def main():
         groups = all_groups(prices)
         for gid in re.findall(r'<!-- PRICE-GROUP:([\w-]+):START -->', s):
             s = put(s, 'PRICE-GROUP:' + gid, render_groups([groups[gid]]))
+        # un singur preț (după slug), ex. pe cardurile de pachete: <!-- PRICE-VALUE:cafea-esentiala:START/END -->
+        by_slug = {i['slug']: i for g in groups.values() for i in g['items'] if i.get('slug')}
+        for slug in re.findall(r'<!-- PRICE-VALUE:([\w-]+):START -->', s):
+            s = put(s, 'PRICE-VALUE:' + slug, html.escape(fmt_price(by_slug[slug])))
         if s != orig:
             path.write_text(s, encoding='utf-8')
             changed.append(fname)
@@ -421,6 +433,11 @@ def main():
         changed.append('sitemap.xml')
 
     print('Actualizate:', ', '.join(changed) if changed else 'nimic (totul era la zi)')
+    todo = {f: (ROOT / f).read_text(encoding='utf-8').count('[DE COMPLETAT') for f in PAGES if (ROOT / f).exists()}
+    todo = {f: n for f, n in todo.items() if n}
+    if todo:
+        print('  ! Câmpuri [DE COMPLETAT] rămase (nu publica până nu sunt completate):',
+              ', '.join(f'{f} ({n})' for f, n in todo.items()))
 
 
 if __name__ == '__main__':
