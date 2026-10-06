@@ -21,6 +21,8 @@ deployment:
     - /bin/cp -f robots.txt $DEPLOYPATH
     - /bin/cp -f llms.txt $DEPLOYPATH
     - /bin/cp -f .htaccess $DEPLOYPATH
+    - /bin/cp -f favicon.ico favicon.svg favicon-16.png favicon-32.png apple-touch-icon.png $DEPLOYPATH
+    - /bin/cp -f google10fc58929a6fed00.html $DEPLOYPATH
     - /bin/mkdir -p ${DEPLOYPATH}assets/pages ${DEPLOYPATH}assets/fonts
     - /bin/cp -f assets/site.min.css assets/site.min.js ${DEPLOYPATH}assets/
     - /bin/cp -f assets/pages/*.min.css ${DEPLOYPATH}assets/pages/
